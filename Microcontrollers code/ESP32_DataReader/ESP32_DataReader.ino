@@ -8,7 +8,13 @@ DFRobot_DHT11 DHT;  //inicialize the sensor varuiable
 void getTdsValue(){
 
   int sensorValue = analogRead(tdsSensorPin); // Read the analog voltage from the TDS sensor
-  float tdsValue = map(sensorValue, 0, 1023, 0, 5000); // Map the analog value to TDS values (adjust the range as needed)
+  float tdsValue = map(sensorValue, 0, 1023, 0, 320); // Map the analog value to TDS values (adjust the range as needed) -->> TODO make an algorithm to recive the true vallue calculate   
+
+  /*
+
+  
+    compensationCoefficient = 1.0+0.02*(temperature-25.0);
+  */
 
   Serial.print("Raw Sensor Value: ");
   Serial.println(sensorValue);
