@@ -1,0 +1,1 @@
+link whit toturial on how to use https connection -> https://techtutorialsx.com/2017/11/18/esp32-arduino-https-get-request/
