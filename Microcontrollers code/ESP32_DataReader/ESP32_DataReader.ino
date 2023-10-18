@@ -1,4 +1,6 @@
 #include <DFRobot_DHT11.h>
+#include <WiFi.h>
+#include <WiFiClientSecure.h>
 
 #define DHT11_PIN 2  //DHt sensor digital pin
 const int tdsSensorPin = A0; // Define the analog pin for the TDS sensor
@@ -45,6 +47,7 @@ void getTemperatureStatus(){
 
 void setup() {
   Serial.begin(115200);
+  conn1 = client.connect(server,443);
 }
 
 
