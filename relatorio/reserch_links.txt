@@ -1,3 +1,5 @@
 https://www.freshwatersystems.com/blogs/blog/what-are-hydroponic-systems  -> hydroponic explanaition
 
 https://www.arduino.cc/en/Guide/Introduction   -> Aruino page
+
+https://www.e-tinkers.com/2020/07/a-review-on-seeed-studio-ph-and-ec-sensor-kits-part-1/
