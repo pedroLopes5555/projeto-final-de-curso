@@ -13,7 +13,7 @@ namespace greenhouse.Controllers
         }
 
 
-        public IActionResult SendSensorData(string micrcocontrollerID, string type, string value)
+        public IActionResult SendSensorData(/*[FromBody]*/ string micrcocontrollerID, string type, string value)
         {
             //sensor ID:[values]
 

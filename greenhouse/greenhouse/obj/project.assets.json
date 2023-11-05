@@ -8,19 +8,19 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\pedro\\.nuget\\packages\\": {}
+    "C:\\Users\\pedro_j018d6i\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pedro\\source\\repos\\greenhouse\\greenhouse\\greenhouse.csproj",
+      "projectUniqueName": "C:\\Users\\pedro_j018d6i\\escola\\tfc\\greenhouse\\greenhouse\\greenhouse.csproj",
       "projectName": "greenhouse",
-      "projectPath": "C:\\Users\\pedro\\source\\repos\\greenhouse\\greenhouse\\greenhouse.csproj",
-      "packagesPath": "C:\\Users\\pedro\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pedro\\source\\repos\\greenhouse\\greenhouse\\obj\\",
+      "projectPath": "C:\\Users\\pedro_j018d6i\\escola\\tfc\\greenhouse\\greenhouse\\greenhouse.csproj",
+      "packagesPath": "C:\\Users\\pedro_j018d6i\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\pedro_j018d6i\\escola\\tfc\\greenhouse\\greenhouse\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\pedro\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\pedro_j018d6i\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
