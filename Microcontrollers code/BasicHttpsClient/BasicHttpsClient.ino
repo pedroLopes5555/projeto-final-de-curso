@@ -4,19 +4,24 @@
     Created on: 14.10.2018
 
 */
-
+// Include the libraries we need
+#include <OneWire.h>
+#include <DallasTemperature.h>
 #include <Arduino.h>
-
 #include <WiFi.h>
 #include <WiFiMulti.h>
-
 #include <HTTPClient.h>
-
 #include <WiFiClientSecure.h>
 
-// This is GandiStandardSSLCA2.pem, the root Certificate Authority that signed 
-// the server certifcate for the demo server https://jigsaw.w3.org in this
-// example. This certificate is valid until Sep 11 23:59:59 2024 GMT
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+// Data wire is plugged into port 2 on the Arduino
+#define ONE_WIRE_BUS 5
+
+// root certeficate for the https 
+// 
+// 
 const char* rootCACertificate = \
 "-----BEGIN CERTIFICATE-----\n" \
 "MIIDjjCCAnagAwIBAgIQAzrx5qcRqaC7KGSxHQn65TANBgkqhkiG9w0BAQsFADBh\n" \
@@ -41,6 +46,39 @@ const char* rootCACertificate = \
 "MrY=\n" \
 "-----END CERTIFICATE-----\n";
 
+
+
+
+// Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
+OneWire oneWire(ONE_WIRE_BUS);
+
+// Pass our oneWire reference to Dallas Temperature. 
+DallasTemperature sensors(&oneWire);
+
+
+float readTemperature(){
+    // call sensors.requestTemperatures() to issue a global temperature 
+  // request to all devices on the bus
+  Serial.print("Requesting temperatures...");
+  sensors.requestTemperatures(); // Send the command to get temperatures
+  Serial.println("DONE");
+  // After we got the temperatures, we can print them here.
+  // We use the function ByIndex, and as an example get the temperature from the first sensor only.
+  float tempC = sensors.getTempCByIndex(0);
+
+  // Check if reading was successful
+  if(tempC != DEVICE_DISCONNECTED_C) 
+  {
+    Serial.print("Temperature for the device 1 (index 0) is: ");
+    Serial.println(tempC);
+    return tempC;
+  } 
+  else
+  {
+    Serial.println("Error: Could not read temperature data");
+    return 999999999.0;
+  }
+}
 
 // Not sure if WiFiClientSecure checks the validity date of the certificate. 
 // Setting clock just to be sure...
@@ -67,9 +105,12 @@ void setClock() {
 WiFiMulti WiFiMulti;
 
 void setup() {
+    // Start up the library
 
   Serial.begin(115200);
   // Serial.setDebugOutput(true);
+  sensors.begin();
+  
 
   Serial.println();
   Serial.println();
@@ -84,12 +125,15 @@ void setup() {
     Serial.print(".");
   }
   Serial.println(" connected");
+  Serial.print("ESP Board MAC Address:  ");
+  Serial.println(WiFi.macAddress());
 
   setClock();  
 }
 
-void loop() {
-  WiFiClientSecure *client = new WiFiClientSecure;
+
+void sendValueToApi(String type, String value){
+    WiFiClientSecure *client = new WiFiClientSecure;
   if(client) {
     client -> setCACert(rootCACertificate);
 
@@ -98,13 +142,13 @@ void loop() {
       HTTPClient https;
   
       Serial.print("[HTTPS] begin...\n");
-      if (https.begin(*client, "https://tfcgreenhouse.azurewebsites.net/automation/sendsensordata")) {  // HTTPS
+      if (https.begin(*client, "https://tfcgreenhouse.azurewebsites.net/automation/ReciveSensorData")) {  // HTTPS
         Serial.print("[HTTPS] GET...\n");
         // start connection and send HTTP header2
         https.addHeader("Content-Type", "application/json");
-        int httpCode = https.POST("{\"micrcocontrollerID\":\"1\",\"type\":\"distance\",\"value\":\"10\"}");
+        int httpCode = https.POST("{\"micrcocontrollerID\":\"" + WiFi.macAddress() + "\",\"type\":\"" + type + "\",\"value\":\"" + value +"\"}");
         Serial.print("post:");
-        Serial.print("{\"micrcocontrollerID\":\"1\",\"type\":\"distance\",\"value\":\"10\"}");
+        Serial.print("{\"micrcocontrollerID\":\"" + WiFi.macAddress() + "\",\"type\":\"" + type + "\",\"value\":\"" + value +"\"}");
         Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
 
         // httpCode will be negative on error
@@ -136,5 +180,18 @@ void loop() {
 
   Serial.println();
   Serial.println("Waiting 10s before the next round...");
+   
+}
+
+void loop() {
+
+  String temperature = String(readTemperature());
+  sendValueToApi("temperature", temperature);
+
+
+
+
+
+
   delay(10000);
 }
