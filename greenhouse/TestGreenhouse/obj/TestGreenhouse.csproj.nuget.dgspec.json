@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pedro\\escola\\tfc\\greenhouse\\TestGreenhouse\\TestGreenhouse.csproj": {}
+    "C:\\Users\\pedro_j018d6i\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\TestGreenhouse\\TestGreenhouse.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pedro\\escola\\tfc\\greenhouse\\greenhouse\\greenhouse.csproj": {
+    "C:\\Users\\pedro_j018d6i\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pedro\\escola\\tfc\\greenhouse\\greenhouse\\greenhouse.csproj",
+        "projectUniqueName": "C:\\Users\\pedro_j018d6i\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj",
         "projectName": "greenhouse",
-        "projectPath": "C:\\Users\\pedro\\escola\\tfc\\greenhouse\\greenhouse\\greenhouse.csproj",
-        "packagesPath": "C:\\Users\\pedro\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pedro\\escola\\tfc\\greenhouse\\greenhouse\\obj\\",
+        "projectPath": "C:\\Users\\pedro_j018d6i\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj",
+        "packagesPath": "C:\\Users\\pedro_j018d6i\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\pedro_j018d6i\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\greenhouse\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\pedro\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\pedro_j018d6i\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -62,17 +62,17 @@
         }
       }
     },
-    "C:\\Users\\pedro\\escola\\tfc\\greenhouse\\TestGreenhouse\\TestGreenhouse.csproj": {
+    "C:\\Users\\pedro_j018d6i\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\TestGreenhouse\\TestGreenhouse.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pedro\\escola\\tfc\\greenhouse\\TestGreenhouse\\TestGreenhouse.csproj",
+        "projectUniqueName": "C:\\Users\\pedro_j018d6i\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\TestGreenhouse\\TestGreenhouse.csproj",
         "projectName": "TestGreenhouse",
-        "projectPath": "C:\\Users\\pedro\\escola\\tfc\\greenhouse\\TestGreenhouse\\TestGreenhouse.csproj",
-        "packagesPath": "C:\\Users\\pedro\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pedro\\escola\\tfc\\greenhouse\\TestGreenhouse\\obj\\",
+        "projectPath": "C:\\Users\\pedro_j018d6i\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\TestGreenhouse\\TestGreenhouse.csproj",
+        "packagesPath": "C:\\Users\\pedro_j018d6i\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\pedro_j018d6i\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\TestGreenhouse\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\pedro\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\pedro_j018d6i\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -86,8 +86,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\pedro\\escola\\tfc\\greenhouse\\greenhouse\\greenhouse.csproj": {
-                "projectPath": "C:\\Users\\pedro\\escola\\tfc\\greenhouse\\greenhouse\\greenhouse.csproj"
+              "C:\\Users\\pedro_j018d6i\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj": {
+                "projectPath": "C:\\Users\\pedro_j018d6i\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj"
               }
             }
           }

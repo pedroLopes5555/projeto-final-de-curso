@@ -4,11 +4,12 @@ namespace greenhouse.Models.DB
 {
     public class Container
     {
-        private int containerId { get; set; }
-        private string containerName { get; set; }
-        private int containerDimension { get; set; }
-        private string containerLocation { get; set; }
-        private List<Microcontroller> microcontrollers { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Dimension { get; set; }
+        public string rLocation { get; set; }
+        public List<Microcontroller> Microcontrollers { get; set; }
+        public Value Values { get; set; }
 
 
     }
