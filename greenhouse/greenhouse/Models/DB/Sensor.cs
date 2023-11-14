@@ -2,9 +2,12 @@
 {
     public class Sensor
     {
-        private int Id { get; set; }
-        private string Name { get; set; }
-        private string Type { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
 
     }
+
+
+
 }

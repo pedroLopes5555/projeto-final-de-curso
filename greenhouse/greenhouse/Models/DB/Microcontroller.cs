@@ -2,13 +2,13 @@
 {
     public class Microcontroller
     {
-        private int Id { get; set; }
-        private string Name { get; set; }
-        private int Capacity { get; set; }
-
-        private List<Sensor> Sensors { get; set; }
-
-        private List<Relay> Relays { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public int Capacity { get; set; }
+        
+        public List<Sensor> Sensors { get; set; }
+       
+        public List<Relay> Relays { get; set; }
 
     }
 }

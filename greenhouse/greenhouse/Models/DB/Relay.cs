@@ -2,9 +2,9 @@
 {
     public class Relay
     {
-        private int Id { get ; set; }
-        private float Name { get; set; }
-        private bool State { get; set; }
+        public int Id { get ; set; }
+        public string Name { get; set; }
+        public bool State { get; set; }
 
     }
 }
