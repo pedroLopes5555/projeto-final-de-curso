@@ -43,8 +43,9 @@ const char* rootCACertificate = \
 "Fdtom/DzMNU+MeKNhJ7jitralj41E6Vf8PlwUHBHQRFXGU7Aj64GxJUTFy8bJZ91\n" \
 "8rGOmaFvE7FBcf6IKshPECBV1/MUReXgRPTqh5Uykw7+U0b6LJ3/iyK5S9kJRaTe\n" \
 "pLiaWN0bfVKfjllDiIGknibVb63dDcY3fe0Dkhvld1927jyNxF1WW6LZZm6zNTfl\n" \
-"MrY=\n" \
+"MrY=\n"
 "-----END CERTIFICATE-----\n";
+
 
 
 
@@ -56,7 +57,10 @@ OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
 
-float readTemperature(){
+const int tdsSensorPin = A0; // Define the analog pin for the TDS sensor
+
+
+String readTemperature(){
     // call sensors.requestTemperatures() to issue a global temperature 
   // request to all devices on the bus
   Serial.print("Requesting temperatures...");
@@ -71,14 +75,42 @@ float readTemperature(){
   {
     Serial.print("Temperature for the device 1 (index 0) is: ");
     Serial.println(tempC);
-    return tempC;
+    return String(tempC);
   } 
   else
   {
     Serial.println("Error: Could not read temperature data");
-    return 999999999.0;
+    return "error";
   }
 }
+
+
+
+String readTdsValue(){
+
+  int sensorValue = analogRead(tdsSensorPin); // Read the analog voltage from the TDS sensor
+  float tdsValue = map(sensorValue, 0, 1023, 0, 320); // Map the analog value to TDS values (adjust the range as needed) -->> TODO make an algorithm to recive the true vallue calculate   
+
+  /*
+    compensationCoefficient = 1.0+0.02*(temperature-25.0);
+  */
+
+  Serial.print("Raw Sensor Value: ");
+  Serial.println(sensorValue);
+  Serial.print("TDS Value (ppm): ");
+  Serial.println(tdsValue);
+
+  return String(tdsValue);
+
+}
+
+
+
+
+
+
+
+
 
 // Not sure if WiFiClientSecure checks the validity date of the certificate. 
 // Setting clock just to be sure...
@@ -111,7 +143,7 @@ void setup() {
   // Serial.setDebugOutput(true);
   sensors.begin();
   
-
+/*
   Serial.println();
   Serial.println();
   Serial.println();
@@ -128,7 +160,7 @@ void setup() {
   Serial.print("ESP Board MAC Address:  ");
   Serial.println(WiFi.macAddress());
 
-  setClock();  
+  setClock();  */
 }
 
 
@@ -142,7 +174,7 @@ void sendValueToApi(String type, String value){
       HTTPClient https;
   
       Serial.print("[HTTPS] begin...\n");
-      if (https.begin(*client, "https://tfcgreenhouse.azurewebsites.net/automation/ReciveSensorData")) {  // HTTPS
+      if (https.begin(*client, "https://hydrogrowthmanager.azurewebsites.net/automation/ReciveSensorData")) {  // HTTPS
         Serial.print("[HTTPS] GET...\n");
         // start connection and send HTTP header2
         https.addHeader("Content-Type", "application/json");
@@ -185,11 +217,21 @@ void sendValueToApi(String type, String value){
 
 void loop() {
 
-  String temperature = String(readTemperature());
+
+
+
+  String temperature = readTemperature();
+  Serial.print("---------------------");
+  Serial.print(temperature);
+  Serial.print("---------------------");
   sendValueToApi("temperature", temperature);
 
-
-
+  String tds = readTdsValue();
+  Serial.print("---------------------");
+  Serial.print(tds);
+  Serial.print("---------------------");
+  sendValueToApi("tds", tds);
+  
 
 
 

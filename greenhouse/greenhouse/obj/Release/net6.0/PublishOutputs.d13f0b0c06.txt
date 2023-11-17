@@ -1,0 +1,7 @@
+C:\Users\pedro\workdir\TFC\projeto-final-de-curso\greenhouse\greenhouse\obj\Release\net6.0\PubTmp\Out\greenhouse.exe
+C:\Users\pedro\workdir\TFC\projeto-final-de-curso\greenhouse\greenhouse\obj\Release\net6.0\PubTmp\Out\appsettings.Development.json
+C:\Users\pedro\workdir\TFC\projeto-final-de-curso\greenhouse\greenhouse\obj\Release\net6.0\PubTmp\Out\appsettings.json
+C:\Users\pedro\workdir\TFC\projeto-final-de-curso\greenhouse\greenhouse\obj\Release\net6.0\PubTmp\Out\greenhouse.dll
+C:\Users\pedro\workdir\TFC\projeto-final-de-curso\greenhouse\greenhouse\obj\Release\net6.0\PubTmp\Out\greenhouse.deps.json
+C:\Users\pedro\workdir\TFC\projeto-final-de-curso\greenhouse\greenhouse\obj\Release\net6.0\PubTmp\Out\greenhouse.runtimeconfig.json
+C:\Users\pedro\workdir\TFC\projeto-final-de-curso\greenhouse\greenhouse\obj\Release\net6.0\PubTmp\Out\greenhouse.pdb

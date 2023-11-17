@@ -8,4 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = TestGreenhouse
-build_property.ProjectDir = C:\Users\pedro\escola\tfc\greenhouse\TestGreenhouse\
+build_property.ProjectDir = C:\Users\pedro\workdir\TFC\projeto-final-de-curso\greenhouse\TestGreenhouse\
