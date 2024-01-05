@@ -48,7 +48,7 @@ const char* rootCACertificate = \
 "-----END CERTIFICATE-----\n";
 
 
-
+WiFiMulti WiFiMulti;
 
 
 // Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
@@ -59,6 +59,7 @@ DallasTemperature sensors(&oneWire);
 
 
 const int tdsSensorPin = A0; // Define the analog pin for the TDS sensor
+int AcidSolution = D3;
 
 
 String readTemperature(){
@@ -87,30 +88,28 @@ String readTemperature(){
 
 
 
-String readTdsValue(){
+float readTdsValue(){
 
   int sensorValue = analogRead(tdsSensorPin); // Read the analog voltage from the TDS sensor
-  float tdsValue = map(sensorValue, 0, 1023, 0, 320); // Map the analog value to TDS values (adjust the range as needed) -->> TODO make an algorithm to recive the true vallue calculate   
+  float tdsValue = map(sensorValue, 0, 1023, 0,210); // Map the analog value to TDS values (adjust the range as needed) -->> TODO make an algorithm to recive the true vallue calculate   
 
-  /*
+    float voltage = sensorValue * (2.3 / 1023.0);  /*
+
+  //float voltage = sensorValue * (2.3 / 1023.0);                                                                                                                                                                                                                                                                                             sorValue * (3.3 / 1023.0);
     compensationCoefficient = 1.0+0.02*(temperature-25.0);
   */
-
+  Serial.println("Voltag:e");
+  Serial.println("");
+  Serial.println(voltage);
+  Serial.println("");
   Serial.print("Raw Sensor Value: ");
   Serial.println(sensorValue);
   Serial.print("TDS Value (ppm): ");
-  Serial.println(tdsValue);
+  Serial.println(2*tdsValue);
 
-  return String(tdsValue);
+  return tdsValue;
 
 }
-
-
-
-
-
-
-
 
 
 // Not sure if WiFiClientSecure checks the validity date of the certificate. 
@@ -135,7 +134,6 @@ void setClock() {
 }
 
 
-WiFiMulti WiFiMulti;
 
 void setup() {
     // Start up the library
@@ -144,13 +142,14 @@ void setup() {
   // Serial.setDebugOutput(true);
   sensors.begin();
   
-/*
+  pinMode(AcidSolution, OUTPUT);
+
   Serial.println();
   Serial.println();
   Serial.println();
 
   WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP("LL-GUEST", "VendaDoPinheiro");
+  WiFiMulti.addAP("LL-GUEST", "VendaDoPinehiro");
 
   // wait for WiFi connection
   Serial.print("Waiting for WiFi to connect...");
@@ -161,7 +160,7 @@ void setup() {
   Serial.print("ESP Board MAC Address:  ");
   Serial.println(WiFi.macAddress());
 
-  setClock();  */
+  setClock();  
 }
 
 
@@ -225,16 +224,28 @@ void loop() {
   Serial.print("---------------------");
   Serial.print(temperature);
   Serial.print("---------------------");
-  sendValueToApi("temperature", temperature);
+  sendValueToApi("temperature", String(temperature));
 
-  String tds = readTdsValue();
+
+
+
+  float tds = readTdsValue();
   Serial.print("---------------------");
   Serial.print(tds);
   Serial.print("---------------------");
-  sendValueToApi("tds", tds);
-  
+  sendValueToApi("tds", String(tds));
+
+
+  /*
+  if(tds< 500){
+    digitalWrite(AcidSolution, HIGH); // Turn the digital output HIGH 
+  }else{
+    digitalWrite(AcidSolution, LOW); // Turn the digital output HIGH 
+
+  }
+*/
 
 
 
-  delay(10000);
+  delay(1000);
 }

@@ -1,11 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace greenhouse.DB
 {
-    public class GreenhouseConex
+    public class GreenhouseContex : DbContext
     {
 
-        public DbSet<Microcontroller> Microcontroller { get; set; }
+        public GreenhouseContex()
+        {
+            //Database.EnsureDeleted();
+            Database.EnsureCreated();
+        }
+
+        public DbSet<Microcontroller> Microcontrollers { get; set; }
         public DbSet<Relay> Relays { get; set; }
         public DbSet<Sensor> Sensors { get; set; }
         public DbSet<Contaier>  Contaiers { get; set; }
@@ -13,10 +20,27 @@ namespace greenhouse.DB
 
 
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    object value = optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=greenhouse;Trusted_Connection=True;");
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            object value = optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=greenhouseDB;Trusted_Connection=True;");
+        }
+
+
+
+
+        /*
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Contaier>()
+                .HasOne(c => c.Value)
+                .WithOne(v => v.Container)
+                .HasForeignKey<Value>(v => v.Container.Id);
+
+            // Other configurations...
+
+            base.OnModelCreating(modelBuilder);
+        }*/
+
 
 
     }

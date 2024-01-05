@@ -1,5 +1,5 @@
 
-$result = Invoke-RestMethod  -uri https://localhost:7220/automation/sendsensordata -Method Post -Body @{micrcocontrollerID = "1"; type = "pH" ; value = "3,0"}
+$result = Invoke-RestMethod  -uri https://localhost:7220/automation/ReciveSensorData -Method Post -Body @{micrcocontrollerID = "1"; type = "pH" ; value = "3,0"}
 
 $expected = "micrcocontrollerID:1 type:pH value:3,0"
 

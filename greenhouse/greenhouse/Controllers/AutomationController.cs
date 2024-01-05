@@ -1,30 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Constraints;
 using greenhouse.Models;
-using greenhouse.Models.DB;
+using greenhouse.DB;
+using System.Diagnostics;
 
 namespace greenhouse.Controllers
 {
     public class AutomationController : Controller
     {
-        private string? microcontrollerID;
-        private string? type;
-        private string? value;
+        private static string microcontrollerID = "";
+        private static string type = "";
+        private static string value = "";
+
+        static private string _temperatureValue = "";
+        static private string _tdsValue = "";
+        static private string _phValue = "";
 
 
-        private static String _temperatureValue = "null";
-        private static String _tdsValue = "null";
-
-
-
-        public IActionResult Index()
-        {
-
-
-            Context a = new Context();
-            return View();
-
-        }
+        
 
 
         //[HttpPost("message")]
@@ -36,7 +29,7 @@ namespace greenhouse.Controllers
 
             // Save data into controller variables
             microcontrollerID = sensorData.MicrcocontrollerID;
-            type = sensorData.Type;
+            type = sensorData.Type; 
             value = sensorData.Value;
 
             /*
@@ -52,6 +45,10 @@ namespace greenhouse.Controllers
             {
                 _temperatureValue = value;
             }
+            if(type == "ph" && value != null)
+            {
+                _phValue = value;
+            }
 
             return Json("micrcocontrollerID:" + microcontrollerID + " type:" + type + " value:" + value);
         }
@@ -63,13 +60,14 @@ namespace greenhouse.Controllers
         //test funtion
         public IActionResult requestValues()
         {
-            var environmentData = new 
+            var environmentData = new
             {
                 Temperature = _temperatureValue + " C",
-                Tds = _tdsValue + " ppm"
+                Tds = _tdsValue + " ppm",
+                Ph = _phValue + " ph"
             };
 
-            return Json(environmentData);
+             return Json(environmentData);
         }
 
 
@@ -95,8 +93,6 @@ namespace greenhouse.Controllers
 
             
             return Json("\nmicrocontroller id -> " + microcontrollerID + "\ntype -> " + type + "\nvalue -> " + value);
-            
-
 
         }
 

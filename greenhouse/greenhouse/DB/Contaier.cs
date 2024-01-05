@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace greenhouse.DB
 {
@@ -6,6 +7,7 @@ namespace greenhouse.DB
     {
         [Key]
         public int Id { get; set; }
+        public Value Value { get; set; }
         public string? Name { get; set; }
         
         [Required]
@@ -14,6 +16,5 @@ namespace greenhouse.DB
         [Required]
         public string Location { get; set; }
 
-        public Value Value { get; set; }
     }
 }

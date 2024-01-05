@@ -26,5 +26,6 @@ function writeTempHum(data) {
 
     document.getElementById('tds').innerText = `TDS : ${data.tds}`;
     document.getElementById('temperature').innerText = `Temperatura : ${data.temperature}`;
+    document.getElementById('ph').innerText = `pH : ${data.ph}`;
 
 }

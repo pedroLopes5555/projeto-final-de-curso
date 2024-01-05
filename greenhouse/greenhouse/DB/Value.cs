@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace greenhouse.DB
 {
@@ -11,6 +12,11 @@ namespace greenhouse.DB
         public float Temperature { get; set; }
         public DateTime Time { get; set; }
 
-        public Contaier Container { get; set; }
+        //public Contaier Container { get; set; }
+        //public Contaier Container { get; set; }
+
+
+
+
     }
 }
