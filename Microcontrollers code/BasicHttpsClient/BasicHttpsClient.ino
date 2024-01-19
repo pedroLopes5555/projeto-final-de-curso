@@ -1,22 +1,28 @@
+
 /**
    BasicHTTPSClient.ino
 
     Created on: 14.10.2018
 
 */
-
+// Include the libraries we need
+#include <OneWire.h>
+#include <DallasTemperature.h>
 #include <Arduino.h>
-
 #include <WiFi.h>
 #include <WiFiMulti.h>
-
 #include <HTTPClient.h>
-
 #include <WiFiClientSecure.h>
 
-// This is GandiStandardSSLCA2.pem, the root Certificate Authority that signed 
-// the server certifcate for the demo server https://jigsaw.w3.org in this
-// example. This certificate is valid until Sep 11 23:59:59 2024 GMT
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+// Data wire is plugged into port 2 on the Arduino
+#define ONE_WIRE_BUS 5
+
+// root certeficate for the https 
+// 
+// 
 const char* rootCACertificate = \
 "-----BEGIN CERTIFICATE-----\n" \
 "MIIDjjCCAnagAwIBAgIQAzrx5qcRqaC7KGSxHQn65TANBgkqhkiG9w0BAQsFADBh\n" \
@@ -38,8 +44,93 @@ const char* rootCACertificate = \
 "Fdtom/DzMNU+MeKNhJ7jitralj41E6Vf8PlwUHBHQRFXGU7Aj64GxJUTFy8bJZ91\n" \
 "8rGOmaFvE7FBcf6IKshPECBV1/MUReXgRPTqh5Uykw7+U0b6LJ3/iyK5S9kJRaTe\n" \
 "pLiaWN0bfVKfjllDiIGknibVb63dDcY3fe0Dkhvld1927jyNxF1WW6LZZm6zNTfl\n" \
-"MrY=\n" \
+"MrY=\n"
 "-----END CERTIFICATE-----\n";
+
+
+WiFiMulti WiFiMulti;
+
+
+// Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
+OneWire oneWire(ONE_WIRE_BUS);
+
+// Pass our oneWire reference to Dallas Temperature. 
+DallasTemperature sensors(&oneWire);
+
+
+//const int tdsSensorPin = A0; // Define the analog pin for the TDS sensor
+int AcidSolution = D3;
+const int phSensor = A2;
+
+
+namespace device {
+  float aref = 4.3;
+}
+namespace pin {
+  const byte tds_sensor = A0;
+}
+
+namespace sensor{
+  float ec = 0;
+  unsigned int tds = 0;
+  float waterTemperature = 0;
+  float ecCalibration = 1;
+}
+
+
+
+
+
+
+String readPh()
+{
+  float pHValue = analogRead(phSensor);
+  float voltage = pHValue * (3.3/1023.0);
+  return String((voltage*4.24));
+}
+
+String readTemperature(){
+    // call sensors.requestTemperatures() to issue a global temperature 
+  // request to all devices on the bus
+  Serial.print("Requesting temperatures...");
+  sensors.requestTemperatures(); // Send the command to get temperatures
+  Serial.println("DONE");
+  // After we got the temperatures, we can print them here.
+  // We use the function ByIndex, and as an example get the temperature from the first sensor only.
+  float tempC = sensors.getTempCByIndex(0);
+
+  // Check if reading was successful
+  if(tempC != DEVICE_DISCONNECTED_C) 
+  {
+    Serial.print("Temperature for the device 1 (index 0) is: ");
+    Serial.println(tempC);
+    return String(tempC);
+  } 
+  else
+  {
+    Serial.println("Error: Could not read temperature data");
+    return "error";
+  }
+}
+
+
+
+float readTdsValue(){
+
+  sensor::waterTemperature = 20.0;
+
+  float rawEc = analogRead(pin::tds_sensor) * device::aref/ 4095.0;
+
+  float temperatureCoefecient = 1.0 + 0.02 * (sensor::waterTemperature - 25.0);
+  sensor::ec = (rawEc/temperatureCoefecient) * sensor::ecCalibration;
+  sensor::tds = (133.42 * pow(sensor::ec, 3) - 255.86 * sensor::ec * sensor::ec + 857.39 * sensor::ec) * 0.5;
+  Serial.print(F("TDS:")); Serial.println(sensor::tds);
+  Serial.print(F("EC:")); Serial.println(sensor::ec, 2);
+  Serial.print(F("uS:")); Serial.println(sensor::ec * 640);
+  Serial.print(F("Temperature:")); Serial.println(sensor::waterTemperature,2);
+  return sensor::ec * 640;
+
+}
 
 
 // Not sure if WiFiClientSecure checks the validity date of the certificate. 
@@ -64,13 +155,15 @@ void setClock() {
 }
 
 
-WiFiMulti WiFiMulti;
 
 void setup() {
+  
+  pinMode(phSensor, INPUT);
 
   Serial.begin(115200);
+  
   // Serial.setDebugOutput(true);
-
+  sensors.begin();
   Serial.println();
   Serial.println();
   Serial.println();
@@ -88,8 +181,10 @@ void setup() {
   setClock();  
 }
 
-void loop() {
-  WiFiClientSecure *client = new WiFiClientSecure;
+
+
+void sendValueToApi(String type, String value){
+    WiFiClientSecure *client = new WiFiClientSecure;
   if(client) {
     client -> setCACert(rootCACertificate);
 
@@ -98,13 +193,13 @@ void loop() {
       HTTPClient https;
   
       Serial.print("[HTTPS] begin...\n");
-      if (https.begin(*client, "https://tfcgreenhouse.azurewebsites.net/automation/sendsensordata")) {  // HTTPS
+      if (https.begin(*client, "https://hydrogrowthmanager.azurewebsites.net/automation/ReciveSensorData")) {  // HTTPS
         Serial.print("[HTTPS] GET...\n");
         // start connection and send HTTP header2
         https.addHeader("Content-Type", "application/json");
-        int httpCode = https.POST("{\"micrcocontrollerID\":\"1\",\"type\":\"distance\",\"value\":\"10\"}");
+        int httpCode = https.POST("{\"micrcocontrollerID\":\"" + WiFi.macAddress() + "\",\"type\":\"" + type + "\",\"value\":\"" + value +"\"}");
         Serial.print("post:");
-        Serial.print("{\"micrcocontrollerID\":\"1\",\"type\":\"distance\",\"value\":\"10\"}");
+        Serial.print("{\"micrcocontrollerID\":\"" + WiFi.macAddress() + "\",\"type\":\"" + type + "\",\"value\":\"" + value +"\"}");
         Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
 
         // httpCode will be negative on error
@@ -136,5 +231,49 @@ void loop() {
 
   Serial.println();
   Serial.println("Waiting 10s before the next round...");
+   
+}
+
+void loop() {
+
+
+
+
+  String temperature = readTemperature();
+  Serial.print("---------------------");
+  Serial.print(temperature);
+  Serial.print("---------------------");
+  sendValueToApi("temperature", String(temperature));
+
+
+
+
+  float tds = readTdsValue();
+  Serial.print("---------------------");
+  Serial.print(tds);
+  Serial.print("---------------------");
+  sendValueToApi("tds", String(tds));
+
+
+  String ph = readPh();
+  Serial.print("---------------------");
+  Serial.print(ph);
+  Serial.print("---------------------");
+  sendValueToApi("ph", ph);
+
+
+
+
+  /*
+  if(tds< 500){
+    digitalWrite(AcidSolution, HIGH); // Turn the digital output HIGH 
+  }else{
+    digitalWrite(AcidSolution, LOW); // Turn the digital output HIGH 
+
+  }
+*/
+
+
+
   delay(10000);
 }
