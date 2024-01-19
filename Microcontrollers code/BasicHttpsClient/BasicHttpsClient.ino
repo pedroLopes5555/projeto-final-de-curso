@@ -58,9 +58,36 @@ OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
 
-const int tdsSensorPin = A0; // Define the analog pin for the TDS sensor
+//const int tdsSensorPin = A0; // Define the analog pin for the TDS sensor
 int AcidSolution = D3;
+const int phSensor = A2;
 
+
+namespace device {
+  float aref = 4.3;
+}
+namespace pin {
+  const byte tds_sensor = A0;
+}
+
+namespace sensor{
+  float ec = 0;
+  unsigned int tds = 0;
+  float waterTemperature = 0;
+  float ecCalibration = 1;
+}
+
+
+
+
+
+
+String readPh()
+{
+  float pHValue = analogRead(phSensor);
+  float voltage = pHValue * (3.3/1023.0);
+  return String((voltage*4.24));
+}
 
 String readTemperature(){
     // call sensors.requestTemperatures() to issue a global temperature 
@@ -90,24 +117,18 @@ String readTemperature(){
 
 float readTdsValue(){
 
-  int sensorValue = analogRead(tdsSensorPin); // Read the analog voltage from the TDS sensor
-  float tdsValue = map(sensorValue, 0, 1023, 0,210); // Map the analog value to TDS values (adjust the range as needed) -->> TODO make an algorithm to recive the true vallue calculate   
+  sensor::waterTemperature = 20.0;
 
-    float voltage = sensorValue * (2.3 / 1023.0);  /*
+  float rawEc = analogRead(pin::tds_sensor) * device::aref/ 4095.0;
 
-  //float voltage = sensorValue * (2.3 / 1023.0);                                                                                                                                                                                                                                                                                             sorValue * (3.3 / 1023.0);
-    compensationCoefficient = 1.0+0.02*(temperature-25.0);
-  */
-  Serial.println("Voltag:e");
-  Serial.println("");
-  Serial.println(voltage);
-  Serial.println("");
-  Serial.print("Raw Sensor Value: ");
-  Serial.println(sensorValue);
-  Serial.print("TDS Value (ppm): ");
-  Serial.println(2*tdsValue);
-
-  return tdsValue;
+  float temperatureCoefecient = 1.0 + 0.02 * (sensor::waterTemperature - 25.0);
+  sensor::ec = (rawEc/temperatureCoefecient) * sensor::ecCalibration;
+  sensor::tds = (133.42 * pow(sensor::ec, 3) - 255.86 * sensor::ec * sensor::ec + 857.39 * sensor::ec) * 0.5;
+  Serial.print(F("TDS:")); Serial.println(sensor::tds);
+  Serial.print(F("EC:")); Serial.println(sensor::ec, 2);
+  Serial.print(F("uS:")); Serial.println(sensor::ec * 640);
+  Serial.print(F("Temperature:")); Serial.println(sensor::waterTemperature,2);
+  return sensor::ec * 640;
 
 }
 
@@ -136,20 +157,19 @@ void setClock() {
 
 
 void setup() {
-    // Start up the library
+  
+  pinMode(phSensor, INPUT);
 
   Serial.begin(115200);
+  
   // Serial.setDebugOutput(true);
   sensors.begin();
-  
-  pinMode(AcidSolution, OUTPUT);
-
   Serial.println();
   Serial.println();
   Serial.println();
 
   WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP("LL-GUEST", "VendaDoPinehiro");
+  WiFiMulti.addAP("LL-GUEST", "VendaDoPinheiro");
 
   // wait for WiFi connection
   Serial.print("Waiting for WiFi to connect...");
@@ -157,11 +177,10 @@ void setup() {
     Serial.print(".");
   }
   Serial.println(" connected");
-  Serial.print("ESP Board MAC Address:  ");
-  Serial.println(WiFi.macAddress());
 
   setClock();  
 }
+
 
 
 void sendValueToApi(String type, String value){
@@ -236,6 +255,15 @@ void loop() {
   sendValueToApi("tds", String(tds));
 
 
+  String ph = readPh();
+  Serial.print("---------------------");
+  Serial.print(ph);
+  Serial.print("---------------------");
+  sendValueToApi("ph", ph);
+
+
+
+
   /*
   if(tds< 500){
     digitalWrite(AcidSolution, HIGH); // Turn the digital output HIGH 
@@ -247,5 +275,5 @@ void loop() {
 
 
 
-  delay(1000);
+  delay(10000);
 }

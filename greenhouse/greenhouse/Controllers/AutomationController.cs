@@ -8,15 +8,55 @@ namespace greenhouse.Controllers
 {
     public class AutomationController : Controller
     {
-        private static string microcontrollerID = "";
-        private static string type = "";
-        private static string value = "";
+        private static string _microcontrollerID = "";
+        private static string _type = "";
+        private static string _value = "";
 
         static private string _temperatureValue = "";
         static private string _tdsValue = "";
         static private string _phValue = "";
 
 
+
+        public void saveData(String microcontrollerId, String type,String value)
+        {
+
+            DateTime time = DateTime.Now;
+
+            //check if microcontroller exists oi database
+            using (var context = new GreenhouseContex())
+            {
+                var microcontroller = context.Microcontrollers.SingleOrDefault(x => x.Id == microcontrollerId);
+
+
+                if (microcontroller != null)
+                {
+                    microcontroller.Capacity = microcontroller.Capacity + 1;
+                }
+                else
+                {
+                    var newMicrocontroller = new Microcontroller()
+                    {
+                        Id = microcontrollerId,
+                        Name = microcontrollerId,
+                        Capacity = 0,
+                    };
+
+                    /*
+                    var newValue = new Value()
+                    {
+                        EletricalCondutivity = 0,
+                        Temperature = 0,
+                        Id = new Guid(),
+                        Ph = 0,
+                        Time = time,
+                    };*/
+                    context.Microcontrollers.Add(newMicrocontroller);
+                    //context.Values.Add(newValue);
+                }
+                    context.SaveChanges();
+            }
+        }
         
 
 
@@ -28,29 +68,31 @@ namespace greenhouse.Controllers
             //Context context = Context.GetInstance();
 
             // Save data into controller variables
-            microcontrollerID = sensorData.MicrcocontrollerID;
-            type = sensorData.Type; 
-            value = sensorData.Value;
+            _microcontrollerID = sensorData.MicrcocontrollerID;
+            _type = sensorData.Type; 
+            _value = sensorData.Value;
+            
+            saveData(_microcontrollerID,_type,_value);
 
-            /*
-             data base
-             
-             */
 
-            if(type == "tds" && value != null)
+
+            if (_type == "tds" && _value != null)
             {
-                _tdsValue = value;
+                _tdsValue = _value;
             }
-            if(type == "temperature" && value != null)
+            if(_type == "temperature" && _value != null)
             {
-                _temperatureValue = value;
+                
+                _temperatureValue = _value;
             }
-            if(type == "ph" && value != null)
+            if(_type == "ph" && _value != null)
             {
-                _phValue = value;
+                _phValue = _value;
             }
 
-            return Json("micrcocontrollerID:" + microcontrollerID + " type:" + type + " value:" + value);
+
+            
+            return Json("micrcocontrollerID:" + _microcontrollerID + " type:" + _type + " value:" + _value);
         }
 
 
@@ -87,12 +129,12 @@ namespace greenhouse.Controllers
 
         public IActionResult SendTest([FromBody] Message sensorData)
         {
-            microcontrollerID = sensorData.MicrcocontrollerID;
-            type = sensorData.Type;
-            value = sensorData.Value;
+            _microcontrollerID = sensorData.MicrcocontrollerID;
+            _type = sensorData.Type;
+            _value = sensorData.Value;
 
             
-            return Json("\nmicrocontroller id -> " + microcontrollerID + "\ntype -> " + type + "\nvalue -> " + value);
+            return Json("\nmicrocontroller id -> " + _microcontrollerID + "\ntype -> " + _type + "\nvalue -> " + _value);
 
         }
 

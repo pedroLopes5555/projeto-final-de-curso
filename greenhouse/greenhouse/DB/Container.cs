@@ -3,13 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace greenhouse.DB
 {
-    public class Contaier
+    public class Container
     {
         [Key]
         public int Id { get; set; }
         public Value Value { get; set; }
         public string? Name { get; set; }
         
+        public List<Microcontroller> Microcontrollers { get; set; }
+
         [Required]
         public int Dimension { get; set; }
         

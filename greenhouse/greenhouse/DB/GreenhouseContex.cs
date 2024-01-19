@@ -8,14 +8,14 @@ namespace greenhouse.DB
 
         public GreenhouseContex()
         {
-            //Database.EnsureDeleted();
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
-        public DbSet<Microcontroller> Microcontrollers { get; set; }
         public DbSet<Relay> Relays { get; set; }
+        public DbSet<Microcontroller> Microcontrollers { get; set; }
         public DbSet<Sensor> Sensors { get; set; }
-        public DbSet<Contaier>  Contaiers { get; set; }
+        public DbSet<Container>  Container { get; set; }
         public DbSet<Value> Values { get; set; }
 
 
