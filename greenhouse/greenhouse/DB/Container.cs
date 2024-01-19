@@ -18,5 +18,8 @@ namespace greenhouse.DB
         [Required]
         public string Location { get; set; }
 
+        [Required]
+        public Users Users { get; set; }
+
     }
 }

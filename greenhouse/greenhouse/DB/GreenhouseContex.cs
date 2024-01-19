@@ -17,6 +17,13 @@ namespace greenhouse.DB
         public DbSet<Sensor> Sensors { get; set; }
         public DbSet<Container>  Container { get; set; }
         public DbSet<Value> Values { get; set; }
+        
+        public DbSet<Permission> Permissions { get; set; }
+
+        public DbSet<PermsRelations> PermsRelations { get; set; }
+
+        public DbSet<Users> Users { get; set; }
+
 
 
 

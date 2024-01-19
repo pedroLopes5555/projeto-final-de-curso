@@ -25,7 +25,7 @@ namespace greenhouse.Controllers
             //                {
             //                    Id = 1,
             //                    Value = new Value
-            //{
+            //                {
             //                        Id = Guid.NewGuid(),
             //                        EletricalCondutivity = 110.10F,
             //                        Ph = 7.4F,
@@ -84,7 +84,7 @@ namespace greenhouse.Controllers
             }*/
 
 
-            
+
             using (var context = new GreenhouseContex())
             {
                 var microcontroller = new Microcontroller
@@ -159,7 +159,7 @@ namespace greenhouse.Controllers
 
                 context.Add(container); context.SaveChanges();
             }
-                return View();
+            return View();
 
         }
 
