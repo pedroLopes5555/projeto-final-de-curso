@@ -12,7 +12,8 @@ namespace greenhouse.DB
         public string? Name { get; set; }
         public int Capacity { get; set; }
         public List<Relay> Relays { get; set; } = new List<Relay>();
-        //public Container Container { get; set; }
+        
+        public Container Container { get; set; }
 
     }
 }

@@ -4,6 +4,7 @@ using greenhouse.Models;
 using greenhouse.DB;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 
 namespace greenhouse.Controllers
 {
@@ -92,6 +93,26 @@ namespace greenhouse.Controllers
 
             //return Json("ok");
             return Json(test);
+        }
+
+
+        public IActionResult setDesiredValues(Value values, string microcontrollerID)
+        {
+
+            using (var context = new GreenhouseContex())
+            {
+                var microcontroller = context.Microcontrollers.Where(x => x.Id == microcontrollerID).FirstOrDefault();
+
+                if (microcontroller == null) return Json("Microcontroller Not Find");
+
+                //create new desired values instance
+
+                values.Time = DateTime.Now;
+
+                microcontroller.Container.DesiredValues.Add(values);
+
+            }
+            return Json("OK");
         }
 
 
