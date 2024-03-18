@@ -8,9 +8,10 @@ namespace greenhouse.DB
         [Key]
         public Guid Id { get; set; }
         public float Ph {  get; set; }
-        public float EletricalCondutivity { get; set; }
+        public float ElectricalConductivity { get; set; }
         public float Temperature { get; set; }
         public DateTime Time { get; set; }
+
 
         //public Contaier Container { get; set; }
         //public Contaier Container { get; set; }

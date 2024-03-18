@@ -6,8 +6,9 @@ namespace greenhouse.DB
     public class Container
     {
         [Key]
-        public int Id { get; set; }
-        public Value Value { get; set; }
+        public Guid Id { get; set; }
+        public List<Value> Values { get; set; }
+        public List<Value> DesiredValues { get; set; }
         public string? Name { get; set; }
         
         public List<Microcontroller> Microcontrollers { get; set; }
@@ -18,8 +19,6 @@ namespace greenhouse.DB
         [Required]
         public string Location { get; set; }
 
-        [Required]
-        public Users Users { get; set; }
 
     }
 }

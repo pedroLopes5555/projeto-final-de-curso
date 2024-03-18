@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "R3QgHrSopuZ2QIWvkZnRAJCpUjyWO2MzoaLlFANvY4Wg67z+8Zyf2A5iE+vSplkgBGjpTGhHw0lINIFpntIkBA==",
+  "dgSpecHash": "4LiyFMvkuFaJg1Vl83DKRbibJDHtANZ1TyFPHyy1ztRmIh38dZ8gDQOvzpgZTGnAOXwLg1/rLScVKE96+Z2bpA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\pedro\\workdir\\TFC\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj",
+  "projectFilePath": "C:\\Users\\pedro\\Source\\Repos\\pedroLopes5555\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\pedro\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\pedro\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

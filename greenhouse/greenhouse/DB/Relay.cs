@@ -10,8 +10,5 @@ namespace greenhouse.DB
         public bool State {  get; set; }
         public Sensor? Sensor { get; set; }
 
-
-        [Required]
-        public Microcontroller Microcontroller { get; set; }
     }
 }

@@ -8,6 +8,10 @@ namespace greenhouse.Controllers
 {
     public class HomeController : Controller
     {
+
+        ITestData _testData;
+
+
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -85,84 +89,101 @@ namespace greenhouse.Controllers
 
 
 
+            //using (var context = new GreenhouseContex())
+            //{
+            //    var microcontroller = new Microcontroller
+            //    {
+            //        Id = Guid.NewGuid().ToString(),
+            //        Name = "Arduino3",
+            //        Capacity = 3,
+
+
+            //    };
+
+            //    context.Microcontrollers.Add(microcontroller);
+            //    Debug.WriteLine("microcontroller:");
+            //    Debug.WriteLine(microcontroller.Id);
+            //    Debug.WriteLine(microcontroller.Name);
+            //    Debug.WriteLine(microcontroller.Capacity + "\n \n \n");
+            //    context.SaveChanges();
+            //}
+
+
+
+            //using (var context = new GreenhouseContex())
+            //{
+            //    var microcontrollers = context.Microcontrollers.FirstOrDefault();
+            //    if (microcontrollers != null)
+            //    {
+            //        var relay = new Relay
+            //        {
+            //            Name = "Relay1",
+            //            State = true,
+            //            Microcontroller = microcontrollers
+            //        };
+
+            //        context.Relays.Add(relay);
+            //        context.SaveChanges();
+            //    }
+            //}
+
+            //using (var context = new GreenhouseContex())
+            //{
+            //    var list = context.Microcontrollers.Where(x => x.Name.StartsWith("Ar"));
+            //    Debug.WriteLine("\n\n\nGOT HERE:");
+            //    foreach (var item in list)
+            //    {
+            //        Debug.WriteLine(item.Name);
+            //    }
+            //    Debug.WriteLine("\n foreach end");
+
+            //}
+
+            //using (var context = new GreenhouseContex())
+            //{
+            //    var microcontrollers = context.Microcontrollers.FirstOrDefault();
+            //    var list = context.Microcontrollers.Where(x => x.Name.StartsWith("Ar"));
+
+            //    List<Microcontroller> microocontrollersHelper = new List<Microcontroller>();
+
+            //    foreach (var item in list)
+            //    {
+            //        microocontrollersHelper.Add(item);
+            //    }
+
+
+            //    var container = new Container()
+            //    {
+            //        Dimension = 1,
+            //        Location = "Em cima",
+            //        Id = 1,
+            //        Name = "principal",
+            //        Microcontrollers = microocontrollersHelper
+            //    };
+
+            //    context.Add(container); 
+            //    context.SaveChanges();
+            //}
+
+
+
+            _testData = new TestData();
+            List<User> test = _testData.getTestData().ToList();
+
             using (var context = new GreenhouseContex())
             {
-                var microcontroller = new Microcontroller
+                foreach (var user in test)
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    Name = "Arduino3",
-                    Capacity = 3,
+                    context.Add(user);
+                }
 
-
-                };
-
-                context.Microcontrollers.Add(microcontroller);
-                Debug.WriteLine("microcontroller:");
-                Debug.WriteLine(microcontroller.Id);
-                Debug.WriteLine(microcontroller.Name);
-                Debug.WriteLine(microcontroller.Capacity + "\n \n \n");
                 context.SaveChanges();
             }
 
-
-
-            using (var context = new GreenhouseContex())
-            {
-                var microcontrollers = context.Microcontrollers.FirstOrDefault();
-                if (microcontrollers != null)
-                {
-                    var relay = new Relay
-                    {
-                        Name = "Relay1",
-                        State = true,
-                        Microcontroller = microcontrollers
-                    };
-
-                    context.Relays.Add(relay);
-                    context.SaveChanges();
-                }
-            }
-
-            using (var context = new GreenhouseContex())
-            {
-                var list = context.Microcontrollers.Where(x => x.Name.StartsWith("Ar"));
-                Debug.WriteLine("\n\n\nGOT HERE:");
-                foreach (var item in list)
-                {
-                    Debug.WriteLine(item.Name);
-                }
-                Debug.WriteLine("\n foreach end");
-
-            }
-
-            using (var context = new GreenhouseContex())
-            {
-                var microcontrollers = context.Microcontrollers.FirstOrDefault();
-                var list = context.Microcontrollers.Where(x => x.Name.StartsWith("Ar"));
-
-                List<Microcontroller> microocontrollersHelper = new List<Microcontroller>();
-
-                foreach (var item in list)
-                {
-                    microocontrollersHelper.Add(item);
-                }
-
-
-                var container = new Container()
-                {
-                    Dimension = 1,
-                    Location = "Em cima",
-                    Id = 1,
-                    Name = "principal",
-                    Microcontrollers = microocontrollersHelper
-                };
-
-                context.Add(container); context.SaveChanges();
-            }
             return View();
 
         }
-
+        
         public IActionResult Privacy()
         {
             return View(); 
@@ -173,5 +194,13 @@ namespace greenhouse.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+
+
+
+
+
+
     }
 }

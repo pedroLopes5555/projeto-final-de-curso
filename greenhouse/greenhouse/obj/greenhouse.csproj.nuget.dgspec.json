@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pedro\\workdir\\TFC\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj": {}
+    "C:\\Users\\pedro\\Source\\Repos\\pedroLopes5555\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pedro\\workdir\\TFC\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj": {
+    "C:\\Users\\pedro\\Source\\Repos\\pedroLopes5555\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pedro\\workdir\\TFC\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj",
+        "projectUniqueName": "C:\\Users\\pedro\\Source\\Repos\\pedroLopes5555\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj",
         "projectName": "greenhouse",
-        "projectPath": "C:\\Users\\pedro\\workdir\\TFC\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj",
+        "projectPath": "C:\\Users\\pedro\\Source\\Repos\\pedroLopes5555\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj",
         "packagesPath": "C:\\Users\\pedro\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pedro\\workdir\\TFC\\projeto-final-de-curso\\greenhouse\\greenhouse\\obj\\",
+        "outputPath": "C:\\Users\\pedro\\Source\\Repos\\pedroLopes5555\\projeto-final-de-curso\\greenhouse\\greenhouse\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -39,6 +39,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -73,7 +78,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     }

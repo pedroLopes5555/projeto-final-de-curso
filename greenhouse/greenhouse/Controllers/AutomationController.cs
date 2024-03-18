@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Routing.Constraints;
 using greenhouse.Models;
 using greenhouse.DB;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 
 namespace greenhouse.Controllers
 {
@@ -16,7 +17,7 @@ namespace greenhouse.Controllers
         static private string _tdsValue = "";
         static private string _phValue = "";
 
-
+        ITestData _testData;
 
         public void saveData(String microcontrollerId, String type,String value)
         {
@@ -60,12 +61,11 @@ namespace greenhouse.Controllers
         
 
 
-        //[HttpPost("message")]
+        
+        //responce whit the desired value
         public IActionResult ReciveSensorData([FromBody] Message sensorData)
-         {
+        {
 
-
-            //Context context = Context.GetInstance();
 
             // Save data into controller variables
             _microcontrollerID = sensorData.MicrcocontrollerID;
@@ -76,68 +76,44 @@ namespace greenhouse.Controllers
 
 
 
-            if (_type == "tds" && _value != null)
-            {
-                _tdsValue = _value;
-            }
-            if(_type == "temperature" && _value != null)
-            {
-                
-                _temperatureValue = _value;
-            }
-            if(_type == "ph" && _value != null)
-            {
-                _phValue = _value;
-            }
-
 
             
-            return Json("micrcocontrollerID:" + _microcontrollerID + " type:" + _type + " value:" + _value);
+            return Json(_microcontrollerID + " type:" + _type + " value:" + _value);
         }
 
 
 
-
-
-        //test funtion
-        public IActionResult requestValues()
+        public IActionResult requestData()
         {
-            var environmentData = new
-            {
-                Temperature = _temperatureValue + " C",
-                Tds = _tdsValue + " ppm",
-                Ph = _phValue + " ph"
-            };
+            _testData = new TestData();
+            List<User> test = _testData.getTestData().ToList();
 
-             return Json(environmentData);
+            //var contex = new GreenhouseContex();
+
+            //return Json("ok");
+            return Json(test);
         }
 
 
 
+        //public IActionResult TestRequestContainers(List<Guid> guids)
+        //{
+
+        //    _testData = new TestData();
 
 
-        public IActionResult testRequest() 
-        {
-
-            var enviromentData = new {
-                test = ":)"
-            };
-
-            return Json(enviromentData);
-        }
+        //    return Json(data.getContainersData());
+        //}
 
 
-        public IActionResult SendTest([FromBody] Message sensorData)
-        {
-            _microcontrollerID = sensorData.MicrcocontrollerID;
-            _type = sensorData.Type;
-            _value = sensorData.Value;
 
-            
-            return Json("\nmicrocontroller id -> " + _microcontrollerID + "\ntype -> " + _type + "\nvalue -> " + _value);
 
-        }
 
+        //get container
+        //update container
+        //delete container
+
+        //SendUsers
 
     }
 }

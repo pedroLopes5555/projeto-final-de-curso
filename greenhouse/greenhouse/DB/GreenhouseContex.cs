@@ -8,7 +8,7 @@ namespace greenhouse.DB
 
         public GreenhouseContex()
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -18,21 +18,21 @@ namespace greenhouse.DB
         public DbSet<Container>  Container { get; set; }
         public DbSet<Value> Values { get; set; }
         
-        public DbSet<Permission> Permissions { get; set; }
+        //public DbSet<Permission> Permissions { get; set; }
 
-        public DbSet<PermsRelations> PermsRelations { get; set; }
+        //public DbSet<PermsRelations> PermsRelations { get; set; }
 
-        public DbSet<Users> Users { get; set; }
+        public DbSet<User> Users { get; set; }
 
 
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+
+            optionsBuilder.EnableSensitiveDataLogging();
             object value = optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=greenhouseDB;Trusted_Connection=True;");
         }
-
-
 
 
         /*
