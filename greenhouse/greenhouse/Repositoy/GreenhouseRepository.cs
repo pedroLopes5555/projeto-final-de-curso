@@ -72,7 +72,7 @@ namespace greenhouse.Repositoy
                 SingleOrDefault(a => a.Id == content.MicrocontrollerId);
 
             //check if id exists
-            if(microcontroller == null)
+            if (microcontroller == null)
             {
                 throw new ArgumentOutOfRangeException($"Microcontroller {content.MicrocontrollerId} do not exist");
 
@@ -87,7 +87,16 @@ namespace greenhouse.Repositoy
 
             }
 
+            container.Values.Add(new ScannedValue()
+            {
+                Id = new Guid(),
+                Reading = content.Value,
+                ReadingType = content.ValueType,
+                Time = DateTime.Now,
+            });
 
+
+            _context.SaveChanges();
         }
 
 
