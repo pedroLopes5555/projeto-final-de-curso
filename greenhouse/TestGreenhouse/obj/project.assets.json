@@ -1520,20 +1520,13 @@
       },
       "greenhouse/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
-        "dependencies": {
-          "Microsoft.EntityFrameworkCore": "7.0.14",
-          "Microsoft.EntityFrameworkCore.SqlServer": "7.0.14"
-        },
+        "framework": "Unsupported,Version=v0.0",
         "compile": {
           "bin/placeholder/greenhouse.dll": {}
         },
         "runtime": {
           "bin/placeholder/greenhouse.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
+        }
       }
     }
   },
@@ -4800,5 +4793,16 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1201",
+      "level": "Error",
+      "message": "Project greenhouse is not compatible with net6.0 (.NETCoreApp,Version=v6.0). Project greenhouse supports: net8.0 (.NETCoreApp,Version=v8.0)",
+      "libraryId": "greenhouse",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }
