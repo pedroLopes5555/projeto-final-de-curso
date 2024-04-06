@@ -167,21 +167,20 @@ namespace greenhouse.Controllers
 
 
 
-            _testData = new TestData();
-            List<User> test = _testData.getTestData().ToList();
+            //_testData = new TestData();
+            //List<User> test = _testData.etTestData().ToList();
 
-            using (var context = new GreenhouseContex())
-            {
-                foreach (var user in test)
-                {
-                    context.Add(user);
-                }
+            //using (var context = new GreenhouseContex())
+            //{
+            //    foreach (var user in test)
+            //    {
+            //        context.Add(user);
+            //    }
 
-                context.SaveChanges();
-            }
-
+            //    context.SaveChanges();
+            //    return View(test);
+            //}
             return View();
-
         }
         
         public IActionResult Privacy()

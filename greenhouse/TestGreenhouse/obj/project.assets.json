@@ -4709,11 +4709,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pedro\\workdir\\TFC\\projeto-final-de-curso\\greenhouse\\TestGreenhouse\\TestGreenhouse.csproj",
+      "projectUniqueName": "C:\\Users\\pedro\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\TestGreenhouse\\TestGreenhouse.csproj",
       "projectName": "TestGreenhouse",
-      "projectPath": "C:\\Users\\pedro\\workdir\\TFC\\projeto-final-de-curso\\greenhouse\\TestGreenhouse\\TestGreenhouse.csproj",
+      "projectPath": "C:\\Users\\pedro\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\TestGreenhouse\\TestGreenhouse.csproj",
       "packagesPath": "C:\\Users\\pedro\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pedro\\workdir\\TFC\\projeto-final-de-curso\\greenhouse\\TestGreenhouse\\obj\\",
+      "outputPath": "C:\\Users\\pedro\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\TestGreenhouse\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4735,8 +4735,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\pedro\\workdir\\TFC\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj": {
-              "projectPath": "C:\\Users\\pedro\\workdir\\TFC\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj"
+            "C:\\Users\\pedro\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj": {
+              "projectPath": "C:\\Users\\pedro\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj"
             }
           }
         }
@@ -4745,6 +4745,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -4792,7 +4797,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
       }
     }
   }

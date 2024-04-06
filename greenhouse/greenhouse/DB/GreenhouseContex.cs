@@ -8,6 +8,7 @@ namespace greenhouse.DB
 
         public GreenhouseContex()
         {
+            //uncommet Database.EnsureDeleted(); and run to update data base
             //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
@@ -15,9 +16,13 @@ namespace greenhouse.DB
         public DbSet<Relay> Relays { get; set; }
         public DbSet<Microcontroller> Microcontrollers { get; set; }
         public DbSet<Sensor> Sensors { get; set; }
-        public DbSet<Container>  Container { get; set; }
-        public DbSet<Value> Values { get; set; }
-        
+        public DbSet<Container>  Containers { get; set; }
+        public DbSet<ScannedValue> Values { get; set; }
+
+        public DbSet<ContainerConfig> Configs { get; set; }
+
+
+
         //public DbSet<Permission> Permissions { get; set; }
 
         //public DbSet<PermsRelations> PermsRelations { get; set; }

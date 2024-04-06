@@ -7,10 +7,11 @@ namespace greenhouse.DB
     {
         [Key]
         public Guid Id { get; set; }
-        public List<Value> Values { get; set; }
-        public List<Value> DesiredValues { get; set; }
+        public List<ScannedValue> Values { get; set; }
         public string? Name { get; set; }
-        
+
+        public List<ContainerConfig> Configs { get; set; }
+
         public List<Microcontroller> Microcontrollers { get; set; }
 
         [Required]
@@ -18,6 +19,13 @@ namespace greenhouse.DB
         
         [Required]
         public string Location { get; set; }
+
+
+        public Container()
+        {
+            
+        }
+
 
 
     }

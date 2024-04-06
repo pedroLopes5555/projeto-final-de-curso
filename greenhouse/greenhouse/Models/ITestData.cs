@@ -7,6 +7,6 @@ namespace greenhouse.Models
 {
     public interface ITestData
     {
-        IEnumerable<User> getTestData();
+        IEnumerable<User> GetTestData();
     }
 }

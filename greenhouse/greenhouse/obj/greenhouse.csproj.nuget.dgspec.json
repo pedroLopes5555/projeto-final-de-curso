@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pedro\\Source\\Repos\\pedroLopes5555\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj": {}
+    "C:\\Users\\pedro\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pedro\\Source\\Repos\\pedroLopes5555\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj": {
+    "C:\\Users\\pedro\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pedro\\Source\\Repos\\pedroLopes5555\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj",
+        "projectUniqueName": "C:\\Users\\pedro\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj",
         "projectName": "greenhouse",
-        "projectPath": "C:\\Users\\pedro\\Source\\Repos\\pedroLopes5555\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj",
+        "projectPath": "C:\\Users\\pedro\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\greenhouse\\greenhouse.csproj",
         "packagesPath": "C:\\Users\\pedro\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pedro\\Source\\Repos\\pedroLopes5555\\projeto-final-de-curso\\greenhouse\\greenhouse\\obj\\",
+        "outputPath": "C:\\Users\\pedro\\workdir\\tfc\\projeto-final-de-curso\\greenhouse\\greenhouse\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
