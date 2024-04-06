@@ -34,6 +34,40 @@ namespace greenhouse.Controllers
             return Ok();
 
         }
+
+
+        [HttpPost]
+        public IActionResult GetDesiredValue([FromBody] RequestDesiredValueJsonContent content)
+        {
+            var result = _greenhouseRepository.GetContainerConfig(content);
+            return Json(result.Value);
+        }
+
+
+
+
+
+
+
+
+        [HttpGet]
+        public IActionResult TestJsonFormat()
+        {
+            var result = new RequestDesiredValueJsonContent();
+
+            result.MicrocontrollerId = "abc";
+            result.Type = ReadingTypeEnum.PH;
+
+            var result1 = new MicrocontrollerValueJsonContent()
+            {
+                MicrocontrollerId = "abc",
+                Value = 3.0f,
+                ValueType = ReadingTypeEnum.EL
+            };
+
+            return Json(result);
+        }
+
     }
 
 }

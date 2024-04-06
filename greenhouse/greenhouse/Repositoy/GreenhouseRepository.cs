@@ -101,5 +101,35 @@ namespace greenhouse.Repositoy
 
 
 
+
+        //get container desired value
+        public ContainerConfig GetContainerConfig(RequestDesiredValueJsonContent content)
+        {
+            //first we need the container taht the microcontroller belongs
+
+            var microcontroller = _context.Microcontrollers.
+                Include(a => a.Container).ThenInclude(a => a.Configs).
+                SingleOrDefault(a => a.Id == content.MicrocontrollerId);
+
+            //check if id exists
+            if (microcontroller == null)
+            {
+                throw new ArgumentOutOfRangeException($"Microcontroller {content.MicrocontrollerId} do not exist");
+
+            }
+
+            var container = microcontroller.Container;
+
+            //check if container exists
+            if (container == null)
+            {
+                throw new ArgumentOutOfRangeException($"Microcontroller do not have container");
+
+            }
+
+            return container.Configs.SingleOrDefault(a => a.Type == content.Type);
+        }
+
+
     }
 }
