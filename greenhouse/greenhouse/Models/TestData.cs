@@ -18,7 +18,16 @@ namespace greenhouse.Models
                 Name = "Test1",
                 Location = "ali em cima 1",
                 Values = GetValues(),
-                Microcontrollers = GetMicrocontrollers(),
+                Microcontrollers = new List<Microcontroller>()
+                {
+                    new Microcontroller()
+                    {
+                        Id = "34:85:18:7B:0E:C8",
+                        Capacity = 10,
+                        Name = "Arduino de teste",
+                        Relays = GetRelays()
+                    }
+                },
                 Configs = GetContainerConfigs()
             };
 

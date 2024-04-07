@@ -36,7 +36,7 @@ namespace greenhouse.DB
         {
 
             optionsBuilder.EnableSensitiveDataLogging();
-            object value = optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=greenhouseDB;Trusted_Connection=True;");
+            object value = optionsBuilder.UseSqlServer("Server=tcp:greenhousetfc.database.windows.net,1433;Initial Catalog=GreenHouse;Persist Security Info=False;User ID=ghapp;Password='sf68Kjç#2hha&gA';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
 
 

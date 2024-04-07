@@ -35,10 +35,15 @@ namespace greenhouse.Controllers
 //    "valueType": 2,
 //    "value": 12.3
 //}
-    public IActionResult setDesiredValue([FromBody] SetDesiredValueContent content)
+        public IActionResult setDesiredValue([FromBody] SetDesiredValueContent content)
         {
             _greenhouseRepository.SetContainerDesiredValue(content);
             return Ok();
+        }
+
+        public IActionResult RequestUserContainers([FromBody] String userId)
+        {
+            return Json(_greenhouseRepository.GetUserContainers(userId));
         }
     }
 }

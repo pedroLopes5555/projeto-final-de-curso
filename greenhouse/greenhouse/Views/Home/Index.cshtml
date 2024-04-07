@@ -19,50 +19,18 @@
         
     </h1>
 
-
-
-@* 
     <h1>
-        <h2>
-            Test data
-        </h2>
-        <ul>
-            @foreach (var user in Model)
-            {
-                @foreach (var container in user.Containers)
-                {
-                    <li>
-                        <h3>
-                            @container.Name
-                        </h3>
-                        @foreach (var value in container.Values)
-                        {
-                                <p>
-                                    PH:
-                                    @value.Ph
-                                </p>
-                                <p>
-                                    ElectricalConductivity:
-                                    @value.ElectricalConductivity
-                                </p>
-                                <p>
-                                    Temperature:
-                                    @value.Temperature
-                                </p>
-                                <p>    
-                                    Time:
-                                    @value.Time
-                                </p>
-                        }
-                    </li>
-                }
-            }
-        </ul>
 
-
-
- *@
-
-
-
+        https://localhost:7220/Automation/setDesiredValue
     </h1>
+    <h1>
+        https://localhost:7220/Microcontroller/UpdateValue
+    </h1>
+
+   <h1>
+        https://localhost:7220/Microcontroller/GetDesiredValue
+   </h1>
+
+   <h1>
+        Automation/RequestUserContainers
+   </h1>

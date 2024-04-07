@@ -27,6 +27,10 @@ namespace greenhouse.Controllers
         }
 
 
+
+
+        //todo
+        //if the value is diferente from the desired value take actions
         [HttpPost]
         public IActionResult UpdateValue([FromBody] UpdateValueJsonContent content)
         {
@@ -56,7 +60,7 @@ namespace greenhouse.Controllers
             var result = new RequestDesiredValueJsonContent();
 
             result.MicrocontrollerId = "abc";
-            result.Type = ReadingTypeEnum.PH;
+            result.ValueType = ReadingTypeEnum.PH;
 
             var result1 = new MicrocontrollerValueJsonContent()
             {
@@ -65,7 +69,9 @@ namespace greenhouse.Controllers
                 ValueType = ReadingTypeEnum.EL
             };
 
-            return Json(result);
+            String userId = "ola";
+
+            return Json(userId);
         }
 
     }

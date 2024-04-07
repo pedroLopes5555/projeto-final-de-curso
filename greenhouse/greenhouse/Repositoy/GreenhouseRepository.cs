@@ -39,13 +39,13 @@ namespace greenhouse.Repositoy
                 throw new ArgumentOutOfRangeException(nameof(containerId),$"Container {containerId} does not exist");
 
 
-            var config = _context.Configs.Where(a => a.ContainerId == containerId && a.Type == content.Type).FirstOrDefault();
+            var config = _context.Configs.Where(a => a.ContainerId == containerId && a.Type == content.ValueType).FirstOrDefault();
 
             if (config == null)
             {
                 _context.Configs.Add(new ContainerConfig()
                 {
-                    Type = content.Type,
+                    Type = content.ValueType,
                     ContainerId = containerId,
                     Value = content.DesiredValue,
                 });
@@ -127,7 +127,41 @@ namespace greenhouse.Repositoy
 
             }
 
-            return container.Configs.SingleOrDefault(a => a.Type == content.Type);
+            return container.Configs.SingleOrDefault(a => a.Type == content.ValueType);
+        }
+
+
+
+
+
+
+
+        public IQueryable<DB.Container> GetUserContainers(String userId)
+        {
+
+            var serIDGuid = Guid.Parse(userId);
+            //get user
+            var user = _context.Users.
+                Include(a => a.Containers).
+                SingleOrDefault(a => a.Id.Equals(serIDGuid));
+
+            //null check
+            if (user == null)
+            {
+                throw new ArgumentOutOfRangeException($"User {userId} not found");
+            }
+
+            //get containers
+            var containers = user.Containers;
+
+            //null check
+            if (containers == null)
+            {
+                throw new ArgumentOutOfRangeException($"User´s containers not found");
+            }
+
+
+            return containers.AsQueryable();
         }
 
 

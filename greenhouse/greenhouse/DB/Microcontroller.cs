@@ -15,5 +15,10 @@ namespace greenhouse.DB
         
         public Container Container { get; set; }
 
+
+        public Microcontroller()
+        {
+            
+        }
     }
 }

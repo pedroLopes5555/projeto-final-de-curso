@@ -168,7 +168,7 @@ namespace greenhouse.Controllers
 
 
             //_testData = new TestData();
-            //List<User> test = _testData.etTestData().ToList();
+            //List<User> test = _testData.GetTestData().ToList();
 
             //using (var context = new GreenhouseContex())
             //{
