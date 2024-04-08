@@ -165,5 +165,25 @@ namespace greenhouse.Repositoy
         }
 
 
+
+
+        public IQueryable<ScannedValue>? getContainerValues(String containerId)
+        {
+            var guidContainerId = Guid.Parse(containerId);
+            var container = _context.Containers.Include(a => a.Values).Where(a => a.Id == guidContainerId).SingleOrDefault();
+
+            //check if container is null
+            if (container == null)
+            {
+                throw new IndexOutOfRangeException($"Container {containerId} not found");
+            }
+
+            var values = container.Values;
+
+            return values.AsQueryable();
+
+        }
+
+
     }
 }

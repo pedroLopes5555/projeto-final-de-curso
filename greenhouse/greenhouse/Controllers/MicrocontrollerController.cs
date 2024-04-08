@@ -50,10 +50,6 @@ namespace greenhouse.Controllers
 
 
 
-
-
-
-
         [HttpGet]
         public IActionResult TestJsonFormat()
         {
