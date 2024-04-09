@@ -47,7 +47,11 @@ namespace greenhouse.Controllers
             return Json(result.Value);
         }
 
-
+        [HttpPost]
+        public IActionResult TurnOnRelay([FromBody] ChangeRelayStateJsonContent content)
+        {
+            return Ok();
+        }
 
 
         [HttpGet]

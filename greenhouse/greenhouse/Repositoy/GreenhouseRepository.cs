@@ -214,5 +214,35 @@ namespace greenhouse.Repositoy
         }
 
 
+        public void changeRelayState(ChangeRelayStateJsonContent content)
+        {
+            var microcontroller = _context.Microcontrollers.
+              Include(a => a.Container).ThenInclude(a => a.Relays).ThenInclude(a => a.History).
+              SingleOrDefault(a => a.Id == content.MicrocontrollerId);
+
+            //check if id exists
+            if (microcontroller == null)
+            {
+                throw new ArgumentOutOfRangeException($"Microcontroller {content.MicrocontrollerId} do not exist");
+
+            }
+
+            var container = microcontroller.Container;
+
+            if (container == null)
+            {
+                throw new IndexOutOfRangeException("Container Not Found");
+            }
+
+            var relay = container.Relays.SingleOrDefault(a => a.Type == content.RelayType);
+
+            if (relay == null)
+            {
+                throw new IndexOutOfRangeException("Relay Not Found");
+            }
+
+        }
+
+
     }
 }
