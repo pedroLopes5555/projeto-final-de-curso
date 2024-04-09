@@ -19,15 +19,16 @@ namespace greenhouse.DB
         public DbSet<Container>  Containers { get; set; }
         public DbSet<ScannedValue> Values { get; set; }
 
+        public DbSet<RelayHistory> RelaysHistory { get; set; }
         public DbSet<ContainerConfig> Configs { get; set; }
 
+        public DbSet<User> Users { get; set; }
 
 
         //public DbSet<Permission> Permissions { get; set; }
 
         //public DbSet<PermsRelations> PermsRelations { get; set; }
 
-        public DbSet<User> Users { get; set; }
 
 
 

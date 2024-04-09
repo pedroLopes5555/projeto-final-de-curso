@@ -25,9 +25,9 @@ namespace greenhouse.Models
                         Id = "34:85:18:7B:0E:C8",
                         Capacity = 10,
                         Name = "Arduino de teste",
-                        Relays = GetRelays()
                     }
                 },
+                Relays = GetRelays(),
                 Configs = GetContainerConfigs()
             };
 
@@ -39,7 +39,9 @@ namespace greenhouse.Models
                 Location = "ali em cima 2",
                 Values = GetValues(),
                 Microcontrollers = GetMicrocontrollers(),
-                Configs = GetContainerConfigs()
+                Configs = GetContainerConfigs(),
+                Relays = GetRelays(),
+
             };
 
             result.Add(new User
@@ -86,8 +88,7 @@ namespace greenhouse.Models
                 {
                     Capacity = 10,
                     Id = Guid.NewGuid().ToString(),
-                    Name = $"Microcontroller{i}",
-                    Relays = GetRelays()
+                    Name = $"Microcontroller{i}"
                 });
             }
 
@@ -105,13 +106,6 @@ namespace greenhouse.Models
                 {
                     Id = Guid.NewGuid(),
                     Name = $"relay{i}",
-                    State = false,
-                    Sensor = new Sensor
-                    {
-                        Id = Guid.NewGuid(),
-                        Name = "pH",
-                        Type = "pH"
-                    }
                 });
             }
 

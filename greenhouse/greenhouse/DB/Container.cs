@@ -12,6 +12,9 @@ namespace greenhouse.DB
 
         public List<ContainerConfig> Configs { get; set; }
 
+        public List<Relay> Relays { get; set; }
+
+        public List<Sensor> Sensors { get; set; }
         public List<Microcontroller> Microcontrollers { get; set; }
 
         [Required]
