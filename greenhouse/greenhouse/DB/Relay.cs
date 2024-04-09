@@ -6,8 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace greenhouse.DB
 {
 
-    //[PrimaryKey(nameof(ContainerId), nameof(Type))]
-    [PrimaryKey(nameof(Id), nameof(RelayTypeEnum))]
+    //[PrimaryKey(nameof(Id), nameof(RelayTypeEnum))]
     public class Relay
     {
         public Guid Id { get; set; }
