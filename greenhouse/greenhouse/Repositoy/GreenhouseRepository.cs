@@ -201,6 +201,18 @@ namespace greenhouse.Repositoy
         }
         
 
+        public IQueryable<Microcontroller> getContainerMicrocontrollers(String containerId)
+        {
+            var microcontrollers = _context.Microcontrollers.Where(a => a.Container.Id == Guid.Parse(containerId));
+
+            if (microcontrollers == null)
+            {
+                throw new IndexOutOfRangeException($"Container or microcontrollers not found");
+            }
+            
+            return microcontrollers.AsQueryable();
+        }
+
 
     }
 }

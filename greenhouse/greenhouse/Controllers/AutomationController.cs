@@ -6,6 +6,7 @@ using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
 using greenhouse.Interfaces;
+using System.Threading.Tasks.Dataflow;
 
 namespace greenhouse.Controllers
 {
@@ -54,6 +55,11 @@ namespace greenhouse.Controllers
         public IActionResult RequestContainerDesiredValues([FromBody] String containerId)
         {
             return Json(_greenhouseRepository.getContainerConfigs(containerId));
+        }
+
+
+        public IActionResult RequestContainerMicrocontrollers([FromBody] String containerId) {
+            return Json(_greenhouseRepository.getContainerMicrocontrollers(containerId));
         }
 
     }

@@ -1,6 +1,7 @@
 ﻿using greenhouse.DB;
 using greenhouse.Models;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace greenhouse.Interfaces
@@ -20,5 +21,7 @@ namespace greenhouse.Interfaces
         IQueryable<ScannedValue> getContainerValues(String containerId);
 
         IQueryable<ContainerConfig> getContainerConfigs(String containerId);
+
+        IQueryable<Microcontroller> getContainerMicrocontrollers(String containerId);
     }
 }
