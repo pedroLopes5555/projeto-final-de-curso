@@ -185,5 +185,22 @@ namespace greenhouse.Repositoy
         }
 
 
+        public IQueryable<ContainerConfig> getContainerConfigs(String containerId)
+        {
+            var containerIDGuid = Guid.Parse(containerId);
+
+            var configs = _context.Configs.Where(a => a.ContainerId == containerIDGuid);
+
+            if (configs == null)
+            {
+                throw new IndexOutOfRangeException($"Container {containerId} not found");
+            }
+
+            return configs.AsQueryable();
+
+        }
+        
+
+
     }
 }

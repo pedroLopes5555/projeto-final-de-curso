@@ -51,5 +51,10 @@ namespace greenhouse.Controllers
             return Json(_greenhouseRepository.getContainerValues(containerId));
         }
 
+        public IActionResult RequestContainerDesiredValues([FromBody] String containerId)
+        {
+            return Json(_greenhouseRepository.getContainerConfigs(containerId));
+        }
+
     }
 }

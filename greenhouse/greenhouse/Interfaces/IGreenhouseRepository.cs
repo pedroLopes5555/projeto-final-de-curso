@@ -18,5 +18,7 @@ namespace greenhouse.Interfaces
         IQueryable<DB.Container> GetUserContainers(String userId);
 
         IQueryable<ScannedValue> getContainerValues(String containerId);
+
+        IQueryable<ContainerConfig> getContainerConfigs(String containerId);
     }
 }
