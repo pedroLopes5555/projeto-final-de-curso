@@ -1,10 +1,33 @@
+// namespace greenhouse.Models
+// {
+//     public enum ReadingTypeEnum
+//     {
+//         PH = 0x1,
+//         EL = 0x1 << 1,
+//         TEMPERATURE = 0x1 << 2,
+//     }
+// }
 
-/**
-   BasicHTTPSClient.ino
 
-    Created on: 14.10.2018
+/*
+Microcontroller/GetDesiredValue
+{
+    "microcontrollerId": "087be1ec-ef3a-414b-9db4-5ff789ce3fb3",
+    "valueType": 1
+}
 
+Microcontroller/UpdateValue
+{
+    "microcontrollerId": "087be1ec-ef3a-414b-9db4-5ff789ce3fb3",
+    "valueType": 2,
+    "value": 3
+}
 */
+
+
+
+
+
 // Include the libraries we need
 #include <OneWire.h>
 #include <DallasTemperature.h>
@@ -13,9 +36,6 @@
 #include <WiFiMulti.h>
 #include <HTTPClient.h>
 #include <WiFiClientSecure.h>
-
-#include <OneWire.h>
-#include <DallasTemperature.h>
 
 // Data wire is plugged into port 2 on the Arduino
 #define ONE_WIRE_BUS 5
@@ -77,6 +97,19 @@ namespace sensor{
   float ecCalibration = 1;
 }
 
+
+namespace DesiredValues{
+  float ec = 100;
+  float ph = 6;
+  float temperature = 0;
+}
+
+
+enum ReadingTypeEnum {
+    PH = 0x1,
+    EL = 0x1 << 1,
+    TEMPERATURE = 0x1 << 2,
+};
 
 
 
@@ -169,7 +202,7 @@ void setup() {
   Serial.println();
 
   WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP("LL-GUEST", "VendaDoPinheiro");
+  WiFiMulti.addAP("MEO-6ADAC0", "2827d34e9e");
 
   // wait for WiFi connection
   Serial.print("Waiting for WiFi to connect...");
@@ -183,7 +216,7 @@ void setup() {
 
 
 
-void sendValueToApi(String type, String value){
+void sendValueToApi(String value, ReadingTypeEnum type){
     WiFiClientSecure *client = new WiFiClientSecure;
   if(client) {
     client -> setCACert(rootCACertificate);
@@ -193,13 +226,13 @@ void sendValueToApi(String type, String value){
       HTTPClient https;
   
       Serial.print("[HTTPS] begin...\n");
-      if (https.begin(*client, "https://hydrogrowthmanager.azurewebsites.net/automation/ReciveSensorData")) {  // HTTPS
+      if (https.begin(*client, "https://hydrogrowthmanager.azurewebsites.net/Microcontroller/UpdateValue")) {  // HTTPS
         Serial.print("[HTTPS] GET...\n");
         // start connection and send HTTP header2
         https.addHeader("Content-Type", "application/json");
-        int httpCode = https.POST("{\"micrcocontrollerID\":\"" + WiFi.macAddress() + "\",\"type\":\"" + type + "\",\"value\":\"" + value +"\"}");
+        int httpCode = https.POST("{\"microcontrollerId\":\"" + WiFi.macAddress() + "\",\"type\":\"" + type + "\",\"value\":\"" + value +"\"}");
         Serial.print("post:");
-        Serial.print("{\"micrcocontrollerID\":\"" + WiFi.macAddress() + "\",\"type\":\"" + type + "\",\"value\":\"" + value +"\"}");
+        Serial.print("{\"micrcocontrollerID\":\"" + WiFi.macAddress() + "\",\"valueType\":" + type + ",\"value\":" + value +"}");
         Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
 
         // httpCode will be negative on error
@@ -229,9 +262,61 @@ void sendValueToApi(String type, String value){
     Serial.println("Unable to create client");
   }
 
-  Serial.println();
-  Serial.println("Waiting 10s before the next round...");
    
+}
+
+
+void requestDesiredValues(ReadingTypeEnum type){
+// Microcontroller/GetDesiredValue
+// {
+//     "microcontrollerId": "087be1ec-ef3a-414b-9db4-5ff789ce3fb3",
+//     "valueType": 1
+// }
+  WiFiClientSecure *client = new WiFiClientSecure;
+
+  if(client) {
+    client -> setCACert(rootCACertificate);
+
+    {
+      // Add a scoping block for HTTPClient https to make sure it is destroyed before WiFiClientSecure *client is 
+      HTTPClient https;
+  
+      Serial.print("[HTTPS] begin...\n");
+      if (https.begin(*client, "https://hydrogrowthmanager.azurewebsites.net/Microcontroller/GetDesiredValue")) {  // HTTPS
+        // start connection and send HTTP header2
+        https.addHeader("Content-Type", "application/json");
+        int httpCode = https.POST("{\"microcontrollerId\": \"%s\", \"valueType\": %d}", microcontrollerId, valueType);
+        Serial.print("{\"micrcocontrollerID\":\"" + WiFi.macAddress() + "\",\"valueType\":" + type + ",\"value\":" + value +"}");
+        Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
+
+        // httpCode will be negative on error
+        if (httpCode > 0) {
+          // HTTP header has been send and Server response header has been handled
+          
+  
+          // file found at server
+          if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
+            String payload = https.getString();
+            Serial.println(payload);
+          }
+        } else {
+          Serial.printf("[HTTPS] GET... failed, error: %s\n", https.errorToString(httpCode).c_str());
+        }
+  
+        https.end();
+      } else {
+        Serial.printf("[HTTPS] Unable to connect\n");
+      }
+
+      // End extra scoping block
+    }
+  
+    delete client;
+  } else {
+    Serial.println("Unable to create client");
+  }
+
+
 }
 
 void loop() {
@@ -243,7 +328,8 @@ void loop() {
   Serial.print("---------------------");
   Serial.print(temperature);
   Serial.print("---------------------");
-  sendValueToApi("temperature", String(temperature));
+  ReadingTypeEnum type = TEMPERATURE;
+  sendValueToApi(String(temperature), type);
 
 
 
@@ -252,28 +338,20 @@ void loop() {
   Serial.print("---------------------");
   Serial.print(tds);
   Serial.print("---------------------");
-  sendValueToApi("tds", String(tds));
+  type = EL;
+  sendValueToApi(String(tds), type);
 
 
   String ph = readPh();
   Serial.print("---------------------");
   Serial.print(ph);
   Serial.print("---------------------");
-  sendValueToApi("ph", ph);
+  type = PH;
+  sendValueToApi(ph, type);
 
 
 
 
-  /*
-  if(tds< 500){
-    digitalWrite(AcidSolution, HIGH); // Turn the digital output HIGH 
-  }else{
-    digitalWrite(AcidSolution, LOW); // Turn the digital output HIGH 
 
-  }
-*/
-
-
-
-  delay(10000);
+  delay(100000);
 }
