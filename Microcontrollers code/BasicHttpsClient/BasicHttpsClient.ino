@@ -224,15 +224,12 @@ void sendValueToApi(String value, ReadingTypeEnum type){
     {
       // Add a scoping block for HTTPClient https to make sure it is destroyed before WiFiClientSecure *client is 
       HTTPClient https;
-  
-      Serial.print("[HTTPS] begin...\n");
       if (https.begin(*client, "https://hydrogrowthmanager.azurewebsites.net/Microcontroller/UpdateValue")) {  // HTTPS
-        Serial.print("[HTTPS] GET...\n");
         // start connection and send HTTP header2
         https.addHeader("Content-Type", "application/json");
         int httpCode = https.POST("{\"microcontrollerId\":\"" + WiFi.macAddress() + "\",\"type\":\"" + type + "\",\"value\":\"" + value +"\"}");
-        Serial.print("post:");
-        Serial.print("{\"micrcocontrollerID\":\"" + WiFi.macAddress() + "\",\"valueType\":" + type + ",\"value\":" + value +"}");
+        // Serial.println("post:");
+        // Serial.print("{\"micrcocontrollerID\":\"" + WiFi.macAddress() + "\",\"valueType\":" + type + ",\"value\":" + value +"}");
         Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
 
         // httpCode will be negative on error
@@ -266,7 +263,7 @@ void sendValueToApi(String value, ReadingTypeEnum type){
 }
 
 
-void requestDesiredValues(ReadingTypeEnum type){
+String requestDesiredValues(ReadingTypeEnum type){
 // Microcontroller/GetDesiredValue
 // {
 //     "microcontrollerId": "087be1ec-ef3a-414b-9db4-5ff789ce3fb3",
@@ -280,13 +277,12 @@ void requestDesiredValues(ReadingTypeEnum type){
     {
       // Add a scoping block for HTTPClient https to make sure it is destroyed before WiFiClientSecure *client is 
       HTTPClient https;
-  
-      Serial.print("[HTTPS] begin...\n");
       if (https.begin(*client, "https://hydrogrowthmanager.azurewebsites.net/Microcontroller/GetDesiredValue")) {  // HTTPS
         // start connection and send HTTP header2
         https.addHeader("Content-Type", "application/json");
-        int httpCode = https.POST("{\"microcontrollerId\": \"%s\", \"valueType\": %d}", microcontrollerId, valueType);
-        Serial.print("{\"micrcocontrollerID\":\"" + WiFi.macAddress() + "\",\"valueType\":" + type + ",\"value\":" + value +"}");
+        int httpCode = https.POST("{\"microcontrollerId\":\"" + WiFi.macAddress() + "\",\"type\":" + String(type) + "}");
+
+        Serial.print("{\"microcontrollerId\":\"" + WiFi.macAddress() + "\",\"type\":" + String(type) + "}");
         Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
 
         // httpCode will be negative on error
@@ -298,6 +294,7 @@ void requestDesiredValues(ReadingTypeEnum type){
           if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
             String payload = https.getString();
             Serial.println(payload);
+            return payload;
           }
         } else {
           Serial.printf("[HTTPS] GET... failed, error: %s\n", https.errorToString(httpCode).c_str());
@@ -321,37 +318,36 @@ void requestDesiredValues(ReadingTypeEnum type){
 
 void loop() {
 
-
-
-
-  String temperature = readTemperature();
-  Serial.print("---------------------");
-  Serial.print(temperature);
-  Serial.print("---------------------");
-  ReadingTypeEnum type = TEMPERATURE;
-  sendValueToApi(String(temperature), type);
-
-
-
-
-  float tds = readTdsValue();
-  Serial.print("---------------------");
-  Serial.print(tds);
-  Serial.print("---------------------");
-  type = EL;
-  sendValueToApi(String(tds), type);
-
-
-  String ph = readPh();
-  Serial.print("---------------------");
-  Serial.print(ph);
-  Serial.print("---------------------");
-  type = PH;
-  sendValueToApi(ph, type);
+  // String temperature = readTemperature();
+  // Serial.print("---------------------");
+  // Serial.print(temperature);
+  // Serial.print("---------------------");
+  // ReadingTypeEnum type = TEMPERATURE;
+  // sendValueToApi(String(temperature), type);
 
 
 
 
+  // float tds = readTdsValue();
+  // Serial.print("---------------------");
+  // Serial.print(tds);
+  // Serial.print("---------------------");
+  // type = EL;
+  // sendValueToApi(String(tds), type);
+
+
+  // String ph = readPh();
+  // Serial.print("---------------------");
+  // Serial.print(ph);
+  // Serial.print("---------------------");
+  // type = PH;
+  // sendValueToApi(ph, type);
+
+  ReadingTypeEnum type = PH;
+
+  String result = requestDesiredValues(type);
+
+  Serial.println(result);
 
   delay(100000);
 }
