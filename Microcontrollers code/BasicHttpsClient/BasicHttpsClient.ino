@@ -78,8 +78,10 @@ OneWire oneWire(ONE_WIRE_BUS);
 DallasTemperature sensors(&oneWire);
 
 
-//const int tdsSensorPin = A0; // Define the analog pin for the TDS sensor
-int AcidSolution = D3;
+
+int AcidSoluction = D10;
+int ELSoluction = D9;
+
 const int phSensor = A2;
 
 
@@ -125,9 +127,9 @@ String readPh()
 String readTemperature(){
     // call sensors.requestTemperatures() to issue a global temperature 
   // request to all devices on the bus
-  Serial.print("Requesting temperatures...");
-  sensors.requestTemperatures(); // Send the command to get temperatures
-  Serial.println("DONE");
+  // Serial.print("Requesting temperatures...");
+  // sensors.requestTemperatures(); // Send the command to get temperatures
+  // Serial.println("DONE");
   // After we got the temperatures, we can print them here.
   // We use the function ByIndex, and as an example get the temperature from the first sensor only.
   float tempC = sensors.getTempCByIndex(0);
@@ -135,8 +137,8 @@ String readTemperature(){
   // Check if reading was successful
   if(tempC != DEVICE_DISCONNECTED_C) 
   {
-    Serial.print("Temperature for the device 1 (index 0) is: ");
-    Serial.println(tempC);
+    //Serial.print("Temperature:");
+    //Serial.println(tempC);
     return String(tempC);
   } 
   else
@@ -157,10 +159,10 @@ float readTdsValue(){
   float temperatureCoefecient = 1.0 + 0.02 * (sensor::waterTemperature - 25.0);
   sensor::ec = (rawEc/temperatureCoefecient) * sensor::ecCalibration;
   sensor::tds = (133.42 * pow(sensor::ec, 3) - 255.86 * sensor::ec * sensor::ec + 857.39 * sensor::ec) * 0.5;
-  Serial.print(F("TDS:")); Serial.println(sensor::tds);
-  Serial.print(F("EC:")); Serial.println(sensor::ec, 2);
-  Serial.print(F("uS:")); Serial.println(sensor::ec * 640);
-  Serial.print(F("Temperature:")); Serial.println(sensor::waterTemperature,2);
+  // Serial.print(F("TDS:")); Serial.println(sensor::tds);
+  // Serial.print(F("EC:")); Serial.println(sensor::ec, 2);
+  // Serial.print(F("uS:")); Serial.println(sensor::ec * 640);
+  // Serial.print(F("Temperature:")); Serial.println(sensor::waterTemperature,2);
   return sensor::ec * 640;
 
 }
@@ -192,6 +194,8 @@ void setClock() {
 void setup() {
   
   pinMode(phSensor, INPUT);
+  pinMode(AcidSoluction, OUTPUT);
+  pinMode(ELSoluction, OUTPUT);
 
   Serial.begin(115200);
   
@@ -230,7 +234,7 @@ void sendValueToApi(String value, ReadingTypeEnum type){
         int httpCode = https.POST("{\"microcontrollerId\":\"" + WiFi.macAddress() + "\",\"type\":\"" + type + "\",\"value\":\"" + value +"\"}");
         // Serial.println("post:");
         // Serial.print("{\"micrcocontrollerID\":\"" + WiFi.macAddress() + "\",\"valueType\":" + type + ",\"value\":" + value +"}");
-        Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
+        //Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
 
         // httpCode will be negative on error
         if (httpCode > 0) {
@@ -240,7 +244,7 @@ void sendValueToApi(String value, ReadingTypeEnum type){
           // file found at server
           if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
             String payload = https.getString();
-            Serial.println(payload);
+            //Serial.println(payload);
           }
         } else {
           Serial.printf("[HTTPS] GET... failed, error: %s\n", https.errorToString(httpCode).c_str());
@@ -280,10 +284,10 @@ String requestDesiredValues(ReadingTypeEnum type){
       if (https.begin(*client, "https://hydrogrowthmanager.azurewebsites.net/Microcontroller/GetDesiredValue")) {  // HTTPS
         // start connection and send HTTP header2
         https.addHeader("Content-Type", "application/json");
-        int httpCode = https.POST("{\"microcontrollerId\":\"" + WiFi.macAddress() + "\",\"type\":" + String(type) + "}");
+        int httpCode = https.POST("{\"microcontrollerId\":\"" + WiFi.macAddress() + "\",\"valueType\":" + String(type) + "}");
 
-        Serial.print("{\"microcontrollerId\":\"" + WiFi.macAddress() + "\",\"type\":" + String(type) + "}");
-        Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
+        //Serial.print("{\"microcontrollerId\":\"" + WiFi.macAddress() + "\",\"type\":" + String(type) + "}");
+        //Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
 
         // httpCode will be negative on error
         if (httpCode > 0) {
@@ -293,7 +297,7 @@ String requestDesiredValues(ReadingTypeEnum type){
           // file found at server
           if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
             String payload = https.getString();
-            Serial.println(payload);
+            //Serial.println(payload);
             return payload;
           }
         } else {
@@ -318,36 +322,62 @@ String requestDesiredValues(ReadingTypeEnum type){
 
 void loop() {
 
-  // String temperature = readTemperature();
-  // Serial.print("---------------------");
-  // Serial.print(temperature);
-  // Serial.print("---------------------");
-  // ReadingTypeEnum type = TEMPERATURE;
-  // sendValueToApi(String(temperature), type);
-
-
-
-
-  // float tds = readTdsValue();
-  // Serial.print("---------------------");
-  // Serial.print(tds);
-  // Serial.print("---------------------");
-  // type = EL;
-  // sendValueToApi(String(tds), type);
-
-
-  // String ph = readPh();
-  // Serial.print("---------------------");
-  // Serial.print(ph);
-  // Serial.print("---------------------");
-  // type = PH;
-  // sendValueToApi(ph, type);
-
-  ReadingTypeEnum type = PH;
-
+  Serial.println("temperature");
+  String temperature = readTemperature();
+  Serial.println("---------------------");
+  Serial.println(temperature);
+  Serial.println("---------------------");
+  ReadingTypeEnum type = TEMPERATURE;
+  sendValueToApi(String(temperature), type);
   String result = requestDesiredValues(type);
+  Serial.println("value read:     " + temperature);
+  Serial.println("desired value:  " + result);
 
-  Serial.println(result);
+
+  Serial.println("");
+  Serial.println("");
+
+  Serial.println("tds");
+  float tds = readTdsValue();
+  Serial.print("---------------------");
+  Serial.print(tds);
+  Serial.print("---------------------");
+  type = EL;
+  sendValueToApi(String(tds), type);
+  result = requestDesiredValues(type);
+  Serial.println("value read:     " + String(tds));
+  Serial.println("desired value:  " + result);
+  if(atof(result.c_str()) > tds){
+    digitalWrite(ELSoluction, HIGH);
+  }else{
+    digitalWrite(ELSoluction, LOW);
+  }
+
+    Serial.println("");
+    Serial.println("");
+
+
+  Serial.println("ph");
+  String ph = readPh();
+  Serial.println("---------------------");
+  Serial.println(ph);
+  Serial.println("---------------------");
+  type = PH;
+  sendValueToApi(ph, type);
+  result = requestDesiredValues(type);
+  Serial.println("value read:     " + ph);
+  Serial.println("desired value:  " + result);
+  if(atof(result.c_str()) < atof(ph.c_str())){
+    digitalWrite(AcidSoluction, HIGH);
+  }else{
+    digitalWrite(AcidSoluction, LOW);
+  }
+
+  Serial.println("");
+  Serial.println("");
+
+
+
 
   delay(100000);
 }
