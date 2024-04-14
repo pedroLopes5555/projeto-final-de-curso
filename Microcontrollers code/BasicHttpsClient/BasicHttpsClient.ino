@@ -108,9 +108,9 @@ namespace DesiredValues{
 
 
 enum ReadingTypeEnum {
-    PH = 0x1,
-    EL = 0x1 << 1,
-    TEMPERATURE = 0x1 << 2,
+    PH = 1,
+    EL = 2,
+    TEMPERATURE = 4,
 };
 
 
@@ -119,9 +119,10 @@ enum ReadingTypeEnum {
 
 String readPh()
 {
-  float pHValue = analogRead(phSensor);
-  float voltage = pHValue * (3.3/1023.0);
-  return String((voltage*4.24));
+  pH_Value = analogRead(phSensor); 
+  Voltage = pH_Value * (3.3 / 4095.0); 
+  Serial.println(Voltage); 
+  return pH_Value;
 }
 
 String readTemperature(){
@@ -206,7 +207,7 @@ void setup() {
   Serial.println();
 
   WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP("MEO-6ADAC0", "2827d34e9e");
+  WiFiMulti.addAP("OS_VDF", "BemVind0s");
 
   // wait for WiFi connection
   Serial.print("Waiting for WiFi to connect...");
@@ -231,10 +232,10 @@ void sendValueToApi(String value, ReadingTypeEnum type){
       if (https.begin(*client, "https://hydrogrowthmanager.azurewebsites.net/Microcontroller/UpdateValue")) {  // HTTPS
         // start connection and send HTTP header2
         https.addHeader("Content-Type", "application/json");
-        int httpCode = https.POST("{\"microcontrollerId\":\"" + WiFi.macAddress() + "\",\"type\":\"" + type + "\",\"value\":\"" + value +"\"}");
-        // Serial.println("post:");
-        // Serial.print("{\"micrcocontrollerID\":\"" + WiFi.macAddress() + "\",\"valueType\":" + type + ",\"value\":" + value +"}");
-        //Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
+        int httpCode = https.POST("{\n\"microcontrollerId\":\"" + WiFi.macAddress() + "\",\n\"valueType\":" + type + ",\n\"value\":" + value + "\n}");
+        Serial.println("post:");
+        Serial.print("{\n\"microcontrollerId\":\"" + WiFi.macAddress() + "\",\n\"valueType\":" + type + ",\n\"value\":" + value + "\n}");
+        Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
 
         // httpCode will be negative on error
         if (httpCode > 0) {
@@ -321,8 +322,9 @@ String requestDesiredValues(ReadingTypeEnum type){
 }
 
 void loop() {
-
-  Serial.println("temperature");
+  int debugSensors = 1;
+if(debugSensors == 0){
+ Serial.println("temperature");
   String temperature = readTemperature();
   Serial.println("---------------------");
   Serial.println(temperature);
@@ -333,15 +335,16 @@ void loop() {
   Serial.println("value read:     " + temperature);
   Serial.println("desired value:  " + result);
 
+  delay(1000);
 
   Serial.println("");
   Serial.println("");
 
   Serial.println("tds");
   float tds = readTdsValue();
-  Serial.print("---------------------");
-  Serial.print(tds);
-  Serial.print("---------------------");
+  Serial.println("---------------------");
+  Serial.println(tds);
+  Serial.println("---------------------");
   type = EL;
   sendValueToApi(String(tds), type);
   result = requestDesiredValues(type);
@@ -355,6 +358,7 @@ void loop() {
 
     Serial.println("");
     Serial.println("");
+  delay(1000);
 
 
   Serial.println("ph");
@@ -372,12 +376,38 @@ void loop() {
   }else{
     digitalWrite(AcidSoluction, LOW);
   }
-
+}else{
+    Serial.println("temperature");
+  String temperature = readTemperature();
+  Serial.println("---------------------");
+  Serial.println(temperature);
+  Serial.println("---------------------");
+  
+  
+    Serial.println("");
   Serial.println("");
+
+ Serial.println("tds");
+  float tds = readTdsValue();
+  Serial.println("---------------------");
+  Serial.println(tds);
+  Serial.println("---------------------");
+
+      Serial.println("");
   Serial.println("");
 
 
+ Serial.println("ph");
+  String ph = readPh();
+  Serial.println("---------------------");
+  Serial.println(ph);
+  Serial.println("---------------------");
+}
+
+ 
+  
+  
 
 
-  delay(100000);
+  delay(1000);
 }
