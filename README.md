@@ -202,63 +202,70 @@ Errors
 404 Not Found: If the requested resource (container, user, etc.) is not found.
 500 Internal Server Error: If an unexpected error occurs on the server.
 
-Setting up Laravel
-This README will guide you through setting up a Laravel project using the official documentation as a reference. For detailed instructions, please refer to the Laravel documentation.
+# Laravel Setup Guide
 
-Laravel Setup Guide
-This guide provides step-by-step instructions for setting up a Laravel project. For more detailed information, please refer to the official Laravel documentation.
+This guide provides step-by-step instructions for setting up a Laravel project. For more detailed information, please refer to the [official Laravel documentation](https://laravel.com/docs/11.x/installation).
 
-Requirements
-PHP >= 7.4
-Composer
-Installation
-Clone Repository: Clone this repository to your local machine.
+## Requirements
 
-bash
-Copy code
-git clone <repository_url>
-Navigate to Project Directory: Change your current directory to the project directory.
+- PHP >= 7.4
+- Composer
 
-bash
-Copy code
-cd <project_directory>
-Install Dependencies: Install Composer dependencies.
+## Installation
 
-bash
-Copy code
-composer install
-Copy Environment File: Create a copy of the .env.example file and rename it to .env.
+1. **Clone Repository**: Clone this repository to your local machine.
 
-bash
-Copy code
-cp .env.example .env
-Generate Application Key: Generate an application key.
+    ```bash
+    git clone <repository_url>
+    ```
 
-bash
-Copy code
-php artisan key:generate
-Configure Database: Set up your database connection details in the .env file.
+2. **Navigate to Project Directory**: Change your current directory to the project directory.
 
-env
-Copy code
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=your_database_name
-DB_USERNAME=your_database_username
-DB_PASSWORD=your_database_password
-Run Migrations: Execute database migrations to create the necessary tables.
+    ```bash
+    cd <project_directory>
+    ```
 
-bash
-Copy code
-php artisan migrate
-Running the Application
+3. **Install Dependencies**: Install Composer dependencies.
+
+    ```bash
+    composer install
+    ```
+
+4. **Copy Environment File**: Create a copy of the `.env.example` file and rename it to `.env`.
+
+    ```bash
+    cp .env.example .env
+    ```
+
+5. **Generate Application Key**: Generate an application key.
+
+    ```bash
+    php artisan key:generate
+    ```
+
+6. **Configure Database**: Set up your database connection details in the `.env` file.
+
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=your_database_name
+    DB_USERNAME=your_database_username
+    DB_PASSWORD=your_database_password
+    ```
+
+7. **Run Migrations**: Execute database migrations to create the necessary tables.
+
+    ```bash
+    php artisan migrate
+    ```
+
+## Running the Application
+
 To start a local development server, run the following command:
 
-bash
-Copy code
+```bash
 php artisan serve
-You can now access your Laravel application at http://localhost:8000 in your web browser.
 
 
 
