@@ -9,7 +9,6 @@
 
 @section('buttons')
 <button data-target="#modal-merge" data-toggle="modal" class="btn btn-success">Update</button>
-<button data-target="#modal-new" data-toggle="modal" class="btn btn-success">Create</button>
 @endsection
 
 @section('body')

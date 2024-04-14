@@ -7,8 +7,7 @@
 ])
 
 @section('buttons')
-<button data-target="#modal-merge" data-toggle="modal" class="btn btn-success">Update</button>
-<button data-target="#modal-new" data-toggle="modal" class="btn btn-success">Create</button>
+  <button id="update-button" class="btn btn-success">Update</button>
 @endsection
 
 @section('body')
@@ -31,8 +30,7 @@
     <td>${container_dimension}</td>
     <td>${container_location}</td>
     <td>
-      <i class="fas fa-pencil-alt" option="edit"></i>
-      <i class="fas fa-trash-alt" option="delete"></i>
+      <i class="fas fa-eye" option="view"></i>
     </td>
   </tr>
   </script>
@@ -45,16 +43,28 @@
   ])
     <div id="form-new" api-call="countryCity.new">
       <div class="form-group">
-        <label>Name</label>
+        <label>Nome</label>
         <input type="text" class="form-control" name="container_name" maxlength="64" required/>
       </div>
       <div class="form-group">
-        <label>Capacity</label>
-        <input type="number" class="form-control" name="container_dimension" required/>
+        <label><label>Arduinos</label></label>
+						@component('_components.formSelect', [
+						'multiple' => true,
+						'required' => true,
+						'class' => '',
+						'attributes' => 'ajax-url="/api/select/arduinos"',
+						'name' => 'arduinos[]',
+						'placeholder' => 'Escolhe os Arduinos',
+						'array' => [],
+						])@endComponent
       </div>
       <div class="form-group">
-        <Label>Location</label>
+        <Label>Localização</label>
         <input type="text" class="form-control" name="container_location" maxlength="64" required/>
+      </div>
+      <div class="form-group">
+        <label>Dimensão</label>
+        <input type="text" class="form-control" name="container_dimension" maxlength="64" required/>
       </div>
     </div>
     @slot('footer')
@@ -70,16 +80,28 @@
   ])
     <div id="form-edit" api-call="">
       <div class="form-group">
-        <label>Name</label>
+        <label>Nome</label>
         <input type="text" class="form-control" name="container_name" maxlength="64" required/>
       </div>
       <div class="form-group">
-        <label>Capacity</label>
-        <input type="number" class="form-control" name="container_dimension" required/>
+        <label><label>Arduinos</label></label>
+						@component('_components.formSelect', [
+						'multiple' => true,
+						'required' => true,
+						'class' => '',
+						'attributes' => 'ajax-url="/api/select/arduinos fill="arduinos:arduino_id|arduino_name"',
+						'name' => 'arduinos[]',
+						'placeholder' => 'Escolhe os Arduinos',
+						'array' => [],
+						])@endComponent
       </div>
       <div class="form-group">
-        <label>Location</label>
+        <Label>Localização</label>
         <input type="text" class="form-control" name="container_location" maxlength="64" required/>
+      </div>
+      <div class="form-group">
+        <label>Dimensão</label>
+        <input type="text" class="form-control" name="container_dimension" maxlength="64" required/>
       </div>
     </div>
     @slot('footer')
@@ -116,17 +138,6 @@
 <script>
 let dt = document.getElementById('dt');
 
-let modalMerge = document.getElementById('modal-merge');
-let $modalMerge = $(modalMerge);
-let formMerge = modalMerge.querySelector('[api-call]');
-formMerge.addEventListener('api-response', e => {
-	if(!e.isOK) return;
-
-	dt.refresh();
-	$modalMerge.modal('hide');
-});
-let selectMerge = formMerge.querySelector('[select2]');
-
 let modalNew = document.getElementById('modal-new');
 let $modalNew = $(modalNew);
 let formNew = modalNew.querySelector('[api-call]');
@@ -155,6 +166,32 @@ formDelete.addEventListener('api-response', e => {
 
 	dt.refresh();
 	$modalDelete.modal('hide');
+});
+
+document.getElementById('update-button').addEventListener('click', e => {
+  console.log('Update button clicked'); // Log to check if the event listener is working
+
+  // Make an AJAX request to the server
+  $.ajax({
+    url: '/api/admin/RequestContainers',
+    method: 'POST',
+    processData: false,
+    contentType: false,
+    success: function(data){
+      // Log the response to check if it's coming as expected
+      console.log('Update request response:', data);
+
+      // If the response is not OK, return
+      if(!data.isOK){
+        dt.refresh();
+        return;
+      }
+    },
+    error: function(xhr, status, error) {
+      // Log any errors for debugging
+      console.error('Error:', error);
+    }
+  });
 });
 
 window.addEventListener('option-click', e => {
