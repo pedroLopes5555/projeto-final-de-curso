@@ -2,40 +2,74 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1 class="display-4">Welcome</h1>
+
+<!-- Plotly charts containers -->
+<p>
+    ph
+</p>
+<div id="phChart"></div>
+<p>
+    el
+</p>
+<div id="elChart"></div>
+<p>
+    temp
+</p>
+<div id="temperatureChart"></div>
+
+@section Scripts {
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+        // Fetch data from the server
+        async function fetchData() {
+            const response = await fetch('/Automation/RequestContainerValues', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify('D32A78E8-8DEB-4B8E-AB63-09CE983C0398')
+            });
+            return await response.json();
+        }
+
+        // Plot data using Plotly
+        async function plotData() {
+            const data = await fetchData();
+
+            // Separate data by reading type
+            const phData = data.filter(d => d.readingType === 1).map(d => ({ x: new Date(d.time), y: d.reading }));
+            const elData = data.filter(d => d.readingType === 2).map(d => ({ x: new Date(d.time), y: d.reading }));
+            const temperatureData = data.filter(d => d.readingType === 4).map(d => ({ x: new Date(d.time), y: d.reading }));
 
 
-    <h1>
 
+            const phTrace = {
+                x: phData.map(d => d.x),
+                y: phData.map(d => d.y),
+                mode: 'lines',
+                name: 'PH'
+            };
 
-        <h2>
-        Post
-        </h2>
-        <p>
-        https://hydrogrowthmanager.azurewebsites.net/Automation/RequestContainers
-        </p>
-        
-    </h1>
+            const elTrace = {
+                x: elData.map(d => d.x),
+                y: elData.map(d => d.y),
+                mode: 'lines',
+                name: 'EL'
+            };
 
-    <h1>
+            const temperatureTrace = {
+                x: temperatureData.map(d => d.x),
+                y: temperatureData.map(d => d.y),
+                mode: 'lines',
+                name: 'Temperature'
+            };
 
-        https://localhost:7220/Automation/setDesiredValue
-    </h1>
-    <h1>
-        https://localhost:7220/Microcontroller/UpdateValue
-    </h1>
+            Plotly.newPlot('phChart', [phTrace]);
+            Plotly.newPlot('elChart', [elTrace]);
+            Plotly.newPlot('temperatureChart', [temperatureTrace]);
+        }
 
-   <h1>
-        https://localhost:7220/Microcontroller/GetDesiredValue
-   </h1>
-
-   <h1>
-        Automation/RequestUserContainers
-   </h1>
-
-   <h1>
-        Automation/RequestContainerValues
-   </h1>
-
+        plotData();
+    </script>
+}

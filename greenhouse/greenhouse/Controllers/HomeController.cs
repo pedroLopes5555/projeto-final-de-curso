@@ -21,11 +21,17 @@ namespace greenhouse.Controllers
 
         public IActionResult Index()
         {
+            //_testData = new TestData();
 
-            using (var contex = new GreenhouseContex())
-            {
-                return View(contex);
-            }
+            //using (var context = new GreenhouseContex())
+            //{
+            //    var users = _testData.GetTestData();
+            //    context.Users.Add(users.FirstOrDefault(a => a.UserName == "Test"));
+            //    context.SaveChanges();
+            //}
+
+            return View();
+            
         }
 
         public IActionResult Privacy()

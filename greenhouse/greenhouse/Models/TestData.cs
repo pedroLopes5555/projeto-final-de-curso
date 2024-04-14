@@ -62,7 +62,7 @@ namespace greenhouse.Models
             var result = new List<ScannedValue>();
 
             // Generate sample scanned values
-            for (var i = 0; i < 5; i++)
+            for (var i = 0; i < 1; i++)
             {
                 var value = new ScannedValue()
                 {
