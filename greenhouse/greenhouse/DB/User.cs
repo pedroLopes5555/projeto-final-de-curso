@@ -20,8 +20,8 @@ namespace greenhouse.DB
         [Required]
         public string Email { get; set; }
 
-        //[AllowNull]
-        //public Permission Permission { get; set; }
+        [AllowNull]
+        public Permission Permissions { get; set; }
 
         [Required]
         public List<Container> Containers { get; set; }    
