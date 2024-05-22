@@ -72,5 +72,10 @@ namespace greenhouse.Controllers
             return Json(_greenhouseRepository.getUserPermissions(userId));
         }
 
+        public IActionResult RegistNewUser([FromBody] User user)
+        {
+            return Json(user);
+        }
+
     }
 }
