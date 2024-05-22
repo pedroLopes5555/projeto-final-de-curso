@@ -244,5 +244,38 @@ namespace greenhouse.Repositoy
         }
 
 
+
+        public Permission getUserPermissions(String userId)
+        {
+            Guid guid = Guid.Parse(userId);
+
+            var user = _context.Users.FirstOrDefault(a => a.Id == guid);
+
+            if(user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            return user.Permissions;
+
+        }
+
+
+        public User getUser(String userId)
+        {
+            Guid guid = Guid.Parse(userId);
+
+            var user = _context.Users.FirstOrDefault(a => a.Id == guid);
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+
+            return user;
+        }
+
+
     }
 }

@@ -25,5 +25,10 @@ namespace greenhouse.Interfaces
         IQueryable<Microcontroller> getContainerMicrocontrollers(String containerId);
 
         void changeRelayState(ChangeRelayStateJsonContent content);
+
+        Permission getUserPermissions(String userId);
+
+        User getUser(String userId);
+
     }
 }
