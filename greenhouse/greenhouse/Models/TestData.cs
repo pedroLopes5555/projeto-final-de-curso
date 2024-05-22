@@ -51,7 +51,9 @@ namespace greenhouse.Models
                 Id = Guid.NewGuid(),
                 Super = true,
                 UserName = "Test",
-                UserPassword = "password"
+                UserPassword = "password",
+                Permissions = Permission.ADMIN,
+                
             });
 
             return result;
