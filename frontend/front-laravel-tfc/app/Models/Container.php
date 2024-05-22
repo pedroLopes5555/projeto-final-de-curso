@@ -20,4 +20,7 @@ class Container extends Model
     public function arduinos(){
         return $this->hasMany(Arduino::class, 'container_id', 'container_id');
     }
+    public function targetValue(){
+        return $this->hasOne(TargetValue::class, 'container_id', 'container_id');
+    }
 }

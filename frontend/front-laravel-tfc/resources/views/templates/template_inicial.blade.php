@@ -32,6 +32,11 @@
 
 <script> 
     // define toast options
+
+    // user is defined by a php variable named $user
+    let user = @json($user);
+    console.log('this is the user', user);
+
 toastr.options = {
     "closeButton": true,
     "debug": false,

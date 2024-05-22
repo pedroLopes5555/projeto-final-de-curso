@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Value extends Model
+class TargetValue extends Model
 {
-    protected $table = 'real_time_values';
-    protected $primaryKey = 'real_time_value_id';
+    protected $table = 'target_values';
+    protected $primaryKey = 'value_id';
     protected $guarded = [];
     public $timestamps = false;
     protected $hidden = [];
