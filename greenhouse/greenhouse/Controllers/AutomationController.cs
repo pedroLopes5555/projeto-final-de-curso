@@ -62,5 +62,15 @@ namespace greenhouse.Controllers
             return Json(_greenhouseRepository.getContainerMicrocontrollers(containerId));
         }
 
+        public IActionResult GetUser([FromBody] string userId)
+        {
+            return Json(_greenhouseRepository.getUser(userId));
+        }
+
+        public IActionResult RequestUserPermissions([FromBody] String userId)
+        {
+            return Json(_greenhouseRepository.getUserPermissions(userId));
+        }
+
     }
 }
