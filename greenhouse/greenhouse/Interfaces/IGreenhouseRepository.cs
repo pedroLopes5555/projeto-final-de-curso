@@ -30,5 +30,8 @@ namespace greenhouse.Interfaces
 
         User getUser(String userId);
 
+        void registUser(User user);
+
+
     }
 }
