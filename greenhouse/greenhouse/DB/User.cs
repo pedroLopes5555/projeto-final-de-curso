@@ -15,16 +15,16 @@ namespace greenhouse.DB
         [Required]
         public String UserPassword { get; set; }
 
-        public bool Super {  get; set; }
 
         [Required]
         public string Email { get; set; }
 
         [AllowNull]
-        public Permission Permissions { get; set; }
 
-        [Required]
+        public Permission Permissions { get; set; }
+        [AllowNull]
         public List<Container> Containers { get; set; }    
+        public bool Super {  get; set; }
 
     }
 }
