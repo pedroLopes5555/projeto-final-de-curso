@@ -18,7 +18,7 @@
 </p>
 <div id="temperatureChart"></div>
 
-@section Scripts {
+@* @section Scripts {
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>
         // Fetch data from the server
@@ -55,7 +55,7 @@
                 x: elData.map(d => d.x),
                 y: elData.map(d => d.y),
                 mode: 'lines',
-                name: 'EL'
+                name: 'EL'  
             };
 
             const temperatureTrace = {
@@ -72,4 +72,4 @@
 
         plotData();
     </script>
-}
+} *@
