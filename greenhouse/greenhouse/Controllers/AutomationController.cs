@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
 using greenhouse.Interfaces;
 using System.Threading.Tasks.Dataflow;
+using greenhouse.Models.jsonContent;
+using Microsoft.JSInterop.Implementation;
 
 namespace greenhouse.Controllers
 {
@@ -75,6 +77,14 @@ namespace greenhouse.Controllers
         public IActionResult RegistNewUser([FromBody] User user)
         {
             return Json(user);
+        }
+
+        public IActionResult addContainerToUser([FromBody] AddContainerToUserJsonContent content)
+        {
+
+            _greenhouseRepository.createNewContainer(content);
+            return Ok();
+
         }
 
     }
