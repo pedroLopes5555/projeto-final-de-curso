@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.EnvironmentVariables;
 using System.ComponentModel;
+using greenhouse.Models.jsonContent;
 
 namespace greenhouse.Repositoy
 {
@@ -286,10 +287,38 @@ namespace greenhouse.Repositoy
             //now check if user's email alweary exists
             if ((_context.Users.FirstOrDefault(a => a.Email == user.Email)) != null) throw new Exception("email alweady exists");
             
+
             //convert password to ash
 
             _context.Users.Add(user);
 
+
+        }
+
+
+        public void createNewContainer(AddContainerToUserJsonContent content)
+        {
+            //get user
+            var user = _context.Users.Include(y => y.Containers).FirstOrDefault(a => a.Id == content.userId);
+
+            //check if null
+            if(user == null)
+            {
+                throw new Exception("User id not found");
+            }
+
+            //Add container to user
+            var container = new DB.Container
+            {
+                Id = Guid.NewGuid(),
+                Location = content.location,
+                Name = content.name,
+                Dimension = 10,
+                
+            };
+
+            user.Containers.Add(container);
+            _context.SaveChanges();
 
         }
 

@@ -1,5 +1,6 @@
 ﻿using greenhouse.DB;
 using greenhouse.Models;
+using greenhouse.Models.jsonContent;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Constraints;
@@ -31,6 +32,8 @@ namespace greenhouse.Interfaces
         User getUser(String userId);
 
         void registUser(User user);
+
+        void createNewContainer(AddContainerToUserJsonContent content);
 
 
     }
