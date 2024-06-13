@@ -44,7 +44,7 @@ namespace greenhouse.Controllers
         [HttpPost]
         public IActionResult GetDesiredValue([FromBody] RequestDesiredValueJsonContent content)
         {
-            var result = _greenhouseRepository.GetContainerConfig(content);
+            var result = _greenhouseRepository.GetMicrocontrollerContainerConfig(content);
             return Json(result.Value);
         }
 

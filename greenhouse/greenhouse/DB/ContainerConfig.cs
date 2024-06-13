@@ -5,12 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace greenhouse.DB
 {
-    [PrimaryKey(nameof(ContainerId), nameof(Type))]
+    [PrimaryKey(nameof(ContainerId), nameof(ReadingType))]
     public class ContainerConfig
     {
         public Guid ContainerId { get; set; }
 
-        public ReadingTypeEnum Type { get; set; }
+        public ReadingTypeEnum ReadingType { get; set; }
 
         public float Value { get; set; }
     }

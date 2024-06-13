@@ -9,7 +9,7 @@ namespace greenhouse.DB
         public GreenhouseContex()
         {
             //uncommet Database.EnsureDeleted(); and run to update data base
-            //Database.EnsureDeleted();
+            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 

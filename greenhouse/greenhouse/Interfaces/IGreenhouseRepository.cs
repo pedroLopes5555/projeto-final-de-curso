@@ -15,7 +15,7 @@ namespace greenhouse.Interfaces
 
         void UpdateValues(UpdateValueJsonContent content);
 
-        ContainerConfig GetContainerConfig(RequestDesiredValueJsonContent content);
+        ContainerConfig GetMicrocontrollerContainerConfig(RequestDesiredValueJsonContent content);
 
         IQueryable<DB.Container> GetUserContainers(String userId);
 

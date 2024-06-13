@@ -123,21 +123,21 @@ namespace greenhouse.Models
             containerConfigs.Add(new ContainerConfig
             {
                 ContainerId = Guid.NewGuid(),
-                Type = ReadingTypeEnum.PH,
+                ReadingType = ReadingTypeEnum.PH,
                 Value = 7.0f // Placeholder value for demonstration
             });
 
             containerConfigs.Add(new ContainerConfig
             {
                 ContainerId = Guid.NewGuid(),
-                Type = ReadingTypeEnum.EL,
+                ReadingType = ReadingTypeEnum.EL,
                 Value = 500.0f // Placeholder value for demonstration
             });
 
             containerConfigs.Add(new ContainerConfig
             {
                 ContainerId = Guid.NewGuid(),
-                Type = ReadingTypeEnum.TEMPERATURE,
+                ReadingType = ReadingTypeEnum.TEMPERATURE,
                 Value = 25.0f // Placeholder value for demonstration
             });
 

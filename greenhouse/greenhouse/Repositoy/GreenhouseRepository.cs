@@ -31,6 +31,8 @@ namespace greenhouse.Repositoy
 
 
 
+
+
         //Update desired values of a container 
         public void SetContainerDesiredValue(SetDesiredValueContent content)
         {
@@ -40,13 +42,13 @@ namespace greenhouse.Repositoy
                 throw new ArgumentOutOfRangeException(nameof(containerId),$"Container {containerId} does not exist");
 
 
-            var config = _context.Configs.Where(a => a.ContainerId == containerId && a.Type == content.ValueType).FirstOrDefault();
+            var config = _context.Configs.Where(a => a.ContainerId == containerId && a.ReadingType == content.ValueType).FirstOrDefault();
 
             if (config == null)
             {
                 _context.Configs.Add(new ContainerConfig()
                 {
-                    Type = content.ValueType,
+                    ReadingType = content.ValueType,
                     ContainerId = containerId,
                     Value = content.DesiredValue,
                 });
@@ -104,7 +106,7 @@ namespace greenhouse.Repositoy
 
 
         //get container desired value
-        public ContainerConfig GetContainerConfig(RequestDesiredValueJsonContent content)
+        public ContainerConfig GetMicrocontrollerContainerConfig(RequestDesiredValueJsonContent content)
         {
             //first we need the container taht the microcontroller belongs
 
@@ -128,7 +130,7 @@ namespace greenhouse.Repositoy
 
             }
 
-            return container.Configs.SingleOrDefault(a => a.Type == content.ValueType);
+            return container.Configs.SingleOrDefault(a => a.ReadingType == content.ValueType);
         }
 
 
@@ -286,8 +288,7 @@ namespace greenhouse.Repositoy
 
             //now check if user's email alweary exists
             if ((_context.Users.FirstOrDefault(a => a.Email == user.Email)) != null) throw new Exception("email alweady exists");
-            
-
+            S
             //convert password to ash
 
             _context.Users.Add(user);
