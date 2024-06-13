@@ -22,7 +22,7 @@ namespace greenhouse.Models
                 {
                     new Microcontroller()
                     {
-                        Id = "34:85:18:7B:0E:C8",
+                        Id = "pythonArduino",
                         Capacity = 10,
                         Name = "Arduino de teste",
                     }

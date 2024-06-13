@@ -29,8 +29,8 @@ namespace greenhouse.Controllers
 
 
 
-        //todo
-        //if the value is diferente from the desired value take actions
+
+        //micrcontroller calls this endpoint to update the values that have collected
         [HttpPost]
         public IActionResult UpdateValue([FromBody] UpdateValueJsonContent content)
         {

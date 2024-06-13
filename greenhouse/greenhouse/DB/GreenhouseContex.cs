@@ -9,8 +9,8 @@ namespace greenhouse.DB
         public GreenhouseContex()
         {
             //uncommet Database.EnsureDeleted(); and run to update data base
-            Database.EnsureDeleted();
-            //Database.EnsureCreated();
+            //Database.EnsureDeleted();
+            Database.EnsureCreated();
         }
 
         public DbSet<Relay> Relays { get; set; }
