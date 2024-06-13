@@ -35,6 +35,7 @@ namespace greenhouse.Controllers
         public IActionResult UpdateValue([FromBody] UpdateValueJsonContent content)
         {
            _greenhouseRepository.UpdateValues(content);
+            
             return Ok();
 
         }

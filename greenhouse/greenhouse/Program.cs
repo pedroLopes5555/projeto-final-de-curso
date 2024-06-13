@@ -1,5 +1,6 @@
 using greenhouse.DB;
 using greenhouse.Interfaces;
+using greenhouse.Models;
 using greenhouse.Repositoy;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IGreenhouseRepository, GreenhouseRepository>();
 builder.Services.AddScoped<GreenhouseContex, GreenhouseContex>();
+
+builder.Services.AddSingleton<InstructionsQueue>();
+
 
 
 var app = builder.Build();

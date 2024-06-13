@@ -16,7 +16,6 @@ namespace greenhouse.DB
         [Required]
         public String UserPassword { get; set; }
 
-
         [Required]
         public string Email { get; set; }
 

@@ -1,5 +1,8 @@
 using greenhouse.Controllers;
+using greenhouse.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Security.Cryptography.X509Certificates;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TestGreenhouse
 {
@@ -7,24 +10,44 @@ namespace TestGreenhouse
     public class UnitTest1
     {
         [TestMethod]
-        public void TestSendSensorData()
+        public void TestInstrutionQueue()
         {
+            var queue = new InstructionsQueue();
 
-            // Arrange: Set up test data and objects
-            //HttpClient client = new HttpClient();
+            var expected = new Instruction()
+            {
+                Command = "ph+",
+                DeviceId = "teste1",
+                ExecutionTime = DateTime.Now.AddDays(-4)
+            };
 
-            //string jsonData = "{micrcocontrollerID = \"1\"; sensorId = \"12\"; type = \"pH\" ; value = \"3,0\"}"; // create the json whit the data to post
+            queue.AddInstruction(expected);
 
-            // Act: Perform the action you want to test
+            queue.AddInstruction(new Instruction()
+            {
+                Command = "ph+",
+                DeviceId = "teste1",
+                ExecutionTime = DateTime.Now.AddDays(-2)
+            });
+            queue.AddInstruction(new Instruction()
+            {
+                Command = "ph+",
+                DeviceId = "teste1",
+                ExecutionTime = DateTime.Now.AddDays(-3)
+            });
+            queue.AddInstruction(new Instruction()
+            {
+                Command = "ph+",
+                DeviceId = "teste1",
+                ExecutionTime = DateTime.Now.AddDays(-1)
+            });
 
-            //var result = new AutomationController().SendSensorData("12", "ph", "ph", "7");
+            var result = queue.GetNextInstrution("teste1");
 
-            // Assert: Verify the results using assertions
-
-            //Assert.AreEqual("->data recived<-\r\nsensorID: 12\r\nvalue: 3,0\r\ntype: pH\r\n3,0", result);
-
-            //Assert.IsTrue(true);
-
+            Assert.AreEqual(expected.Command, result.Command);
+            Assert.AreEqual(expected.DeviceId, result.DeviceId );
+            Assert.AreEqual(expected.ExecutionTime, result.ExecutionTime);
+            
         }
     }
 }
