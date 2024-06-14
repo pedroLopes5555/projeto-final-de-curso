@@ -21,6 +21,8 @@ namespace greenhouse.Interfaces
 
         IQueryable<ScannedValue> getContainerValues(String containerId);
 
+        DB.Container getMicrocontrollerContainer(string microcontrollerId);
+
         IQueryable<ContainerConfig> getContainerConfigs(String containerId);
 
         IQueryable<Microcontroller> getContainerMicrocontrollers(String containerId);

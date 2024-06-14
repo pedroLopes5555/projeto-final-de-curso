@@ -1,4 +1,5 @@
-﻿using greenhouse.DB;
+﻿using greenhouse.BuisnesModel;
+using greenhouse.DB;
 using greenhouse.Interfaces;
 using greenhouse.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,12 @@ namespace greenhouse.Controllers
     {
 
         IGreenhouseRepository _greenhouseRepository;
+        InstructionsQueue _queue;
 
         public MicrocontrollerController(IGreenhouseRepository greenhouseRepository)
         {
             _greenhouseRepository = greenhouseRepository;
+            _queue = new InstructionsQueue();
         }
 
 
@@ -31,13 +34,30 @@ namespace greenhouse.Controllers
 
 
         //micrcontroller calls this endpoint to update the values that have collected
+        //executes all the logic to sabe the commands to micrcocontroller execute
         [HttpPost]
         public IActionResult UpdateValue([FromBody] UpdateValueJsonContent content)
         {
            _greenhouseRepository.UpdateValues(content);
+
             
+
+            var phActuator = new PhActuator(_greenhouseRepository);
+            var elActuator = new ElActuator(_greenhouseRepository);
+
+            phActuator.SaveInstructions(content.MicrocontrollerId);
+            elActuator.SaveInstructions(content.MicrocontrollerId);
+
+
             return Ok();
 
+        }
+
+        [HttpPost]
+        public IActionResult GetNextAction(string microcontrollerId)
+        {
+            var result = _queue.GetNextInstrution(microcontrollerId);
+            return Json(result);
         }
 
 

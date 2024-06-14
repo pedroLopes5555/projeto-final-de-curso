@@ -62,6 +62,16 @@ namespace greenhouse.Repositoy
 
         }
 
+        public DB.Container  getMicrocontrollerContainer(string microcontrollerId)
+        {
+            //find microcontroller
+            var microcontroller = _context.Microcontrollers.Include(x => x.Container).FirstOrDefault(a => a.Id == microcontrollerId);
+
+            if(microcontroller == null) { throw new Exception("microcontroller not found"); }
+
+            return microcontroller.Container;
+        }
+            
 
 
 
@@ -217,6 +227,10 @@ namespace greenhouse.Repositoy
         }
 
 
+
+
+
+
         public void changeRelayState(ChangeRelayStateJsonContent content)
         {
             var microcontroller = _context.Microcontrollers.
@@ -248,6 +262,9 @@ namespace greenhouse.Repositoy
 
 
 
+
+
+
         public Permission getUserPermissions(String userId)
         {
             Guid guid = Guid.Parse(userId);
@@ -262,6 +279,13 @@ namespace greenhouse.Repositoy
             return user.Permissions;
 
         }
+
+
+        //public Container GetMicrocontrollerContainer(string microcontrollerId)
+        //{
+        //    _context.Containers.FirstOrDefault(a => a.)
+
+        //}
 
 
         public User getUser(String userId)
@@ -288,7 +312,7 @@ namespace greenhouse.Repositoy
 
             //now check if user's email alweary exists
             if ((_context.Users.FirstOrDefault(a => a.Email == user.Email)) != null) throw new Exception("email alweady exists");
-            S
+            
             //convert password to ash
 
             _context.Users.Add(user);

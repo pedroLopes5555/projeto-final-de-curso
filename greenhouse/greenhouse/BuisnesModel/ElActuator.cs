@@ -4,10 +4,10 @@ using greenhouse.Repositoy;
 
 namespace greenhouse.BuisnesModel
 {
-    public class PhActuator : Actuator
+    public class ElActuator : Actuator
     {
 
-        public PhActuator(IGreenhouseRepository greenhouseRepository)
+        public ElActuator(IGreenhouseRepository greenhouseRepository)
             : base(greenhouseRepository)
         {
         }
@@ -21,11 +21,12 @@ namespace greenhouse.BuisnesModel
             var config = _greenhouseRepository.GetMicrocontrollerContainerConfig(new RequestDesiredValueJsonContent()
             {
                 MicrocontrollerId = microcontrollerID,
-                ValueType = ReadingTypeEnum.PH
+                ValueType = ReadingTypeEnum.EL
             });
 
 
             //get the last write value on the database
+
             var container = _greenhouseRepository.getMicrocontrollerContainer(microcontrollerID);
             var lastPhValue = container.Values.Where(y => y.ReadingType == ReadingTypeEnum.PH)
                 .OrderByDescending(a => a.Time).FirstOrDefault();
@@ -44,7 +45,7 @@ namespace greenhouse.BuisnesModel
             }
 
             //insert instruction baed on the meta value
-            result.Command = (lastPhValue.Reading > config.Value + 0.5) ? "ph-" : "ph+";
+            result.Command = (lastPhValue.Reading > config.Value + 50) ? "el-" : "el+";
 
             return result;
         }

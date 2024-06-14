@@ -1,5 +1,7 @@
+using greenhouse.BuisnesModel;
 using greenhouse.Controllers;
 using greenhouse.Models;
+using greenhouse.Repositoy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Security.Cryptography.X509Certificates;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -49,5 +51,12 @@ namespace TestGreenhouse
             Assert.AreEqual(expected.ExecutionTime, result.ExecutionTime);
             
         }
+
+        //[TestMethod]
+        //public void TestCreateInstruction()
+        //{
+        //    Actuator actuator = new PhActuator(new IGreenhouseRepository());
+
+        //}
     }
 }

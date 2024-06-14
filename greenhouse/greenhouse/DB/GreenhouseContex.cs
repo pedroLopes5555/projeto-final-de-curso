@@ -9,7 +9,7 @@ namespace greenhouse.DB
         public GreenhouseContex()
         {
             //uncommet Database.EnsureDeleted(); and run to update data base
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
@@ -37,7 +37,9 @@ namespace greenhouse.DB
 
             optionsBuilder.EnableSensitiveDataLogging();
             //object value = optionsBuilder.UseSqlServer("Server=tcp:greenhousetfc.database.windows.net,1433;Initial Catalog=GreenHouse;Persist Security Info=False;User ID=ghapp;Password='sf68Kjç#2hha&gA';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-            object value = optionsBuilder.UseSqlServer("Server=192.168.1.86,1433;Database=greenhouse;User=sa;Password=l1n0x3Me#da;TrustServerCertificate=True;");
+            //object value = optionsBuilder.UseSqlServer("Server=192.168.1.86,1433;Database=greenhouse;User=sa;Password=l1n0x3Me#da;TrustServerCertificate=True;");
+            object value = optionsBuilder.UseSqlServer("Server=localhost,1433;Database=greenhouse;User=sa;Password=l1n0x3Me#da;TrustServerCertificate=True;");
+
         }
 
 

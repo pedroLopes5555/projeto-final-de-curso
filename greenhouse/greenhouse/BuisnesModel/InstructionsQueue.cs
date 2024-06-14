@@ -1,10 +1,10 @@
 ﻿using Azure.Core;
 
-namespace greenhouse.Models
+namespace greenhouse.BuisnesModel
 {
     public class InstructionsQueue
     {
-        
+
         private List<Instruction> _instructions = new List<Instruction>();
 
 
@@ -14,13 +14,14 @@ namespace greenhouse.Models
             _instructions.Add(instruction);
         }
 
-        public Instruction GetNextInstrution(string deviceId) {
+        public Instruction GetNextInstrution(string deviceId)
+        {
 
             var instruction = _instructions.Where(a => a.DeviceId.Equals(deviceId))
                 .OrderBy(a => a.ExecutionTime).FirstOrDefault();
 
             _instructions.Remove(instruction);
-           
+
 
             return instruction;
         }

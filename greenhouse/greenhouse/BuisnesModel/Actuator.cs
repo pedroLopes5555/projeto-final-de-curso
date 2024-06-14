@@ -1,5 +1,4 @@
 ﻿using greenhouse.Interfaces;
-using greenhouse.Models;
 
 namespace greenhouse.BuisnesModel
 {
@@ -8,15 +7,15 @@ namespace greenhouse.BuisnesModel
     public abstract class Actuator
     {
 
-        IGreenhouseRepository _greenhouseRepository;
+        protected IGreenhouseRepository _greenhouseRepository;
 
-        InstructionsQueue _instructionsQueue;
+        protected InstructionsQueue _instructionsQueue;
 
 
-        public Actuator(IGreenhouseRepository greenhouseRepository, InstructionsQueue instructionsQueue)
+        public Actuator(IGreenhouseRepository greenhouseRepository)
         {
             _greenhouseRepository = greenhouseRepository;
-            _instructionsQueue = instructionsQueue;
+            _instructionsQueue = new InstructionsQueue();
         }
 
         protected abstract Instruction CreateInstruction(string microcontrollerID);
