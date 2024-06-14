@@ -8,7 +8,6 @@ namespace greenhouse.BuisnesModel
         private List<Instruction> _instructions = new List<Instruction>();
 
 
-
         public void AddInstruction(Instruction instruction)
         {
             _instructions.Add(instruction);
@@ -21,7 +20,6 @@ namespace greenhouse.BuisnesModel
                 .OrderBy(a => a.ExecutionTime).FirstOrDefault();
 
             _instructions.Remove(instruction);
-
 
             return instruction;
         }

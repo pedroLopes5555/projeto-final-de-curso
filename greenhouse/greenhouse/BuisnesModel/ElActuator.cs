@@ -1,4 +1,5 @@
-﻿using greenhouse.Interfaces;
+﻿using greenhouse.BusinessModel;
+using greenhouse.Interfaces;
 using greenhouse.Models;
 using greenhouse.Repositoy;
 
@@ -7,8 +8,8 @@ namespace greenhouse.BuisnesModel
     public class ElActuator : Actuator
     {
 
-        public ElActuator(IGreenhouseRepository greenhouseRepository)
-            : base(greenhouseRepository)
+        public ElActuator(IGreenhouseRepository greenhouseRepository, InstructionsQueue instructionsQueue)
+            : base(greenhouseRepository, instructionsQueue)
         {
         }
 

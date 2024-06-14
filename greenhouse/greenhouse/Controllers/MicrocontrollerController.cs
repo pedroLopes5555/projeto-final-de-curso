@@ -14,11 +14,16 @@ namespace greenhouse.Controllers
 
         IGreenhouseRepository _greenhouseRepository;
         InstructionsQueue _queue;
+        private readonly PhActuator _phActuator;
+        private readonly ElActuator _elActuator;
 
-        public MicrocontrollerController(IGreenhouseRepository greenhouseRepository)
+        public MicrocontrollerController(IGreenhouseRepository greenhouseRepository,InstructionsQueue queue ,PhActuator phActuator, ElActuator elActuator)
         {
             _greenhouseRepository = greenhouseRepository;
-            _queue = new InstructionsQueue();
+            _queue = queue;
+            _phActuator = phActuator;
+            _elActuator = elActuator;
+
         }
 
 
@@ -40,13 +45,9 @@ namespace greenhouse.Controllers
         {
            _greenhouseRepository.UpdateValues(content);
 
-            
-
-            var phActuator = new PhActuator(_greenhouseRepository);
-            var elActuator = new ElActuator(_greenhouseRepository);
-
-            phActuator.SaveInstructions(content.MicrocontrollerId);
-            elActuator.SaveInstructions(content.MicrocontrollerId);
+           
+            _phActuator.SaveInstructions(content.MicrocontrollerId);
+            _elActuator.SaveInstructions(content.MicrocontrollerId);
 
 
             return Ok();

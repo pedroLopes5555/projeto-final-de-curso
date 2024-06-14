@@ -1,4 +1,5 @@
-﻿using greenhouse.Interfaces;
+﻿using greenhouse.BusinessModel;
+using greenhouse.Interfaces;
 using greenhouse.Models;
 using greenhouse.Repositoy;
 
@@ -7,8 +8,8 @@ namespace greenhouse.BuisnesModel
     public class PhActuator : Actuator
     {
 
-        public PhActuator(IGreenhouseRepository greenhouseRepository)
-            : base(greenhouseRepository)
+        public PhActuator(IGreenhouseRepository greenhouseRepository, InstructionsQueue instructionsQueue)
+            : base(greenhouseRepository, instructionsQueue)
         {
         }
 
@@ -26,6 +27,7 @@ namespace greenhouse.BuisnesModel
 
 
             //get the last write value on the database
+
             var container = _greenhouseRepository.getMicrocontrollerContainer(microcontrollerID);
             var lastPhValue = container.Values.Where(y => y.ReadingType == ReadingTypeEnum.PH)
                 .OrderByDescending(a => a.Time).FirstOrDefault();

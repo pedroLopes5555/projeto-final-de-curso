@@ -1,21 +1,17 @@
-﻿using greenhouse.Interfaces;
+﻿using greenhouse.BuisnesModel;
+using greenhouse.Interfaces;
 
-namespace greenhouse.BuisnesModel
+namespace greenhouse.BusinessModel
 {
-
-
     public abstract class Actuator
     {
-
         protected IGreenhouseRepository _greenhouseRepository;
-
         protected InstructionsQueue _instructionsQueue;
 
-
-        public Actuator(IGreenhouseRepository greenhouseRepository)
+        public Actuator(IGreenhouseRepository greenhouseRepository, InstructionsQueue instructionsQueue)
         {
             _greenhouseRepository = greenhouseRepository;
-            _instructionsQueue = new InstructionsQueue();
+            _instructionsQueue = instructionsQueue;
         }
 
         protected abstract Instruction CreateInstruction(string microcontrollerID);
@@ -24,9 +20,5 @@ namespace greenhouse.BuisnesModel
         {
             _instructionsQueue.AddInstruction(CreateInstruction(microcontrollerID));
         }
-
-
-
-       
     }
 }
