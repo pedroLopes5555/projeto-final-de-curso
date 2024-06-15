@@ -6,22 +6,27 @@ namespace greenhouse.BuisnesModel
     {
 
         private List<Instruction> _instructions = new List<Instruction>();
+        static object _lock=new object();
 
 
         public void AddInstruction(Instruction instruction)
         {
-            _instructions.Add(instruction);
+            lock (_lock)
+            {
+                _instructions.Add(instruction);
+            }
         }
-
         public Instruction GetNextInstrution(string deviceId)
         {
+            lock (_lock)
+            {
+                var instruction = _instructions.Where(a => a.DeviceId.Equals(deviceId))
+                    .OrderBy(a => a.ExecutionTime).FirstOrDefault();
 
-            var instruction = _instructions.Where(a => a.DeviceId.Equals(deviceId))
-                .OrderBy(a => a.ExecutionTime).FirstOrDefault();
+                _instructions.Remove(instruction);
 
-            _instructions.Remove(instruction);
-
-            return instruction;
+                return instruction;
+            }
         }
 
     }

@@ -12,8 +12,8 @@ builder.Services.AddScoped<GreenhouseContex, GreenhouseContex>();
 
 builder.Services.AddSingleton<InstructionsQueue>();
 
-builder.Services.AddTransient<PhActuator>();
-builder.Services.AddTransient<ElActuator>();
+builder.Services.AddScoped<PhActuator>();
+builder.Services.AddScoped<ElActuator>();
 
 
 var app = builder.Build();

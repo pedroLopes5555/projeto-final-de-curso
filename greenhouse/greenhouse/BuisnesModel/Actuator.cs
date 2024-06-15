@@ -14,11 +14,7 @@ namespace greenhouse.BusinessModel
             _instructionsQueue = instructionsQueue;
         }
 
-        protected abstract Instruction CreateInstruction(string microcontrollerID);
+        public abstract void EvalAndAct(string microcontrollerID);
 
-        public void SaveInstructions(string microcontrollerID)
-        {
-            _instructionsQueue.AddInstruction(CreateInstruction(microcontrollerID));
-        }
     }
 }

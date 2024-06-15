@@ -17,6 +17,8 @@ namespace greenhouse.Controllers
         private readonly PhActuator _phActuator;
         private readonly ElActuator _elActuator;
 
+
+
         public MicrocontrollerController(IGreenhouseRepository greenhouseRepository,InstructionsQueue queue ,PhActuator phActuator, ElActuator elActuator)
         {
             _greenhouseRepository = greenhouseRepository;
@@ -46,8 +48,8 @@ namespace greenhouse.Controllers
            _greenhouseRepository.UpdateValues(content);
 
            
-            _phActuator.SaveInstructions(content.MicrocontrollerId);
-            _elActuator.SaveInstructions(content.MicrocontrollerId);
+            _phActuator.EvalAndAct(content.MicrocontrollerId);
+            _elActuator.EvalAndAct(content.MicrocontrollerId);
 
 
             return Ok();
@@ -55,7 +57,7 @@ namespace greenhouse.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetNextAction(string microcontrollerId)
+        public IActionResult GetNextAction([FromBody] string microcontrollerId)
         {
             var result = _queue.GetNextInstrution(microcontrollerId);
             return Json(result);
@@ -79,21 +81,14 @@ namespace greenhouse.Controllers
         [HttpGet]
         public IActionResult TestJsonFormat()
         {
-            var result = new RequestDesiredValueJsonContent();
-
-            result.MicrocontrollerId = "abc";
-            result.ValueType = ReadingTypeEnum.PH;
-
-            var result1 = new MicrocontrollerValueJsonContent()
+            var result = new UpdateValueJsonContent()
             {
-                MicrocontrollerId = "abc",
-                Value = 3.0f,
+                MicrocontrollerId = "pyhtonArduino",
+                Value = 10.0f,
                 ValueType = ReadingTypeEnum.EL
+
             };
-
-            String userId = "ola";
-
-            return Json(userId);
+            return Json(result);
         }
 
     }
