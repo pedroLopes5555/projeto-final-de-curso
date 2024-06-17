@@ -38,11 +38,28 @@ namespace greenhouse.BuisnesModel
                 return;
             }
 
+            string command = "";
+
+            //if lastValue is bigger that the metaValue + margin
+            if (lastPhValue.Reading > config.Value + config.Margin)
+            {
+                command = "el-";
+            }
+            //if lastValue is lower that the metaValue + margin
+            if (lastPhValue.Reading > config.Value + config.Margin)
+            {
+                command = "el+";
+            }
+            //if the value is on the margin make no command
+
+            //create result
+
             //create result
             Instruction result = new Instruction()
             {
                 ExecutionTime = DateTime.Now,
                 DeviceId = microcontrollerID,
+                Command = command,
             };
 
             _instructionsQueue.AddInstruction(result);

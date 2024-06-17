@@ -34,7 +34,7 @@ namespace greenhouse.Repositoy
 
 
         //Update desired values of a container 
-        public void SetContainerDesiredValue(SetDesiredValueContent content)
+        public void SetContainerConfig(SetDesiredValueContent content)
         {
             var containerId = Guid.Parse(content.ContainerId);
 
@@ -51,11 +51,15 @@ namespace greenhouse.Repositoy
                     ReadingType = content.ValueType,
                     ContainerId = containerId,
                     Value = content.DesiredValue,
+                    Margin = content.Margin,
+                    ActionTime = content.ActionTime,
                 });
             }
             else
             {
                 config.Value = content.DesiredValue;
+                config.Margin = content.Margin;
+                config.ActionTime = content.ActionTime; 
             }
 
             _context.SaveChanges();

@@ -32,15 +32,9 @@ namespace greenhouse.Controllers
             return Json(_greenhouseRepository.GetContainers());
         }
 
-
-//        {
-//    "microcontrollerId": "123",
-//    "valueType": 2,
-//    "value": 12.3
-//}
-        public IActionResult setDesiredValue([FromBody] SetDesiredValueContent content)
+        public IActionResult SetContainerConfig([FromBody] SetDesiredValueContent content)
         {
-            _greenhouseRepository.SetContainerDesiredValue(content);
+            _greenhouseRepository.SetContainerConfig(content);
             return Ok();
         }
 

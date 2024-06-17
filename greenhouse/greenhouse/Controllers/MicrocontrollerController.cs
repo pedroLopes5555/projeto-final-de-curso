@@ -60,7 +60,7 @@ namespace greenhouse.Controllers
         public IActionResult GetNextAction([FromBody] string microcontrollerId)
         {
             var result = _queue.GetNextInstrution(microcontrollerId);
-            return Json(result);
+            return Json(result.Command);
         }
 
 

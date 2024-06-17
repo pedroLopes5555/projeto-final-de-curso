@@ -39,12 +39,26 @@ namespace greenhouse.BuisnesModel
                 return;
             }
 
+            string command = "";
+
+            //if lastValue is bigger that the metaValue + margin
+            if (lastPhValue.Reading > config.Value + config.Margin)
+            {
+                command = "ph-";
+            }
+            //if lastValue is lower that the metaValue + margin
+            if (lastPhValue.Reading > config.Value + config.Margin)
+            {
+                command = "ph+";
+            }
+            //if the value is on the margin make no command
+
             //create result
             Instruction instruction = new Instruction()
             {
                 ExecutionTime = DateTime.Now,
                 DeviceId = microcontrollerID,
-                Command = (lastPhValue.Reading > config.Value + 0.5) ? "ph-" : "ph+"
+                Command = command
             };
 
             _instructionsQueue.AddInstruction(instruction);

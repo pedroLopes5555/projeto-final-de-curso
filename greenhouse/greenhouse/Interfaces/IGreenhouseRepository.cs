@@ -11,7 +11,7 @@ namespace greenhouse.Interfaces
     {
         IQueryable<DB.Container> GetContainers(); //todo -> change fo comtainers by user-
 
-        void SetContainerDesiredValue(SetDesiredValueContent content);
+        void SetContainerConfig(SetDesiredValueContent content);
 
         void UpdateValues(UpdateValueJsonContent content);
 
