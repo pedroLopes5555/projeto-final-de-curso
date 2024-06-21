@@ -158,7 +158,7 @@ namespace greenhouse.Repositoy
 
             var serIDGuid = Guid.Parse(userId);
             //get user
-            var user = _context.Users.
+            var user = _context.User.
                 Include(a => a.Containers).
                 SingleOrDefault(a => a.Id.Equals(serIDGuid));
 
@@ -273,7 +273,7 @@ namespace greenhouse.Repositoy
         {
             Guid guid = Guid.Parse(userId);
 
-            var user = _context.Users.FirstOrDefault(a => a.Id == guid);
+            var user = _context.User.FirstOrDefault(a => a.Id == guid);
 
             if(user == null)
             {
@@ -296,7 +296,7 @@ namespace greenhouse.Repositoy
         {
             Guid guid = Guid.Parse(userId);
 
-            var user = _context.Users.FirstOrDefault(a => a.Id == guid);
+            var user = _context.User.FirstOrDefault(a => a.Id == guid);
 
             if (user == null)
             {
@@ -312,10 +312,10 @@ namespace greenhouse.Repositoy
         {
             var asher = new PasswordHasher();
             // check if user_name exists
-            if ((_context.Users.FirstOrDefault(a => a.UserName == user.UserName)) != null) throw new Exception("user alweady exists");
+            if ((_context.User.FirstOrDefault(a => a.UserName == user.UserName)) != null) throw new Exception("user alweady exists");
 
             //now check if user's email alweary exists
-            if ((_context.Users.FirstOrDefault(a => a.Email == user.Email)) != null) throw new Exception("email alweady exists");
+            if ((_context.User.FirstOrDefault(a => a.Email == user.Email)) != null) throw new Exception("email alweady exists");
 
             //convert password to ash
 
@@ -332,7 +332,7 @@ namespace greenhouse.Repositoy
                 UserPassword = asher.HashPassword(user.UserPassword)
             };
 
-            _context.Users.Add(userResult);
+            _context.User.Add(userResult);
             _context.SaveChanges();
         }
 
@@ -344,12 +344,12 @@ namespace greenhouse.Repositoy
 
             if(content.UserName == null)
             {
-                user = _context.Users.FirstOrDefault(a => a.Email == content.Email);
+                user = _context.User.FirstOrDefault(a => a.Email == content.Email);
 
             }
             else
             {
-                user = _context.Users.FirstOrDefault(a => a.UserName == content.UserName);
+                user = _context.User.FirstOrDefault(a => a.UserName == content.UserName);
             }
 
             if(user == null) { throw new Exception("user dosent exists"); }
@@ -362,7 +362,7 @@ namespace greenhouse.Repositoy
         public void createNewContainer(AddContainerToUserJsonContent content)
         {
             //get user
-            var user = _context.Users.Include(y => y.Containers).FirstOrDefault(a => a.Id == content.userId);
+            var user = _context.User.Include(y => y.Containers).FirstOrDefault(a => a.Id == content.userId);
 
             //check if null
             if(user == null)
@@ -384,6 +384,27 @@ namespace greenhouse.Repositoy
             _context.SaveChanges();
 
         }
+
+
+
+        //public IQueryable<Microcontroller> getUserMicrocontroller(String userId)
+        //{
+        //    //get user
+        //    var user = _context.User.Include(y => y.M).FirstOrDefault(a => a.Id == Guid.Parse(userId));
+
+        //    //check if null
+        //    if (user == null)
+        //    {
+        //        throw new Exception("User id not found");
+        //    }
+
+        //    //ger Microcontrollers
+
+        //    //var microcontrollers = _context.Microcontrollers.Include(a => a.User).Where(u => u.User)
+
+
+
+        //}
 
     }
 }

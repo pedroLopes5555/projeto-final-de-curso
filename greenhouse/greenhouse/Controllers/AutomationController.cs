@@ -69,7 +69,7 @@ namespace greenhouse.Controllers
         }
 
 
-        public IActionResult GetUserMicrocontrollers()
+        public IActionResult GetUserMicrocontrollers([FromBody] string userId)
         {
             //TODO
             return Ok();

@@ -22,7 +22,7 @@ namespace greenhouse.DB
         public DbSet<RelayHistory> RelaysHistory { get; set; }
         public DbSet<ContainerConfig> Configs { get; set; }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> User { get; set; }
          
         //public DbSet<Permissions> Permissions { get; set; }
 
