@@ -29,11 +29,11 @@ namespace greenhouse.BuisnesModel
             //get the last write value on the database
 
             var container = _greenhouseRepository.getMicrocontrollerContainer(microcontrollerID);
-            var lastPhValue = container.Values.Where(y => y.ReadingType == ReadingTypeEnum.PH)
+            var lastECValue = container.Values.Where(y => y.ReadingType == ReadingTypeEnum.PH)
                 .OrderByDescending(a => a.Time).FirstOrDefault();
 
             //if there is no meta value return no isntruction
-            if (lastPhValue == null)
+            if (lastECValue == null)
             {
                 return;
             }
@@ -41,18 +41,16 @@ namespace greenhouse.BuisnesModel
             string command = "";
 
             //if lastValue is bigger that the metaValue + margin
-            if (lastPhValue.Reading > config.Value + config.Margin)
+            if (lastECValue.Reading > config.Value + config.Margin)
             {
-                command = "el-";
+                command = "OPEN:el-";
             }
             //if lastValue is lower that the metaValue + margin
-            if (lastPhValue.Reading > config.Value + config.Margin)
+            if (lastECValue.Reading < config.Value + config.Margin)
             {
-                command = "el+";
+                command = "OPEN:el+";
             }
             //if the value is on the margin make no command
-
-            //create result
 
             //create result
             Instruction result = new Instruction()
@@ -62,6 +60,11 @@ namespace greenhouse.BuisnesModel
                 Command = command,
             };
 
+            _instructionsQueue.AddInstruction(result);
+
+            if(result.Command.Length > 3) result.Command = "CLOSE:" + command.Substring(command.Length - 3);
+
+            result.ExecutionTime = result.ExecutionTime.AddSeconds(config.ActionTime);
             _instructionsQueue.AddInstruction(result);
         }
     }

@@ -44,25 +44,29 @@ namespace greenhouse.BuisnesModel
             //if lastValue is bigger that the metaValue + margin
             if (lastPhValue.Reading > config.Value + config.Margin)
             {
-                command = "ph-";
+                command = "OPEN:ph-";
             }
             //if lastValue is lower that the metaValue + margin
-            if (lastPhValue.Reading > config.Value + config.Margin)
+            if (lastPhValue.Reading < config.Value + config.Margin)
             {
-                command = "ph+";
+                command = "OPEN:ph+";
             }
             //if the value is on the margin make no command
 
             //create result
-            Instruction instruction = new Instruction()
+            Instruction result = new Instruction()
             {
                 ExecutionTime = DateTime.Now,
                 DeviceId = microcontrollerID,
                 Command = command
             };
 
-            _instructionsQueue.AddInstruction(instruction);
+            _instructionsQueue.AddInstruction(result);
 
+            if (result.Command.Length > 3) result.Command = "CLOSE:" + command.Substring(command.Length - 3);
+
+            result.ExecutionTime = result.ExecutionTime.AddSeconds(config.ActionTime);
+            _instructionsQueue.AddInstruction(result);
         }
     }
 }
