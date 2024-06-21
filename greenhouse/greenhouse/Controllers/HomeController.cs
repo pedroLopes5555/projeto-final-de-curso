@@ -25,7 +25,7 @@ namespace greenhouse.Controllers
             //using (var context = new GreenhouseContex())
             //{
             //    var users = _testData.GetTestData();
-            //    context.User.Add(users.FirstOrDefault(a => a.UserName == "Test"));
+            //    context.Users.Add(users.FirstOrDefault(a => a.UserName == "Test"));
             //    context.SaveChanges();
             //}
 
