@@ -1,8 +1,8 @@
-﻿namespace greenhouse.Models
+﻿namespace greenhouse.Models.jsonContent
 {
     public class ChangeRelayStateJsonContent
     {
-        public String MicrocontrollerId { get; set; }
+        public string MicrocontrollerId { get; set; }
         public RelayTypeEnum RelayType { get; set; }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Constraints;
-using greenhouse.Models;
 using greenhouse.DB;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +8,7 @@ using greenhouse.Interfaces;
 using System.Threading.Tasks.Dataflow;
 using greenhouse.Models.jsonContent;
 using Microsoft.JSInterop.Implementation;
+using System.Text.RegularExpressions;
 
 namespace greenhouse.Controllers
 {
@@ -68,9 +68,22 @@ namespace greenhouse.Controllers
             return Json(_greenhouseRepository.getUserPermissions(userId));
         }
 
+
+        public IActionResult GetUserMicrocontrollers()
+        {
+            //TODO
+            return Ok();
+        }
+
         public IActionResult RegistNewUser([FromBody] User user)
         {
+            _greenhouseRepository.registUser(user);
             return Json(user);
+        }
+
+        public IActionResult UserLogin([FromBody] LoginJsonContent content)
+        {
+            return Json(_greenhouseRepository.UserLogin(content));
         }
 
         public IActionResult addContainerToUser([FromBody] AddContainerToUserJsonContent content)
@@ -80,6 +93,7 @@ namespace greenhouse.Controllers
             return Ok();
 
         }
+
 
     }
 }

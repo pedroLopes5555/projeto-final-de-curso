@@ -1,8 +1,8 @@
-﻿namespace greenhouse.Models
+﻿namespace greenhouse.Models.jsonContent
 {
     public class SetDesiredValueContent
     {
-        public String ContainerId { get; set; }
+        public string ContainerId { get; set; }
         public float DesiredValue { get; set; }
         public ReadingTypeEnum ValueType { get; set; }
 

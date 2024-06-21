@@ -1,4 +1,4 @@
-﻿namespace greenhouse.Models
+﻿namespace greenhouse.Models.jsonContent
 {
     public class RequestDesiredValueJsonContent
     {

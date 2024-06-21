@@ -303,7 +303,6 @@ namespace greenhouse.Repositoy
                 throw new Exception("User not found");
             }
 
-
             return user;
         }
 
@@ -311,18 +310,53 @@ namespace greenhouse.Repositoy
 
         public void registUser(User user)
         {
+            var asher = new PasswordHasher();
             // check if user_name exists
             if ((_context.Users.FirstOrDefault(a => a.UserName == user.UserName)) != null) throw new Exception("user alweady exists");
 
             //now check if user's email alweary exists
             if ((_context.Users.FirstOrDefault(a => a.Email == user.Email)) != null) throw new Exception("email alweady exists");
-            
+
             //convert password to ash
 
-            _context.Users.Add(user);
+            //createUser
 
+            User userResult = new User()
+            {
+                Containers = user.Containers,
+                Email = user.Email,
+                Id = Guid.NewGuid(),
+                Permissions = user.Permissions,
+                Super = user.Super,
+                UserName = user.UserName,
+                UserPassword = asher.HashPassword(user.UserPassword)
+            };
 
+            _context.Users.Add(userResult);
+            _context.SaveChanges();
         }
+
+        public bool UserLogin(LoginJsonContent content)
+        {
+            var asher = new PasswordHasher();
+
+            User user;
+
+            if(content.UserName == null)
+            {
+                user = _context.Users.FirstOrDefault(a => a.Email == content.Email);
+
+            }
+            else
+            {
+                user = _context.Users.FirstOrDefault(a => a.UserName == content.UserName);
+            }
+
+            if(user == null) { throw new Exception("user dosent exists"); }
+
+            return asher.VerifyPassword(user.UserPassword, content.Password);
+        }
+
 
 
         public void createNewContainer(AddContainerToUserJsonContent content)
