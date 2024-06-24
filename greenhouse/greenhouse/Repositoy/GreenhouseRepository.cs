@@ -308,24 +308,27 @@ namespace greenhouse.Repositoy
 
 
 
-        public void registUser(User user)
+        public Guid registUser(User user)
         {
             var asher = new PasswordHasher();
             // check if user_name exists
             if ((_context.Users.FirstOrDefault(a => a.UserName == user.UserName)) != null) throw new Exception("user alweady exists");
 
             //now check if user's email alweary exists
-            if ((_context.Users.FirstOrDefault(a => a.Email == user.Email)) != null) throw new Exception("email alweady exists");
+            //if ((_context.Users.FirstOrDefault(a => a.Email == user.Email)) != null) throw new Exception("email alweady exists");
 
             //convert password to ash
 
             //createUser
 
+            var id = Guid.NewGuid();
+
+
             User userResult = new User()
             {
                 Containers = user.Containers,
                 Email = user.Email,
-                Id = Guid.NewGuid(),
+                Id = id,
                 Permissions = user.Permissions,
                 Super = user.Super,
                 UserName = user.UserName,
@@ -334,6 +337,8 @@ namespace greenhouse.Repositoy
 
             _context.Users.Add(userResult);
             _context.SaveChanges();
+
+            return id; 
         }
 
         public bool UserLogin(LoginJsonContent content)
@@ -351,6 +356,8 @@ namespace greenhouse.Repositoy
             {
                 user = _context.Users.FirstOrDefault(a => a.UserName == content.UserName);
             }
+
+            var users = _context.Users;
 
             if(user == null) { throw new Exception("user dosent exists"); }
 

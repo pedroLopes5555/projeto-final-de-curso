@@ -33,7 +33,7 @@ namespace greenhouse.Interfaces
 
         User getUser(String userId);
 
-        void registUser(User user);
+        Guid registUser(User user);
 
         bool UserLogin(LoginJsonContent content);
 
