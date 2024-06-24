@@ -35,7 +35,7 @@ namespace greenhouse.Interfaces
 
         Guid registUser(User user);
 
-        bool UserLogin(LoginJsonContent content);
+        Guid UserLogin(LoginJsonContent content);
 
         void createNewContainer(AddContainerToUserJsonContent content);
 

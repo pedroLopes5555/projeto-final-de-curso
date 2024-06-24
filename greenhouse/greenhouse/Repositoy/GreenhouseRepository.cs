@@ -341,7 +341,7 @@ namespace greenhouse.Repositoy
             return id; 
         }
 
-        public bool UserLogin(LoginJsonContent content)
+        public Guid UserLogin(LoginJsonContent content)
         {
             var asher = new PasswordHasher();
 
@@ -361,7 +361,13 @@ namespace greenhouse.Repositoy
 
             if(user == null) { throw new Exception("user dosent exists"); }
 
-            return asher.VerifyPassword(user.UserPassword, content.Password);
+            
+            if (asher.VerifyPassword(user.UserPassword, content.Password))
+            {
+                return user.Id;
+            }
+
+            throw new Exception("Password Incorreta");
         }
 
 
