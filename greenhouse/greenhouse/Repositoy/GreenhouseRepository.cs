@@ -366,7 +366,7 @@ namespace greenhouse.Repositoy
 
 
 
-        public void createNewContainer(AddContainerToUserJsonContent content)
+        public Guid createNewContainer(AddContainerToUserJsonContent content)
         {
             //get user
             var user = _context.Users.Include(y => y.Containers).FirstOrDefault(a => a.Id == content.userId);
@@ -384,12 +384,26 @@ namespace greenhouse.Repositoy
                 Location = content.location,
                 Name = content.name,
                 Dimension = 10,
-                
+                Configs = null,
+                Microcontrollers = null,
+                Relays = null,
+                Sensors = null,
+                Values = null
             };
 
-            user.Containers.Add(container);
+            if(user.Containers == null)
+            {
+                user.Containers = new List<DB.Container> { container };
+            }
+            else
+            {
+                user.Containers.Add(container);
+                _context.Containers.Add(container);
+            }
+
             _context.SaveChanges();
 
+            return container.Id;
         }
 
 

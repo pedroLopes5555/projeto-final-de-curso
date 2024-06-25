@@ -37,7 +37,7 @@ namespace greenhouse.Interfaces
 
         Guid UserLogin(LoginJsonContent content);
 
-        void createNewContainer(AddContainerToUserJsonContent content);
+        Guid createNewContainer(AddContainerToUserJsonContent content);
 
         //IQueryable<Microcontroller> getUserMicrocontroller(String userId);
 

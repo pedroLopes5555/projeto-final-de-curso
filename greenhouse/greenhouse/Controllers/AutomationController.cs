@@ -68,6 +68,11 @@ namespace greenhouse.Controllers
             return Json(_greenhouseRepository.getUserPermissions(userId));
         }
 
+        public IActionResult CreateNewContainer([FromBody] AddContainerToUserJsonContent content)
+        {
+            return Json(_greenhouseRepository.createNewContainer(content));
+        }
+
 
         public IActionResult GetUserMicrocontrollers([FromBody] string userId)
         {
