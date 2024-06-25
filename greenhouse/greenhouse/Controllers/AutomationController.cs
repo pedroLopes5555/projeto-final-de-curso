@@ -83,7 +83,16 @@ namespace greenhouse.Controllers
 
         public IActionResult UserLogin([FromBody] LoginJsonContent content)
         {
-            return Json(_greenhouseRepository.UserLogin(content));
+
+            var result = _greenhouseRepository.UserLogin(content);
+
+            var obj = new
+            {
+                login = (result != Guid.Empty),
+                id = result
+            };
+
+            return Json(obj);
         }
 
         public IActionResult addContainerToUser([FromBody] AddContainerToUserJsonContent content)

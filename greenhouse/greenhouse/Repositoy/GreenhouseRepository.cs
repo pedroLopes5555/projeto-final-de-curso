@@ -357,9 +357,7 @@ namespace greenhouse.Repositoy
                 user = _context.Users.FirstOrDefault(a => a.UserName == content.UserName);
             }
 
-            var users = _context.Users;
-
-            if(user == null) { throw new Exception("user dosent exists"); }
+            if(user == null) { return Guid.Empty; }
 
             
             if (asher.VerifyPassword(user.UserPassword, content.Password))
@@ -367,7 +365,7 @@ namespace greenhouse.Repositoy
                 return user.Id;
             }
 
-            throw new Exception("Password Incorreta");
+            return Guid.Empty;
         }
 
 
