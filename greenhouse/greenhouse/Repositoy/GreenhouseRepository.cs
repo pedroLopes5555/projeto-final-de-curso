@@ -311,23 +311,19 @@ namespace greenhouse.Repositoy
         public Guid registUser(User user)
         {
             var asher = new PasswordHasher();
-            // check if user_name exists
-            if ((_context.Users.FirstOrDefault(a => a.UserName == user.UserName)) != null) throw new Exception("user alweady exists");
-
-            //now check if user's email alweary exists
-            //if ((_context.Users.FirstOrDefault(a => a.Email == user.Email)) != null) throw new Exception("email alweady exists");
-
-            //convert password to ash
-
-            //createUser
 
             var id = Guid.NewGuid();
 
 
+            // check if user_name exists
+            if ((_context.Users.FirstOrDefault(a => a.UserName == user.UserName)) != null) {
+                return Guid.Empty;             
+            }
+
             User userResult = new User()
             {
-                Containers = user.Containers,
-                Email = user.Email,
+                Containers = null,
+                Email = "",
                 Id = id,
                 Permissions = user.Permissions,
                 Super = user.Super,

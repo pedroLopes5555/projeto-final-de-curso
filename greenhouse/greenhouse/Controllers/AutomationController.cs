@@ -77,8 +77,17 @@ namespace greenhouse.Controllers
 
         public IActionResult RegistNewUser([FromBody] User user)
         {
-            
-            return Json(_greenhouseRepository.registUser(user));
+            var result = _greenhouseRepository.registUser(user);
+
+
+            var obj = new
+            {
+                userCreated = (result != Guid.Empty),
+                id = result
+            };
+
+
+            return Json(obj);
         }
 
         public IActionResult UserLogin([FromBody] LoginJsonContent content)
