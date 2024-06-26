@@ -240,6 +240,12 @@ namespace greenhouse.Repositoy
         {
             var container = _context.Containers.FirstOrDefault(a => a.Id == Guid.Parse(containerId));
 
+            if (container == null)
+            {
+                return false;
+            }
+
+
             _context.Containers.Remove(container);
 
             _context.SaveChanges(); return true;
