@@ -17,6 +17,8 @@ namespace greenhouse.Interfaces
 
         ContainerConfig GetMicrocontrollerContainerConfig(RequestDesiredValueJsonContent content);
 
+        bool CreateMicrocontroller(CreateMicrocontrollerJsonContent content);
+
         IQueryable<DB.Container> GetUserContainers(String userId);
 
         IQueryable<ScannedValue> getContainerValues(String containerId);

@@ -95,6 +95,32 @@ namespace greenhouse.Controllers
         }
 
 
+        public IActionResult CreateMicrocontroller([FromBody] CreateMicrocontrollerJsonContent content)
+        {
+            return Json(_greenhouseRepository.CreateMicrocontroller(content));
+        }
+
+
+
+
+        public IActionResult TesteJson()
+        {
+            var result = new CreateMicrocontrollerJsonContent()
+            {
+                Microcontroller = new Microcontroller()
+                {
+                    Id = "teste",
+                },
+                User = new User()
+                {
+                    Id = Guid.NewGuid(),
+                }
+            };
+
+            return Json(result);
+        }
+
+
         public IActionResult GetUserMicrocontrollers([FromBody] string userId)
         {
             //TODO

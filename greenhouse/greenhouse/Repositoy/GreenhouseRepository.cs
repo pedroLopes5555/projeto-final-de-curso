@@ -254,6 +254,29 @@ namespace greenhouse.Repositoy
 
 
 
+        public bool CreateMicrocontroller(CreateMicrocontrollerJsonContent content)
+        {
+            //get users container
+
+            var container = _context.Containers.FirstOrDefault(a => a.Id == content.User.Id);
+            
+            if(container == null)
+            {
+                return false;
+            }
+
+            if(_context.Microcontrollers.FirstOrDefault(a => a.Id == content.Microcontroller.Id) != null)
+            {
+                return false;
+            }
+
+            content.Microcontroller.Container = container;
+            _context.Microcontrollers.Add(content.Microcontroller);
+            _context.SaveChanges();
+
+            return true;
+        }
+
 
         public IQueryable<Microcontroller> getContainerMicrocontrollers(String containerId)
         {
@@ -300,10 +323,6 @@ namespace greenhouse.Repositoy
             }
 
         }
-
-
-
-
 
 
         public Permission getUserPermissions(String userId)
@@ -391,7 +410,21 @@ namespace greenhouse.Repositoy
 
             User userResult = new User()
             {
-                Containers = null,
+                Containers = new List<DB.Container>
+                {
+                    new DB.Container()
+                    {
+                        Configs = null,
+                        Dimension = 10,
+                        Id = id,
+                        Location = "",
+                        Name = "Microcontroladores sem Container",
+                        Microcontrollers = null,
+                        Values = null,
+                        Relays = null,
+                        Sensors = null
+                    }
+                },
                 Email = "",
                 Id = id,
                 Permissions = user.Permissions,
