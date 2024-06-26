@@ -76,13 +76,20 @@ namespace greenhouse.Controllers
 
             var obj = new
             {
-                userCreated = (result != Guid.Empty),
+                containerCreated = (result != Guid.Empty),
                 id = result
             };
 
 
             return Json(obj);
         }
+
+        public IActionResult EditContainer([FromBody] Container container)
+        {
+            return Json(_greenhouseRepository.EditContainer(container));
+        }
+
+
 
 
         public IActionResult GetUserMicrocontrollers([FromBody] string userId)
@@ -119,6 +126,22 @@ namespace greenhouse.Controllers
 
             return Json(obj);
         }
+
+
+        //TODO------------------------------------------------------------
+        public IActionResult DeleteUser([FromBody] string userId)
+        {
+            return Ok();
+        }
+
+        public IActionResult Updateuser([FromBody] User user)
+        {
+            return Ok();
+        }
+
+        //------------------------------------------------------------
+
+
 
         public IActionResult addContainerToUser([FromBody] AddContainerToUserJsonContent content)
         {

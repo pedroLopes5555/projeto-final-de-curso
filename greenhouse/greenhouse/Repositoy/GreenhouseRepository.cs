@@ -218,6 +218,25 @@ namespace greenhouse.Repositoy
         }
         
 
+        public bool EditContainer(DB.Container container)
+        {
+            var dbContainer = _context.Containers.FirstOrDefault(a => a.Id == container.Id);
+
+            if(dbContainer == null)
+            {
+                return false;
+            }
+
+            dbContainer.Name = container.Name;
+            dbContainer.Location = container.Location;
+
+            _context.SaveChanges();
+            return true;
+        }
+
+
+
+
         public IQueryable<Microcontroller> getContainerMicrocontrollers(String containerId)
         {
             var microcontrollers = _context.Microcontrollers.Where(a => a.Container.Id == Guid.Parse(containerId));

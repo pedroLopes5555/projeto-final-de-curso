@@ -39,6 +39,8 @@ namespace greenhouse.Interfaces
 
         Guid createNewContainer(AddContainerToUserJsonContent content);
 
+        bool EditContainer(DB.Container container);
+
         //IQueryable<Microcontroller> getUserMicrocontroller(String userId);
 
     }
