@@ -35,6 +35,10 @@ namespace greenhouse.Interfaces
 
         Guid registUser(User user);
 
+        bool DeleteUser(string userId);
+
+        bool UpdateUser(User updatedUser);
+
         Guid UserLogin(LoginJsonContent content);
 
         Guid createNewContainer(AddContainerToUserJsonContent content);

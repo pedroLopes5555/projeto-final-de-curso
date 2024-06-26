@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.EnvironmentVariables;
 using System.ComponentModel;
 using greenhouse.Models.jsonContent;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace greenhouse.Repositoy
 {
@@ -342,6 +343,38 @@ namespace greenhouse.Repositoy
             return user;
         }
 
+        public bool UpdateUser(User updatedUser)
+        {
+            var asher = new PasswordHasher();
+            var outdatedUser = _context.Users.FirstOrDefault(a => a.Id == updatedUser.Id);
+
+            if(outdatedUser == null)
+            {
+                return false;
+            }
+
+
+            if(updatedUser.Permissions != null) outdatedUser.Permissions = updatedUser.Permissions;
+            if (updatedUser.UserName != null && outdatedUser.UserName !=  "") outdatedUser.UserName = updatedUser.UserName;
+            
+            _context.SaveChanges();
+
+            return true;
+        }
+
+
+        public bool DeleteUser(string userId)
+        {
+            var user = _context.Users.FirstOrDefault(a => a.Id == Guid.Parse(userId));
+            if(user == null)
+            {
+                return false;
+            }
+
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+            return true;
+        }
 
 
         public Guid registUser(User user)

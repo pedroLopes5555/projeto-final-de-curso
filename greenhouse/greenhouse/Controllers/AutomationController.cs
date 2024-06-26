@@ -116,6 +116,12 @@ namespace greenhouse.Controllers
             return Json(obj);
         }
 
+
+        public IActionResult UpdateUser([FromBody] User user)
+        {
+            return Json(_greenhouseRepository.UpdateUser(user));
+        }
+
         public IActionResult UserLogin([FromBody] LoginJsonContent content)
         {
 
@@ -131,18 +137,10 @@ namespace greenhouse.Controllers
         }
 
 
-        //TODO------------------------------------------------------------
         public IActionResult DeleteUser([FromBody] string userId)
         {
-            return Ok();
+            return Json(_greenhouseRepository.DeleteUser(userId));
         }
-
-        public IActionResult Updateuser([FromBody] User user)
-        {
-            return Ok();
-        }
-
-        //------------------------------------------------------------
 
 
 
