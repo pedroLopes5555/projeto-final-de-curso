@@ -65,12 +65,23 @@ namespace greenhouse.Controllers
 
         public IActionResult RequestUserPermissions([FromBody] String userId)
         {
+
             return Json(_greenhouseRepository.getUserPermissions(userId));
         }
 
         public IActionResult CreateNewContainer([FromBody] AddContainerToUserJsonContent content)
         {
-            return Json(_greenhouseRepository.createNewContainer(content));
+            var result = _greenhouseRepository.createNewContainer(content);
+
+
+            var obj = new
+            {
+                userCreated = (result != Guid.Empty),
+                id = result
+            };
+
+
+            return Json(obj);
         }
 
 

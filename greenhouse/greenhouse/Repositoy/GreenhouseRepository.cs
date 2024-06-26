@@ -374,7 +374,7 @@ namespace greenhouse.Repositoy
             //check if null
             if(user == null)
             {
-                throw new Exception("User id not found");
+                return Guid.Empty;
             }
 
             //Add container to user
