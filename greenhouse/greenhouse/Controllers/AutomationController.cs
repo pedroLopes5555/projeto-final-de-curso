@@ -89,7 +89,10 @@ namespace greenhouse.Controllers
             return Json(_greenhouseRepository.EditContainer(container));
         }
 
-
+        public IActionResult DeleteContainer([FromBody] string containerId)
+        {
+            return Json(_greenhouseRepository.DeleteContainer(containerId));
+        }
 
 
         public IActionResult GetUserMicrocontrollers([FromBody] string userId)

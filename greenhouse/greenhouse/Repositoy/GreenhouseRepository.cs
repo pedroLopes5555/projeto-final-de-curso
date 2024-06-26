@@ -236,6 +236,17 @@ namespace greenhouse.Repositoy
 
 
 
+        public bool DeleteContainer(string containerId)
+        {
+            var container = _context.Containers.FirstOrDefault(a => a.Id == Guid.Parse(containerId));
+
+            _context.Containers.Remove(container);
+
+            _context.SaveChanges(); return true;
+        }
+
+
+
 
         public IQueryable<Microcontroller> getContainerMicrocontrollers(String containerId)
         {

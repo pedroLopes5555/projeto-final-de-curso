@@ -41,6 +41,8 @@ namespace greenhouse.Interfaces
 
         bool EditContainer(DB.Container container);
 
+        bool DeleteContainer(string containerId);
+
         //IQueryable<Microcontroller> getUserMicrocontroller(String userId);
 
     }
