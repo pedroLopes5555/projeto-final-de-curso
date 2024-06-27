@@ -41,6 +41,8 @@ namespace greenhouse.BuisnesModel
 
             string command = "";
 
+            if (config == null) return;
+
             //if lastValue is bigger that the metaValue + margin
             if (lastECValue.Reading > config.Value + config.Margin)
             {

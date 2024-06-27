@@ -100,6 +100,10 @@ namespace greenhouse.Controllers
             return Json(_greenhouseRepository.CreateMicrocontroller(content));
         }
 
+        public IActionResult AddMicrocontrollerToContainer([FromBody] AddMicrocontrollerToContainerJsonContent content)
+        {
+            return Json(_greenhouseRepository.AddMicrocontrollerToContainer(content));
+        }
 
 
 

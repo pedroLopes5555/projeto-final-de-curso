@@ -18,17 +18,19 @@ namespace greenhouse.Models
                 Name = "Test1",
                 Location = "ali em cima 1",
                 Values = GetValues(),
-                Microcontrollers = new List<Microcontroller>()
-                {
-                    new Microcontroller()
-                    {
-                        Id = "pythonArduino",
-                        Capacity = 10,
-                        Name = "Arduino de teste",
-                    }
-                },
                 Relays = GetRelays(),
                 Configs = GetContainerConfigs()
+            };
+
+            var microcontrollers = new List<Microcontroller>()
+            {
+                new Microcontroller()
+                {
+                    Id = "pythonArduino",
+                    Capacity = 10,
+                    Name = "Arduino de teste",
+                    Container = container1
+                }
             };
 
             var container2 = new Container
@@ -38,11 +40,12 @@ namespace greenhouse.Models
                 Name = "Test2",
                 Location = "ali em cima 2",
                 Values = GetValues(),
-                Microcontrollers = GetMicrocontrollers(),
                 Configs = GetContainerConfigs(),
                 Relays = GetRelays(),
 
             };
+
+            var MicrocontrollersContainer2 = GetMicrocontrollers(container2);
 
             result.Add(new User
             {
@@ -55,6 +58,21 @@ namespace greenhouse.Models
                 Permissions = Permission.ADMIN,
                 
             });
+
+            using (var context = new GreenhouseContex())
+            {
+                var users = result;
+                context.Users.Add(users.FirstOrDefault(a => a.UserName == "Test"));
+                context.Microcontrollers.Add(new Microcontroller()
+                {
+                    Id = "pythonArduino",
+                    Capacity = 10,
+                    Name = "Arduino de teste",
+                    Container = container1
+                });
+
+                context.SaveChanges();
+            }
 
             return result;
         }
@@ -79,7 +97,7 @@ namespace greenhouse.Models
             return result;
         }
 
-        private List<Microcontroller> GetMicrocontrollers()
+        private List<Microcontroller> GetMicrocontrollers( Container container)
         {
             var result = new List<Microcontroller>();
 
@@ -90,7 +108,8 @@ namespace greenhouse.Models
                 {
                     Capacity = 10,
                     Id = Guid.NewGuid().ToString(),
-                    Name = $"Microcontroller{i}"
+                    Name = $"Microcontroller{i}",
+                    Container = container
                 });
             }
 

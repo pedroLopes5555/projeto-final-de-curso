@@ -16,9 +16,6 @@ namespace greenhouse.DB
         public List<Relay> Relays { get; set; }
         [AllowNull]
         public List<Sensor> Sensors { get; set; }
-        [AllowNull]
-        public List<Microcontroller> Microcontrollers { get; set; }
-
         [Required]
         public int Dimension { get; set; }
         

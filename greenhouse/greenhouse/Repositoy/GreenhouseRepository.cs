@@ -72,6 +72,7 @@ namespace greenhouse.Repositoy
             //find microcontroller
             var microcontroller = _context.Microcontrollers.Include(x => x.Container).FirstOrDefault(a => a.Id == microcontrollerId);
 
+
             if(microcontroller == null) { throw new Exception("microcontroller not found"); }
 
             return microcontroller.Container;
@@ -254,6 +255,30 @@ namespace greenhouse.Repositoy
 
 
 
+        public bool AddMicrocontrollerToContainer(AddMicrocontrollerToContainerJsonContent content)
+        {
+            var container = _context.Containers.FirstOrDefault(a => a.Id == Guid.Parse(content.ContainerId));
+            if(container == null)
+            {
+                return false;
+            }
+
+            var microcontroller = _context.Microcontrollers.FirstOrDefault(a => a.Id == content.MicrocontrollerId);
+
+            if(microcontroller == null)
+            {
+                return false;
+            }
+
+
+            microcontroller.Container = container;
+
+            _context.SaveChanges();
+
+            return true;
+
+        }
+
         public bool CreateMicrocontroller(CreateMicrocontrollerJsonContent content)
         {
             //get users container
@@ -419,7 +444,6 @@ namespace greenhouse.Repositoy
                         Id = id,
                         Location = "",
                         Name = "Microcontroladores sem Container",
-                        Microcontrollers = null,
                         Values = null,
                         Relays = null,
                         Sensors = null
@@ -487,7 +511,6 @@ namespace greenhouse.Repositoy
                 Name = content.name,
                 Dimension = 10,
                 Configs = null,
-                Microcontrollers = null,
                 Relays = null,
                 Sensors = null,
                 Values = null
