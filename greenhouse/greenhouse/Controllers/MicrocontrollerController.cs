@@ -46,9 +46,9 @@ namespace greenhouse.Controllers
         [HttpPost]
         public IActionResult UpdateValue([FromBody] UpdateValueJsonContent content)
         {
-           _greenhouseRepository.UpdateValues(content);
-
+            _greenhouseRepository.UpdateValues(content);
            
+
             _phActuator.EvalAndAct(content.MicrocontrollerId);
             _elActuator.EvalAndAct(content.MicrocontrollerId);
 

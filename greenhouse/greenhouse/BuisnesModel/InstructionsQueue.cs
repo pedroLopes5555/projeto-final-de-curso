@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace greenhouse.BuisnesModel
 {
@@ -24,6 +25,16 @@ namespace greenhouse.BuisnesModel
                     .OrderBy(a => a.ExecutionTime).FirstOrDefault();
 
                 //if the next instruction is still after th
+                if(instruction == null)
+                {
+                    return new Instruction()
+                    {
+                        Command = "",
+                        DeviceId = deviceId,
+                        ExecutionTime = DateTime.Now,
+                    };
+                }
+
                 if(DateTime.Now >= instruction.ExecutionTime)
                 {
                     _instructions.Remove(instruction);
