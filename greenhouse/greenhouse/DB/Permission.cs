@@ -4,11 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace greenhouse.DB
 {
-    public class Permission
+    public enum Permission
     {
+        ADMIN = 0X1,
+        USER = 0x1 <<1,
 
-        [Key]
-        public Guid Id { get; set; }
-        public string Name { get; set; }
     }
 }

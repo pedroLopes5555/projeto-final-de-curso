@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.EnvironmentVariables;
 using System.ComponentModel;
+using greenhouse.Models.jsonContent;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace greenhouse.Repositoy
 {
@@ -30,8 +32,10 @@ namespace greenhouse.Repositoy
 
 
 
+
+
         //Update desired values of a container 
-        public void SetContainerDesiredValue(SetDesiredValueContent content)
+        public void SetContainerConfig(SetDesiredValueContent content)
         {
             var containerId = Guid.Parse(content.ContainerId);
 
@@ -39,26 +43,41 @@ namespace greenhouse.Repositoy
                 throw new ArgumentOutOfRangeException(nameof(containerId),$"Container {containerId} does not exist");
 
 
-            var config = _context.Configs.Where(a => a.ContainerId == containerId && a.Type == content.ValueType).FirstOrDefault();
+            var config = _context.Configs.Where(a => a.ContainerId == containerId && a.ReadingType == content.ValueType).FirstOrDefault();
 
             if (config == null)
             {
                 _context.Configs.Add(new ContainerConfig()
                 {
-                    Type = content.ValueType,
+                    ReadingType = content.ValueType,
                     ContainerId = containerId,
                     Value = content.DesiredValue,
+                    Margin = content.Margin,
+                    ActionTime = content.ActionTime,
                 });
             }
             else
             {
                 config.Value = content.DesiredValue;
+                config.Margin = content.Margin;
+                config.ActionTime = content.ActionTime; 
             }
 
             _context.SaveChanges();
 
         }
 
+        public DB.Container  getMicrocontrollerContainer(string microcontrollerId)
+        {
+            //find microcontroller
+            var microcontroller = _context.Microcontrollers.Include(x => x.Container).FirstOrDefault(a => a.Id == microcontrollerId);
+
+
+            if(microcontroller == null) { throw new Exception("microcontroller not found"); }
+
+            return microcontroller.Container;
+        }
+            
 
 
 
@@ -103,7 +122,7 @@ namespace greenhouse.Repositoy
 
 
         //get container desired value
-        public ContainerConfig GetContainerConfig(RequestDesiredValueJsonContent content)
+        public ContainerConfig GetMicrocontrollerContainerConfig(RequestDesiredValueJsonContent content)
         {
             //first we need the container taht the microcontroller belongs
 
@@ -127,12 +146,17 @@ namespace greenhouse.Repositoy
 
             }
 
-            return container.Configs.SingleOrDefault(a => a.Type == content.ValueType);
+            return container.Configs.SingleOrDefault(a => a.ReadingType == content.ValueType);
         }
 
 
 
+        public IQueryable<Microcontroller> getUserMicrocontrollersWhitNoContainer(string userId)
+        {
+            var microcontrollers = _context.Microcontrollers.Include(x => x.Container).Where(a => a.Container.Id == Guid.Parse(userId));
 
+            return microcontrollers.AsQueryable();
+        }
 
 
 
@@ -160,7 +184,7 @@ namespace greenhouse.Repositoy
                 throw new ArgumentOutOfRangeException($"User´s containers not found");
             }
 
-
+            containers.RemoveAll(a => a.Id == Guid.Parse(userId));
             return containers.AsQueryable();
         }
 
@@ -201,6 +225,109 @@ namespace greenhouse.Repositoy
         }
         
 
+        public bool EditContainer(DB.Container container)
+        {
+            var dbContainer = _context.Containers.FirstOrDefault(a => a.Id == container.Id);
+
+            if(dbContainer == null)
+            {
+                return false;
+            }
+
+            dbContainer.Name = container.Name;
+            dbContainer.Location = container.Location;
+
+            _context.SaveChanges();
+            return true;
+        }
+
+
+
+        public bool DeleteContainer(string containerID)
+        {
+            //get all the microcontrollers on the container ID
+
+            var microcontrollers = _context.Microcontrollers.Where(a => a.Container.Id == Guid.Parse(containerID));
+
+            //get the container
+            var container = _context.Containers.FirstOrDefault(a => a.Id == Guid.Parse(containerID));
+
+            if(container == null)
+            {
+                return false;
+            }
+
+            //get the user
+            var user = _context.Users.FirstOrDefault(a => a.Containers.Contains(container));
+
+            var safeContainer = _context.Containers.FirstOrDefault(a => a.Id == user.Id);
+
+
+            foreach (var microcontroller in microcontrollers)
+            {
+                microcontroller.Container = safeContainer;
+            }
+
+
+            _context.Containers.Remove(container);
+
+            _context.SaveChanges(); return true;
+        }
+
+
+
+        public bool AddMicrocontrollerToContainer(AddMicrocontrollerToContainerJsonContent content)
+        {
+
+            var microcontroller = _context.Microcontrollers.Include(a => a.Container).FirstOrDefault(a => a.Id == content.MicrocontrollerId);
+
+            //var container = _context.Containers.FirstOrDefault(a => a.Id == Guid.Parse(content.ContainerId));
+            
+            var metaContainer = _context.Containers.FirstOrDefault(a => a.Id == Guid.Parse(content.ContainerId));
+            
+            if(metaContainer == null)
+            {
+                return false;
+            }
+
+            if(microcontroller == null)
+            {
+                return false;
+            }
+
+
+            microcontroller.Container = metaContainer;
+
+            _context.SaveChanges();
+
+            return true;
+
+        }
+
+        public bool CreateMicrocontroller(CreateMicrocontrollerJsonContent content)
+        {
+            //get users container
+
+            var container = _context.Containers.FirstOrDefault(a => a.Id == content.User.Id);
+            
+            if(container == null)
+            {
+                return false;
+            }
+
+            if(_context.Microcontrollers.FirstOrDefault(a => a.Id == content.Microcontroller.Id) != null)
+            {
+                return false;
+            }
+
+            content.Microcontroller.Container = container;
+            _context.Microcontrollers.Add(content.Microcontroller);
+            _context.SaveChanges();
+
+            return true;
+        }
+
+
         public IQueryable<Microcontroller> getContainerMicrocontrollers(String containerId)
         {
             var microcontrollers = _context.Microcontrollers.Where(a => a.Container.Id == Guid.Parse(containerId));
@@ -212,6 +339,10 @@ namespace greenhouse.Repositoy
             
             return microcontrollers.AsQueryable();
         }
+
+
+
+
 
 
         public void changeRelayState(ChangeRelayStateJsonContent content)
@@ -243,6 +374,208 @@ namespace greenhouse.Repositoy
 
         }
 
+
+        public Permission getUserPermissions(String userId)
+        {
+            Guid guid = Guid.Parse(userId);
+
+            var user = _context.Users.FirstOrDefault(a => a.Id == guid);
+
+            if(user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            return user.Permissions;
+
+        }
+
+
+        //public Container GetMicrocontrollerContainer(string microcontrollerId)
+        //{
+        //    _context.Containers.FirstOrDefault(a => a.)
+
+        //}
+
+
+        public User getUser(String userId)
+        {
+            Guid guid = Guid.Parse(userId);
+
+            var user = _context.Users.FirstOrDefault(a => a.Id == guid);
+
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            return user;
+        }
+
+        public bool UpdateUser(User updatedUser)
+        {
+            var asher = new PasswordHasher();
+            var outdatedUser = _context.Users.FirstOrDefault(a => a.Id == updatedUser.Id);
+
+            if(outdatedUser == null)
+            {
+                return false;
+            }
+
+
+            if(updatedUser.Permissions != null) outdatedUser.Permissions = updatedUser.Permissions;
+            if (updatedUser.UserName != null && outdatedUser.UserName !=  "") outdatedUser.UserName = updatedUser.UserName;
+            
+            _context.SaveChanges();
+
+            return true;
+        }
+
+
+        public bool DeleteUser(string userId)
+        {
+            var user = _context.Users.FirstOrDefault(a => a.Id == Guid.Parse(userId));
+            if(user == null)
+            {
+                return false;
+            }
+
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+            return true;
+        }
+
+
+        public Guid registUser(User user)
+        {
+            var asher = new PasswordHasher();
+
+            var id = Guid.NewGuid();
+
+
+            // check if user_name exists
+            if ((_context.Users.FirstOrDefault(a => a.UserName == user.UserName)) != null) {
+                return Guid.Empty;             
+            }
+
+            User userResult = new User()
+            {
+                Containers = new List<DB.Container>
+                {
+                    new DB.Container()
+                    {
+                        Configs = null,
+                        Dimension = 10,
+                        Id = id,
+                        Location = "",
+                        Name = "Microcontroladores sem Container",
+                        Values = null,
+                        Relays = null,
+                        Sensors = null
+                    }
+                },
+                Email = "",
+                Id = id,
+                Permissions = user.Permissions,
+                Super = user.Super,
+                UserName = user.UserName,
+                UserPassword = asher.HashPassword(user.UserPassword)
+            };
+
+            _context.Users.Add(userResult);
+            _context.SaveChanges();
+
+            return id; 
+        }
+
+        public Guid UserLogin(LoginJsonContent content)
+        {
+            var asher = new PasswordHasher();
+
+            User user;
+
+            if(content.UserName == null)
+            {
+                user = _context.Users.FirstOrDefault(a => a.Email == content.Email);
+
+            }
+            else
+            {
+                user = _context.Users.FirstOrDefault(a => a.UserName == content.UserName);
+            }
+
+            if(user == null) { return Guid.Empty; }
+
+            
+            if (asher.VerifyPassword(user.UserPassword, content.Password))
+            {
+                return user.Id;
+            }
+
+            return Guid.Empty;
+        }
+
+
+
+        public Guid createNewContainer(AddContainerToUserJsonContent content)
+        {
+            //get user
+            var user = _context.Users.Include(y => y.Containers).FirstOrDefault(a => a.Id == content.userId);
+
+            //check if null
+            if(user == null)
+            {
+                return Guid.Empty;
+            }
+
+            //Add container to user
+            var container = new DB.Container
+            {
+                Id = Guid.NewGuid(),
+                Location = content.location,
+                Name = content.name,
+                Dimension = 10,
+                Configs = null,
+                Relays = null,
+                Sensors = null,
+                Values = null
+            };
+
+            if(user.Containers == null)
+            {
+                user.Containers = new List<DB.Container> { container };
+            }
+            else
+            {
+                user.Containers.Add(container);
+                _context.Containers.Add(container);
+            }
+
+            _context.SaveChanges();
+
+            return container.Id;
+        }
+
+
+
+        //public IQueryable<Microcontroller> getUserMicrocontroller(String userId)
+        //{
+        //    //get user
+        //    var user = _context.Users.Include(y => y.M).FirstOrDefault(a => a.Id == Guid.Parse(userId));
+
+        //    //check if null
+        //    if (user == null)
+        //    {
+        //        throw new Exception("Users id not found");
+        //    }
+
+        //    //ger Microcontrollers
+
+        //    //var microcontrollers = _context.Microcontrollers.Include(a => a.Users).Where(u => u.Users)
+
+
+
+        //}
 
     }
 }

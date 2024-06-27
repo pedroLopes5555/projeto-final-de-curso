@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Transactions;
 
 namespace greenhouse.DB
 {
@@ -15,16 +16,17 @@ namespace greenhouse.DB
         [Required]
         public String UserPassword { get; set; }
 
-        public bool Super {  get; set; }
-
         [Required]
         public string Email { get; set; }
 
-        //[AllowNull]
-        //public Permission Permission { get; set; }
+        [AllowNull]
 
-        [Required]
+        public Permission Permissions { get; set; }
+        [AllowNull]
         public List<Container> Containers { get; set; }    
+        public bool Super {  get; set; }
+
 
     }
+
 }

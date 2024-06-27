@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace greenhouse.DB
 {
@@ -9,14 +10,12 @@ namespace greenhouse.DB
         public Guid Id { get; set; }
         public List<ScannedValue> Values { get; set; }
         public string? Name { get; set; }
-
+        [AllowNull]
         public List<ContainerConfig> Configs { get; set; }
-
+        [AllowNull]
         public List<Relay> Relays { get; set; }
-
+        [AllowNull]
         public List<Sensor> Sensors { get; set; }
-        public List<Microcontroller> Microcontrollers { get; set; }
-
         [Required]
         public int Dimension { get; set; }
         

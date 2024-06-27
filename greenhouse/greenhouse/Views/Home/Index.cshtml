@@ -2,74 +2,279 @@
     ViewData["Title"] = "Home Page";
 }
 
-<h1 class="display-4">Welcome</h1>
+<h1 class="display-4">Endpoints</h1>
+
+<div class="endpoint">
+    <h2>Set Desired Value</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/SetDesiredValue">https://localhost:7220/Automation/SetDesiredValue</a></p>
+    <pre>
+{
+    "ContainerId": "B8BA1960-4275-415B-9AAF-9858E32FCA9E",
+    "ValueType": 1,
+    "DesiredValue": 200
+}
+    </pre>
+</div>
+
+<div class="endpoint">
+    <h2>Request User Containers</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/RequestUserContainers">https://localhost:7220/Automation/RequestUserContainers</a></p>
+    <pre>"8EB08444-2B3A-4BDD-A85E-90337AAB11F1"</pre>
+</div>
+
+<div class="endpoint">
+    <h2>Request Container Values</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/RequestContainerValues">https://localhost:7220/Automation/RequestContainerValues</a></p>
+    <pre>"0EF9BFD1-18B9-4A11-B83E-2E265089FD1A"</pre>
+</div>
+
+<div class="endpoint">
+    <h2>Request Container Desired Values</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/RequestContainerDesiredValues">https://localhost:7220/Automation/RequestContainerDesiredValues</a></p>
+    <pre>"0EF9BFD1-18B9-4A11-B83E-2E265089FD1A"</pre>
+</div>
+
+<div class="endpoint">
+    <h2>Request Container Microcontrollers</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/RequestContainerMicrocontrollers">https://localhost:7220/Automation/RequestContainerMicrocontrollers</a></p>
+    <pre>"0EF9BFD1-18B9-4A11-B83E-2E265089FD1A"</pre>
+</div>
+
+<div class="endpoint">
+    <h2>Update Value</h2>
+    <p>URL: <a href="https://localhost:7220/Microcontroller/UpdateValue">https://localhost:7220/Microcontroller/UpdateValue</a></p>
+    <pre>
+{
+    "MicrocontrollerId": "119c2ddc-a233-4787-95d4-99a7474feaa4",
+    "ValueType": 2,
+    "Value": 1000
+}
+    </pre>
+</div>
+
+<div class="endpoint">
+    <h2>Get Desired Value</h2>
+    <p>URL: <a href="https://localhost:7220/Microcontroller/GetDesiredValue">https://localhost:7220/Microcontroller/GetDesiredValue</a></p>
+    <pre>
+{
+    "MicrocontrollerId": "34:85:18:7B:0E:C8",
+    "ValueType": 1
+}
+    </pre>
+</div>
+
+<div class="endpoint">
+    <h2>Turn On Relay</h2>
+    <p>URL: <a href="https://localhost:7220/Microcontroller/TurnOnRelay">https://localhost:7220/Microcontroller/TurnOnRelay</a></p>
+    <pre>
+{
+    "MicrocontrollerId": "119c2ddc-a233-4787-95d4-99a7474feaa4",
+    "RelayType": 2
+}
+    </pre>
+</div>
+
+<div class="endpoint">
+    <h2>Set Container Config</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/SetContainerConfig">https://localhost:7220/Automation/SetContainerConfig</a></p>
+    <pre>
+{
+    "ContainerId": "9E5C1EF6-88AA-4B34-8635-1B9E4576EED2",
+    "ValueType": 1,
+    "DesiredValue": 2,
+    "Margin": 0.5,
+    "ActionTime": 100000
+}
+
+ValueType:
+PH = 0x1,
+EL = 0x1 << 1,
+TEMPERATURE = 0x1 << 2
+ActionTime em segundos
+    </pre>
+</div>
+
+<div class="endpoint">
+    <h2>Get Next Action</h2>
+    <p>URL: <a href="https://localhost:7220/Microcontroller/GetNextAction">https://localhost:7220/Microcontroller/GetNextAction</a></p>
+    <pre>"pythonArduino"</pre>
+    <pre>apenas envciar entre "" o id do microcontrolador</pre>
+</div>
+
+<div class="endpoint">
+    <h2>Register New User</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/RegistNewUser">https://localhost:7220/Automation/RegistNewUser</a></p>
+    <pre>
+{
+    "userName": "Pedro",
+    "userPassword": "teste123",
+    "permissions": 2,
+    "containers": null,
+    "super": false
+}
+
+Permissoes:
+ADMIN = 0X1,
+USER = 0x1 <<1
+    </pre>
+</div>
+
+<div class="endpoint">
+    <h2>User Login</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/UserLogin">https://localhost:7220/Automation/UserLogin</a></p>
+    <pre>
+{
+    "userName": "teste123",
+    "password": "teste123"
+}
+
+se o login for aceito devolve o id do user
+    </pre>
+</div>
+
+<div class="endpoint">
+    <h2>Request User Permissions</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/RequestUserPermissions">https://localhost:7220/Automation/RequestUserPermissions</a></p>
+    <pre>"userId"</pre>
+</div>
+
+<div class="endpoint">
+    <h2>SetCOntainer Config</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/SetContainerConfig">https://localhost:7220/Automation/SetContainerConfig</a></p>
+    <pre>"userId"</pre>
+</div>
+
+<div class="endpoint">
+    <h2>create and add container to user</h2>
+        <p>URL: <a href="https://localhost:7220/Automation/CreateNewContainer">https://localhost:7220/Automation/CreateNewContainer</a></p>
+    <pre>{
+    "name": "contentor1",
+    "location": "no ceu",
+    "UserId": "3AE94CA4-CCC8-4C7F-A6E9-5685A9773E06"
+}</pre>
+
+<pre>
+    returns id of container if secefully created
+</pre>
+</div>
+
+
+<div class="endpoint">
+    <h2>Edit Container</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/EditContainer">https://localhost:7220/Automation/EditContainer</a></p>
+    <pre>    
+        {
+        "id": "containerId",
+        "name": "nome",
+        "location": "Localizacao"
+        }
+    </pre>
+    <pre>
+        devolve true se for efertuado com sucesso
+    </pre>
+</div>
+
+<div class="endpoint">
+    <h2>Delete Container</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/DeleteContainer">https://localhost:7220/Automation/DeleteContainer</a></p>
+    <pre>    
+        "containerId"
+    </pre>
+    <pre>
+        devolve true se for efertuado com sucesso
+    </pre>
+</div>
+
+
+<div class="endpoint">
+    <h2>Update User</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/UpdateUser">https://localhost:7220/Automation/UpdateUser</a></p>
+    <pre>    
+        {
+            "id":"userId",
+            "userName": "newUserName",
+            "permissions" : 2
+        }
+    </pre>
+    <pre>
+        devolve true se for efertuado com sucesso
+    </pre>
+</div>
+
+
+<div class="endpoint">
+    <h2>Delete User</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/DeleteUser">https://localhost:7220/Automation/DeleteUser</a></p>
+    <pre>    
+        "userId"
+    </pre>
+    <pre>
+        devolve true se for efertuado com sucesso
+    </pre>
+</div>
+
+
+<div class="endpoint">
+    <h2>Create Microcontroller</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/CreateMicrocontroller">https://localhost:7220/Automation/CreateMicrocontroller</a></p>
+    <pre>    
+        {
+        "user": {
+            "id": "useeId"
+        },
+    "microcontroller": {
+        "id": "MAC address",
+        "name": "Microcontroller Name"
+        }
+    }
+    </pre>
+    <pre>
+        devolve true se for efertuado com sucesso
+    </pre>
+</div>
+
+<div class="endpoint">
+    <h2>devolve todos os microcontroladores que não tem container</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/GetUserMicrocntrollersWhithNoContainer">https://localhost:7220/Automation/GetUserMicrocntrollersWhithNoContainer</a></p>
+    <pre>    
+        "userId"
+    </pre>
+    <pre>
+        devolve um array de microcontroladores
+    </pre>
+</div>
+
+<div class="endpoint">
+    <h2>coloca o microcontrollador num container</h2>
+    <p>URL: <a href="https://localhost:7220/Automation/AddMicrocontrollerToContainer">https://localhost:7220/Automation/AddMicrocontrollerToContainer</a></p>
+    <pre>    
+        {
+            "microcontrollerId":"macAddress",
+            "containerId": "Id do container alvo"   
+        }
+    </pre>
+    <pre>
+        devlve true se tiver sucesso
+    </pre>
+</div>
+
+
 
 <!-- Plotly charts containers -->
-<p>
-    ph
-</p>
-<div id="phChart"></div>
-<p>
-    el
-</p>
-<div id="elChart"></div>
-<p>
-    temp
-</p>
-<div id="temperatureChart"></div>
+<div id="plotly-chart"></div>
 
 @section Scripts {
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>
-        // Fetch data from the server
-        async function fetchData() {
-            const response = await fetch('/Automation/RequestContainerValues', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify('D32A78E8-8DEB-4B8E-AB63-09CE983C0398')
-            });
-            return await response.json();
-        }
+        var data = [{
+            x: [1, 2, 3, 4, 5],
+            y: [1, 2, 4, 8, 16]
+        }];
 
-        // Plot data using Plotly
-        async function plotData() {
-            const data = await fetchData();
+        var layout = {
+            title: 'Sample Plotly Chart'
+        };
 
-            // Separate data by reading type
-            const phData = data.filter(d => d.readingType === 1).map(d => ({ x: new Date(d.time), y: d.reading }));
-            const elData = data.filter(d => d.readingType === 2).map(d => ({ x: new Date(d.time), y: d.reading }));
-            const temperatureData = data.filter(d => d.readingType === 4).map(d => ({ x: new Date(d.time), y: d.reading }));
-
-
-
-            const phTrace = {
-                x: phData.map(d => d.x),
-                y: phData.map(d => d.y),
-                mode: 'lines',
-                name: 'PH'
-            };
-
-            const elTrace = {
-                x: elData.map(d => d.x),
-                y: elData.map(d => d.y),
-                mode: 'lines',
-                name: 'EL'
-            };
-
-            const temperatureTrace = {
-                x: temperatureData.map(d => d.x),
-                y: temperatureData.map(d => d.y),
-                mode: 'lines',
-                name: 'Temperature'
-            };
-
-            Plotly.newPlot('phChart', [phTrace]);
-            Plotly.newPlot('elChart', [elTrace]);
-            Plotly.newPlot('temperatureChart', [temperatureTrace]);
-        }
-
-        plotData();
+        Plotly.newPlot('plotly-chart', data, layout);
     </script>
 }

@@ -1,6 +1,8 @@
-﻿using greenhouse.DB;
+﻿using greenhouse.BuisnesModel;
+using greenhouse.DB;
 using greenhouse.Interfaces;
 using greenhouse.Models;
+using greenhouse.Models.jsonContent;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Constraints;
 using System.Diagnostics.CodeAnalysis;
@@ -12,10 +14,19 @@ namespace greenhouse.Controllers
     {
 
         IGreenhouseRepository _greenhouseRepository;
+        InstructionsQueue _queue;
+        private readonly PhActuator _phActuator;
+        private readonly ElActuator _elActuator;
 
-        public MicrocontrollerController(IGreenhouseRepository greenhouseRepository)
+
+
+        public MicrocontrollerController(IGreenhouseRepository greenhouseRepository,InstructionsQueue queue ,PhActuator phActuator, ElActuator elActuator)
         {
             _greenhouseRepository = greenhouseRepository;
+            _queue = queue;
+            _phActuator = phActuator;
+            _elActuator = elActuator;
+
         }
 
 
@@ -29,21 +40,35 @@ namespace greenhouse.Controllers
 
 
 
-        //todo
-        //if the value is diferente from the desired value take actions
+
+        //micrcontroller calls this endpoint to update the values that have collected
+        //executes all the logic to sabe the commands to micrcocontroller execute
         [HttpPost]
         public IActionResult UpdateValue([FromBody] UpdateValueJsonContent content)
         {
            _greenhouseRepository.UpdateValues(content);
+
+           
+            _phActuator.EvalAndAct(content.MicrocontrollerId);
+            _elActuator.EvalAndAct(content.MicrocontrollerId);
+
+
             return Ok();
 
+        }
+
+        [HttpPost]
+        public IActionResult GetNextAction([FromBody] string microcontrollerId)
+        {
+            var result = _queue.GetNextInstrution(microcontrollerId);
+            return Json(result.Command);
         }
 
 
         [HttpPost]
         public IActionResult GetDesiredValue([FromBody] RequestDesiredValueJsonContent content)
         {
-            var result = _greenhouseRepository.GetContainerConfig(content);
+            var result = _greenhouseRepository.GetMicrocontrollerContainerConfig(content);
             return Json(result.Value);
         }
 
@@ -57,21 +82,14 @@ namespace greenhouse.Controllers
         [HttpGet]
         public IActionResult TestJsonFormat()
         {
-            var result = new RequestDesiredValueJsonContent();
-
-            result.MicrocontrollerId = "abc";
-            result.ValueType = ReadingTypeEnum.PH;
-
-            var result1 = new MicrocontrollerValueJsonContent()
+            var result = new UpdateValueJsonContent()
             {
-                MicrocontrollerId = "abc",
-                Value = 3.0f,
+                MicrocontrollerId = "pyhtonArduino",
+                Value = 10.0f,
                 ValueType = ReadingTypeEnum.EL
+
             };
-
-            String userId = "ola";
-
-            return Json(userId);
+            return Json(result);
         }
 
     }
