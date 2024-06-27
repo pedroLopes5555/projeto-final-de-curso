@@ -19,6 +19,12 @@ namespace greenhouse.BuisnesModel
         //create the instruction for the microcontroller
         public override void EvalAndAct(string microcontrollerID)
         {
+            if(_instructionsQueue.HasPendingInstructionsFor(microcontrollerID, ":el"))
+            {
+                return;
+            } 
+
+
             //get the config, to get the value to comapre
             var config = _greenhouseRepository.GetMicrocontrollerContainerConfig(new RequestDesiredValueJsonContent()
             {
@@ -57,18 +63,26 @@ namespace greenhouse.BuisnesModel
             }
             //if the value is on the margin make no command
 
-            //create OpenInstruction
+
 
             if(command == "")
             {
                 return;
             }
 
+
+
+
+
+            //create OpenInstruction
+            Guid pairGuid = new Guid();
+
             Instruction OpenInstruction = new Instruction()
             {
                 ExecutionTime = DateTime.Now,
                 DeviceId = microcontrollerID,
                 Command = command,
+                PairGuid = pairGuid
             };
 
             _instructionsQueue.AddInstruction(OpenInstruction);
@@ -78,9 +92,10 @@ namespace greenhouse.BuisnesModel
             {
                 Command = (command.Length > 3) ? command = "CLOSE:" + command.Substring(command.Length - 3) : "",
                 DeviceId = microcontrollerID,
-                ExecutionTime = OpenInstruction.ExecutionTime.AddSeconds(config.ActionTime)
+                ExecutionTime = OpenInstruction.ExecutionTime.AddSeconds(config.ActionTime),
+                PairGuid = pairGuid
             };
-            _instructionsQueue.AddInstruction(OpenInstruction);
+            _instructionsQueue.AddInstruction(closeInstruction);
         }
     }
 }

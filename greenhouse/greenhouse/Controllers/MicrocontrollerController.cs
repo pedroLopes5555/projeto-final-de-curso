@@ -82,11 +82,13 @@ namespace greenhouse.Controllers
         [HttpGet]
         public IActionResult TestJsonFormat()
         {
-            var result = new UpdateValueJsonContent()
+            var result = new AddManualCommentJsonContent()
             {
-                MicrocontrollerId = "pyhtonArduino",
-                Value = 10.0f,
-                ValueType = ReadingTypeEnum.EL
+                Command = "OPEN:el+",
+                ContainerId = "ED516CC2-7115-4EB2-9C13-36F7ED444302",
+                Finish = DateTime.Now.AddHours(1),
+                Start = DateTime.Now,
+                OperationType = "el"
 
             };
             return Json(result);
