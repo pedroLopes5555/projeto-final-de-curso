@@ -243,13 +243,29 @@ namespace greenhouse.Repositoy
 
 
 
-        public bool DeleteContainer(string containerId)
+        public bool DeleteContainer(string containerID)
         {
-            var container = _context.Containers.FirstOrDefault(a => a.Id == Guid.Parse(containerId));
+            //get all the microcontrollers on the container ID
 
-            if (container == null)
+            var microcontrollers = _context.Microcontrollers.Where(a => a.Container.Id == Guid.Parse(containerID));
+
+            //get the container
+            var container = _context.Containers.FirstOrDefault(a => a.Id == Guid.Parse(containerID));
+
+            if(container == null)
             {
                 return false;
+            }
+
+            //get the user
+            var user = _context.Users.FirstOrDefault(a => a.Containers.Contains(container));
+
+            var safeContainer = _context.Containers.FirstOrDefault(a => a.Id == user.Id);
+
+
+            foreach (var microcontroller in microcontrollers)
+            {
+                microcontroller.Container = safeContainer;
             }
 
 
