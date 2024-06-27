@@ -262,13 +262,17 @@ namespace greenhouse.Repositoy
 
         public bool AddMicrocontrollerToContainer(AddMicrocontrollerToContainerJsonContent content)
         {
-            var container = _context.Containers.FirstOrDefault(a => a.Id == Guid.Parse(content.ContainerId));
-            if(container == null)
+
+            var microcontroller = _context.Microcontrollers.Include(a => a.Container).FirstOrDefault(a => a.Id == content.MicrocontrollerId);
+
+            //var container = _context.Containers.FirstOrDefault(a => a.Id == Guid.Parse(content.ContainerId));
+            
+            var metaContainer = _context.Containers.FirstOrDefault(a => a.Id == Guid.Parse(content.ContainerId));
+            
+            if(metaContainer == null)
             {
                 return false;
             }
-
-            var microcontroller = _context.Microcontrollers.FirstOrDefault(a => a.Id == content.MicrocontrollerId);
 
             if(microcontroller == null)
             {
@@ -276,7 +280,7 @@ namespace greenhouse.Repositoy
             }
 
 
-            microcontroller.Container = container;
+            microcontroller.Container = metaContainer;
 
             _context.SaveChanges();
 
