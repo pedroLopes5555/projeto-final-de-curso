@@ -19,6 +19,12 @@ namespace greenhouse.BuisnesModel
         //create the instruction for the microcontroller
         public override void EvalAndAct(string microcontrollerID)
         {
+            if(_instructionsQueue.HasPendingInstructionsFor(microcontrollerID, ":el"))
+            {
+                return;
+            } 
+
+
             //get the config, to get the value to comapre
             var config = _greenhouseRepository.GetMicrocontrollerContainerConfig(new RequestDesiredValueJsonContent()
             {
@@ -30,8 +36,10 @@ namespace greenhouse.BuisnesModel
             //get the last write value on the database
 
             var container = _greenhouseRepository.getMicrocontrollerContainer(microcontrollerID);
-            var lastECValue = container.Values.Where(y => y.ReadingType == ReadingTypeEnum.PH)
+            var lastECValue = container.Values.Where(y => y.ReadingType == ReadingTypeEnum.EL)
                 .OrderByDescending(a => a.Time).FirstOrDefault();
+
+
 
             //if there is no meta value return no isntruction
             if (lastECValue == null)
@@ -49,26 +57,45 @@ namespace greenhouse.BuisnesModel
                 command = "OPEN:el-";
             }
             //if lastValue is lower that the metaValue + margin
-            if (lastECValue.Reading < config.Value + config.Margin)
+            if (lastECValue.Reading < config.Value - config.Margin)
             {
                 command = "OPEN:el+";
             }
             //if the value is on the margin make no command
 
-            //create result
-            Instruction result = new Instruction()
+
+
+            if(command == "")
+            {
+                return;
+            }
+
+
+
+
+
+            //create OpenInstruction
+            Guid pairGuid = new Guid();
+
+            Instruction OpenInstruction = new Instruction()
             {
                 ExecutionTime = DateTime.Now,
                 DeviceId = microcontrollerID,
                 Command = command,
+                PairGuid = pairGuid
             };
 
-            _instructionsQueue.AddInstruction(result);
+            _instructionsQueue.AddInstruction(OpenInstruction);
 
-            if(result.Command.Length > 3) result.Command = "CLOSE:" + command.Substring(command.Length - 3);
 
-            result.ExecutionTime = result.ExecutionTime.AddSeconds(config.ActionTime);
-            _instructionsQueue.AddInstruction(result);
+            Instruction closeInstruction = new Instruction()
+            {
+                Command = (command.Length > 3) ? command = "CLOSE:" + command.Substring(command.Length - 3) : "",
+                DeviceId = microcontrollerID,
+                ExecutionTime = OpenInstruction.ExecutionTime.AddSeconds(config.ActionTime),
+                PairGuid = pairGuid
+            };
+            _instructionsQueue.AddInstruction(closeInstruction);
         }
     }
 }

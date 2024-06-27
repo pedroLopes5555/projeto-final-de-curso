@@ -9,6 +9,7 @@ using System.Threading.Tasks.Dataflow;
 using greenhouse.Models.jsonContent;
 using Microsoft.JSInterop.Implementation;
 using System.Text.RegularExpressions;
+using greenhouse.BuisnesModel;
 
 namespace greenhouse.Controllers
 {
@@ -16,12 +17,14 @@ namespace greenhouse.Controllers
     public class AutomationController : Controller
     {
 
+        ManualActuator _manualActuator;
         IGreenhouseRepository _greenhouseRepository;
 
 
-        public AutomationController(IGreenhouseRepository greenhouseRepository)
+        public AutomationController(IGreenhouseRepository greenhouseRepository, ManualActuator manualActuator)
         {
             _greenhouseRepository = greenhouseRepository;
+            _manualActuator = manualActuator;
         }
 
         public IActionResult RequestContainers()
@@ -179,10 +182,20 @@ namespace greenhouse.Controllers
 
 
 
-        public IActionResult addContainerToUser([FromBody] AddContainerToUserJsonContent content)
+        public IActionResult AddContainerToUser([FromBody] AddContainerToUserJsonContent content)
         {
 
             _greenhouseRepository.createNewContainer(content);
+            return Ok();
+
+        }
+
+
+        public IActionResult AddManualCommand([FromBody] AddManualCommentJsonContent content)
+        {
+
+            _manualActuator.AddManualCommand(content.ContainerId, content.OperationType, content.Start, content.Finish, content.Command);
+            
             return Ok();
 
         }

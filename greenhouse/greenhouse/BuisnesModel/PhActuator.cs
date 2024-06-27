@@ -19,6 +19,13 @@ namespace greenhouse.BuisnesModel
         //create the instruction for the microcontroller
         public override void EvalAndAct(string microcontrollerID)
         {
+            
+
+            if(_instructionsQueue.HasPendingInstructionsFor(microcontrollerID, ":ph"))
+            {
+                return;
+            }
+
             //get the config, to get the value to comapre
             var config = _greenhouseRepository.GetMicrocontrollerContainerConfig(new RequestDesiredValueJsonContent()
             {
@@ -42,6 +49,7 @@ namespace greenhouse.BuisnesModel
 
             string command = "";
 
+
             if(config != null)
             {
 
@@ -51,26 +59,40 @@ namespace greenhouse.BuisnesModel
                     command = "OPEN:ph-";
                 }
                 //if lastValue is lower that the metaValue + margin
-                if (lastPhValue.Reading < config.Value + config.Margin)
+                if (lastPhValue.Reading < config.Value - config.Margin)
                 {
                     command = "OPEN:ph+";
                 }
                 //if the value is on the margin make no command
 
-                //create result
-                Instruction result = new Instruction()
+                //create OpenInstruction
+                Guid pairGuid = new Guid();
+                Instruction OpenInstruction = new Instruction()
                 {
                     ExecutionTime = DateTime.Now,
                     DeviceId = microcontrollerID,
-                    Command = command
+                    Command = command,
+                    PairGuid = pairGuid,
                 };
 
-                _instructionsQueue.AddInstruction(result);
+                if (command == "")
+                {
+                    return;
+                }
 
-                if (result.Command.Length > 3) result.Command = "CLOSE:" + command.Substring(command.Length - 3);
+                _instructionsQueue.AddInstruction(OpenInstruction);
 
-                result.ExecutionTime = result.ExecutionTime.AddSeconds(config.ActionTime);
-                _instructionsQueue.AddInstruction(result);
+                Instruction closeInstruction = new Instruction()
+                {
+                    Command = (command.Length > 3) ? command = "CLOSE:" + command.Substring(command.Length - 3) : "",
+                    DeviceId= microcontrollerID,
+                    ExecutionTime = OpenInstruction.ExecutionTime.AddSeconds(config.ActionTime),
+                    PairGuid = pairGuid,
+                };
+
+
+              
+                _instructionsQueue.AddInstruction(closeInstruction);
             }
 
         }

@@ -1,4 +1,7 @@
 ﻿using Azure.Core;
+using greenhouse.Models;
+using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace greenhouse.BuisnesModel
 {
@@ -23,13 +26,43 @@ namespace greenhouse.BuisnesModel
                 var instruction = _instructions.Where(a => a.DeviceId.Equals(deviceId))
                     .OrderBy(a => a.ExecutionTime).FirstOrDefault();
 
-                //if the next instruction is still after th
-                if(DateTime.Now >= instruction.ExecutionTime)
-                {
-                    _instructions.Remove(instruction);
 
+                var result = new Instruction()
+                {
+                    Command = "",
+                    DeviceId = deviceId,
+                    ExecutionTime = DateTime.Now,
+                };
+
+                //if the next instruction is still after th
+                if (instruction == null || instruction.ExecutionTime > DateTime.Now)
+                {
+                    return result;
                 }
-                return instruction;
+
+                result.ExecutionTime = instruction.ExecutionTime;
+                result.Command = instruction.Command;
+
+                _instructions.Remove(instruction);
+
+                return result;
+            }
+        }
+
+
+        public bool HasPendingInstructionsFor(string deviceId, string operationType)
+        {
+            lock ( _lock)
+            {
+                return _instructions.Any(a => a.DeviceId == deviceId && a.Command.Contains(operationType));
+            }
+        }
+
+        public void ClearInstructionsFor(string deviceId, string operationType)
+        {
+            lock (_lock)
+            {
+                _instructions.RemoveAll(a => a.DeviceId == deviceId && a.Command.Contains(operationType));
             }
         }
 
@@ -37,10 +70,12 @@ namespace greenhouse.BuisnesModel
 
     public class Instruction
     {
+        public Guid PairGuid { get; set; }
+
         public string DeviceId { get; set; }
         public string Command { get; set; }
-
         public DateTime ExecutionTime { get; set; }
+
     }
 
 

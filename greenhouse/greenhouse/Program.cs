@@ -14,7 +14,7 @@ builder.Services.AddSingleton<InstructionsQueue>();
 
 builder.Services.AddScoped<PhActuator>();
 builder.Services.AddScoped<ElActuator>();
-
+builder.Services.AddScoped<ManualActuator>();
 
 var app = builder.Build();
 
