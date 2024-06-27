@@ -23,8 +23,12 @@ namespace greenhouse.BuisnesModel
                 var instruction = _instructions.Where(a => a.DeviceId.Equals(deviceId))
                     .OrderBy(a => a.ExecutionTime).FirstOrDefault();
 
-                _instructions.Remove(instruction);
+                //if the next instruction is still after th
+                if(DateTime.Now >= instruction.ExecutionTime)
+                {
+                    _instructions.Remove(instruction);
 
+                }
                 return instruction;
             }
         }

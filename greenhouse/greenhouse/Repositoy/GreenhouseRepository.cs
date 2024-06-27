@@ -184,7 +184,7 @@ namespace greenhouse.Repositoy
                 throw new ArgumentOutOfRangeException($"User´s containers not found");
             }
 
-
+            containers.RemoveAll(a => a.Id == Guid.Parse(userId));
             return containers.AsQueryable();
         }
 
