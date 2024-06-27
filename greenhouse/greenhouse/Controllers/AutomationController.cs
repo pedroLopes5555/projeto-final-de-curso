@@ -105,6 +105,11 @@ namespace greenhouse.Controllers
             return Json(_greenhouseRepository.AddMicrocontrollerToContainer(content));
         }
 
+        public IActionResult GetUserMicrocntrollersWhithNoContainer([FromBody] string userId)
+        {
+            return Json(_greenhouseRepository.getUserMicrocontrollersWhitNoContainer(userId));
+        }
+
 
 
         public IActionResult TesteJson()

@@ -151,7 +151,12 @@ namespace greenhouse.Repositoy
 
 
 
+        public IQueryable<Microcontroller> getUserMicrocontrollersWhitNoContainer(string userId)
+        {
+            var microcontrollers = _context.Microcontrollers.Include(x => x.Container).Where(a => a.Container.Id == Guid.Parse(userId));
 
+            return microcontrollers.AsQueryable();
+        }
 
 
 

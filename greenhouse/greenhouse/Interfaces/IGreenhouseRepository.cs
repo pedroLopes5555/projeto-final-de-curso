@@ -21,6 +21,9 @@ namespace greenhouse.Interfaces
 
         bool AddMicrocontrollerToContainer(AddMicrocontrollerToContainerJsonContent content);
 
+
+        IQueryable<Microcontroller> getUserMicrocontrollersWhitNoContainer(string userId);
+
         IQueryable<DB.Container> GetUserContainers(String userId);
 
         IQueryable<ScannedValue> getContainerValues(String containerId);
