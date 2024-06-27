@@ -1,0 +1,16 @@
+.gradient-custom {
+    background: #9e9e9e;
+    background: -webkit-linear-gradient(to right, rgb(180, 179, 179), rgb(123, 123, 124));
+    background: linear-gradient(to right, rgb(180, 179, 179), rgb(123, 123, 124))
+}
+
+.p-5 {
+   padding: 3rem !important;
+   padding-bottom: 0px !important;
+}
+
+.mb-0 {
+     /* Make text semi-transparent */
+        color: rgba(255, 255, 255, 0.5);
+        
+}
