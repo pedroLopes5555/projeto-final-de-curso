@@ -1,7 +1,7 @@
 # APPLICATION IS HOSTED ON AZURE WITH THE LINKS 
 
-1. TO THE FRONTPAGE: <https://hydrogrowthweb.azurewebsites.net/admin>
-2. TO THE PLATFORM: <https://hydrogrowthmanager.azurewebsites.net>
+1. TO THE FRONTPAGE: <https://hydrogrowthweb.azurewebsites.net>
+2. TO THE PLATFORM: <https://hydrogrowthmanager.azurewebsites.net/admin>
 
 
 # Greenhouse Automation Project
