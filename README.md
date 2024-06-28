@@ -193,6 +193,212 @@ json
 Response: Returns 200 OK upon successful turning on of the relay.
 ```
 
+9. **Get User Containers**
+
+```bash
+URL: /Automation/RequestUserContainers
+Method: POST
+Description: Retrieves containers associated with a specific user.
+Request Body:
+json
+{
+    "UserId": "string"
+}
+Response: Returns a JSON array containing information about user's containers.
+```
+
+10. **Get Container Values**
+
+```bash
+URL: /Automation/RequestContainerValues
+Method: POST
+Description: Retrieves the current values of a specific container.
+Request Body:
+json
+{
+    "ContainerId": "string"
+}
+Response: Returns a JSON array containing current values of the specified container.
+```
+
+11. **Get Container Desired Values**
+
+```bash
+URL: /Automation/RequestContainerDesiredValues
+Method: POST
+Description: Retrieves the desired values configured for a specific container.
+Request Body:
+json
+{
+    "ContainerId": "string"
+}
+Response: Returns a JSON array containing desired values of the specified container.
+```
+
+12. **Get Container Microcontrollers**
+
+```bash
+URL: /Automation/RequestContainerMicrocontrollers
+Method: POST
+Description: Retrieves microcontrollers associated with a specific container.
+Request Body:
+json
+{
+    "ContainerId": "string"
+}
+Response: Returns a JSON array containing information about microcontrollers associated with the specified container.
+```
+
+13. **Update Microcontroller Value**
+
+```bash
+URL: /Microcontroller/UpdateValue
+Method: POST
+Description: Updates the reading value of a microcontroller.
+Request Body:
+json
+{
+    "MicrocontrollerId": "string",
+    "ValueType": "ReadingTypeEnum",
+    "Value": float
+}
+Response: Returns 200 OK upon successful update of the microcontroller value.
+```
+
+14. **Get Microcontroller Desired Value**
+
+```bash
+URL: /Microcontroller/GetDesiredValue
+Method: POST
+Description: Retrieves the desired value configured for a microcontroller.
+Request Body:
+json
+{
+    "MicrocontrollerId": "string",
+    "ValueType": "ReadingTypeEnum"
+}
+Response: Returns the desired value of the specified microcontroller in JSON format.
+```
+
+15. **Turn On Microcontroller Relay**
+
+```bash
+URL: /Microcontroller/TurnOnRelay
+Method: POST
+Description: Turns on a relay connected to a microcontroller.
+Request Body:
+json
+{
+    "MicrocontrollerId": "string",
+    "RelayType": "RelayTypeEnum"
+}
+Response: Returns 200 OK upon successful turning on of the relay.
+```
+
+16. **Delete Container**
+
+```bash
+URL: /Automation/DeleteContainer
+Method: POST
+Description: Deletes a specific container.
+Request Body:
+{
+    "containerId": "string"
+}
+Response: Returns true if the deletion is successful.
+```
+
+17. **Update User**
+
+```bash
+URL: /Automation/UpdateUser
+Method: POST
+Description: Updates the details of an existing user.
+Request Body:
+{
+    "id": "string",
+    "userName": "string",
+    "permissions": int
+}
+Response: Returns true if the update is successful.
+```
+
+18. **Delete User**
+
+```bash
+URL: /Automation/DeleteUser
+Method: POST
+Description: Deletes a specific user.
+Request Body:
+{
+    "userId": "string"
+}
+Response: Returns true if the deletion is successful.
+```
+
+19. **Create Microcontroller**
+
+```bash
+URL: /Automation/CreateMicrocontroller
+Method: POST
+Description: Creates a new microcontroller and associates it with a user.
+Request Body:
+{
+    "user": {
+        "id": "string"
+    },
+    "microcontroller": {
+        "id": "string",
+        "name": "string"
+    }
+}
+Response: Returns true if the creation is successful.
+```
+
+20. **Get User Microcontrollers Without Container**
+
+```bash
+URL: /Automation/GetUserMicrocntrollersWhithNoContainer
+Method: POST
+Description: Retrieves all microcontrollers associated with a user that are not linked to any container.
+Request Body:
+{
+    "userId": "string"
+}
+Response: Returns a JSON array of microcontrollers.
+```
+
+21. **Add Microcontroller to Container**
+
+```bash
+URL: /Automation/AddMicrocontrollerToContainer
+Method: POST
+Description: Links a microcontroller to a specific container.
+Request Body:
+{
+    "microcontrollerId": "string",
+    "containerId": "string"
+}
+Response: Returns true if the operation is successful.
+```
+
+22. **Add Manual Command**
+
+```bash
+URL: /Automation/AddManualCommand
+Method: POST
+Description: Adds a manual command for a specific container.
+Request Body:
+{
+    "start": "string",
+    "finish": "string",
+    "containerId": "string",
+    "operationType": "string",
+    "command": "string"
+}
+Response: Returns true if the command is successfully added.
+```
+
 ### Data Models
 
 1. **SetDesiredValueContent**
