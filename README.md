@@ -15,7 +15,7 @@ docker pull diomferreira/tfc-docker:latest
 ```bash
 docker run -p 8181:8181 tfc-docker
 ```
-***WARNING*** : This is setup to handle https requests, alter the code so that it can handle the local http requests if needed to run the css files and other imports needed...
+***WARNING*** : This is setup only handles https requests, alter the code so that it can handle the local http requests if needed to run the css files and other imports needed...
 
 ### NORMAL SETUP
 
