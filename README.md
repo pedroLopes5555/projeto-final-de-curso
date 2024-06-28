@@ -267,6 +267,13 @@ To start a local development server, run the following command:
 ```bash
 php artisan serve
 
+Clone Repository: Clone this repository to your local machine.
+
+bash
+Copiar código
+git clone <repository_url>
+
+
 
 
 
