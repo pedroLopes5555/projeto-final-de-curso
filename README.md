@@ -6,7 +6,18 @@ The frontend is developed in Laravel and provides a user-friendly interface for 
 
 ## Laravel Setup Guide
 
-This guide provides step-by-step instructions for setting up a Laravel project. For more detailed information, please refer to the official Laravel documentation.
+This guide provides step-by-step instructions for setting up a Laravel project. For more detailed information, please refer to the official Laravel documentation, there are **2 METHODS**
+
+### DOCKER SETUP
+```bash
+docker pull diomferreira/tfc-docker:latest
+```
+```bash
+docker run -p 8181:8181 tfc-docker
+```
+Now Go to http://localhost:8181 and U have the application running!!!
+
+### NORMAL SETUP
 
 ### Requirements
 
