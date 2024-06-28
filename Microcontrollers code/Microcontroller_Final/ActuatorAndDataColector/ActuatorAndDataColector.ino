@@ -330,5 +330,5 @@ getTemperature();
 
   Serial.println();
   Serial.println("Waiting 10s before the next round...");
-  delay(10000);
+  delay(1000);
 }
