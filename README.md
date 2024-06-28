@@ -17,6 +17,7 @@ This guide provides step-by-step instructions for setting up a Laravel project. 
     ```bash
     git clone <repository_url>
     ```
+    The **Laravel** is inside of the frontend folder.
 
 2. **Navigate to Project Directory**: Change your current directory to the project directory.
     ```bash
@@ -58,21 +59,24 @@ This guide provides step-by-step instructions for setting up a Laravel project. 
 To start a local development server, run the following command:
 ```bash
 php artisan serve
+```
+
 Running Backend Docker
 To pull and run the backend Docker image, use the following command:
-
-bash
-Copiar código
+```bash
 docker pull lopes5555/greenhouse
-Attention: Running the backend on a server with an unknown IP address will not enable connectivity to the Azure SQL database due to firewall restrictions.
+docker run -p 8000:8000 lopes5555/greenhouse
+```
+### Attention: Running the backend on a server with an unknown IP address will not enable connectivity to the Azure SQL database due to firewall restrictions.
 
 Greenhouse Automation API Documentation
 This document outlines the REST API endpoints provided by the Greenhouse Automation system. The base URL for all endpoints is: https://hydrogrowthmanager.azurewebsites.net/
 
-Endpoints
-Frontend Calls
-Set Desired Value
+### Endpoints
 
+1. **Set Desired Value**
+
+```bash
 URL: /automation/SetDesiredValue
 Method: POST
 Description: Sets the desired value for a specific container.
@@ -85,137 +89,170 @@ Copiar código
     "ValueType": "ReadingTypeEnum"
 }
 Response: Returns 200 OK upon successful setting of desired value.
-Request User Containers
+```
 
+2. **Request User Containers**
+
+```bash
 URL: /automation/RequestUserContainers
 Method: POST
 Description: Retrieves containers associated with a specific user.
 Request Body:
 json
-Copiar código
-"string"
+{
+    "UserId": "string"
+}
 Response: Returns a JSON array containing information about user's containers.
-Request Container Values
+```
 
+3. **Request Container Values**
+
+```bash
 URL: /automation/RequestContainerValues
 Method: POST
 Description: Retrieves the current values of a specific container.
 Request Body:
 json
-Copiar código
-"string"
+{
+    "ContainerId": "string"
+}
 Response: Returns a JSON array containing current values of the specified container.
-Request Container Desired Values
+```
 
+4. **Request Container Desired Values**
+
+```bash
 URL: /automation/RequestContainerDesiredValues
 Method: POST
 Description: Retrieves the desired values configured for a specific container.
 Request Body:
 json
-Copiar código
-"string"
+{
+    "ContainerId": "string"
+}
 Response: Returns a JSON array containing desired values of the specified container.
-Request Container Microcontrollers
+```
 
+5. **Request Container Microcontrollers**
+
+```bash
 URL: /automation/RequestContainerMicrocontrollers
 Method: POST
 Description: Retrieves microcontrollers associated with a specific container.
 Request Body:
 json
-Copiar código
-"string"
+{
+    "ContainerId": "string"
+}
 Response: Returns a JSON array containing information about microcontrollers associated with the specified container.
-Microcontroller Calls
-Update Value
+```
 
+6. **Update Value**
+
+```bash
 URL: /microcontroller/UpdateValue
 Method: POST
 Description: Updates the reading value of a microcontroller.
 Request Body:
 json
-Copiar código
 {
     "MicrocontrollerId": "string",
     "ValueType": "ReadingTypeEnum",
     "Value": float
 }
 Response: Returns 200 OK upon successful update of the microcontroller value.
-Get Desired Value
+```
 
+7. **Get Desired Value**
+
+```bash
 URL: /microcontroller/GetDesiredValue
 Method: POST
 Description: Retrieves the desired value configured for a microcontroller.
 Request Body:
 json
-Copiar código
 {
     "MicrocontrollerId": "string",
     "ValueType": "ReadingTypeEnum"
 }
 Response: Returns the desired value of the specified microcontroller in JSON format.
-Turn On Relay
+```
 
+8. **Turn On Relay**
+
+```bash
 URL: /microcontroller/TurnOnRelay
 Method: POST
 Description: Turns on a relay connected to a microcontroller.
 Request Body:
 json
-Copiar código
 {
     "MicrocontrollerId": "string",
     "RelayType": "RelayTypeEnum"
 }
 Response: Returns 200 OK upon successful turning on of the relay.
-Data Models
-SetDesiredValueContent
+```
+
+### Data Models
+
+1. **SetDesiredValueContent**
 
 Description: Represents the data model for setting desired value for a container.
 Properties:
-ContainerId: (String) Identifier of the container.
-DesiredValue: (float) Desired value to be set.
-ValueType: (enum) Type of the value to be set (ReadingTypeEnum).
-UpdateValueJsonContent
+- ContainerId: (String) Identifier of the container.
+- DesiredValue: (float) Desired value to be set.
+- ValueType: (enum) Type of the value to be set (ReadingTypeEnum).
+
+2. **UpdateValueJsonContent**
 
 Description: Represents the data model for updating microcontroller values.
 Properties:
-MicrocontrollerId: (String) Identifier of the microcontroller.
-ValueType: (enum) Type of the value to be updated (ReadingTypeEnum).
-Value: (float) New value to be set.
-RequestDesiredValueJsonContent
+- MicrocontrollerId: (String) Identifier of the microcontroller.
+- ValueType: (enum) Type of the value to be updated (ReadingTypeEnum).
+- Value: (float) New value to be set.
+
+3. **RequestDesiredValueJsonContent**
 
 Description: Represents the data model for requesting desired value of a microcontroller.
 Properties:
-MicrocontrollerId: (String) Identifier of the microcontroller.
-ValueType: (enum) Type of the value (ReadingTypeEnum).
-ChangeRelayStateJsonContent
+- MicrocontrollerId: (String) Identifier of the microcontroller.
+- ValueType: (enum) Type of the value (ReadingTypeEnum).
+
+4. **ChangeRelayStateJsonContent**
 
 Description: Represents the data model for turning on a relay connected to a microcontroller.
 Properties:
-MicrocontrollerId: (String) Identifier of the microcontroller.
-RelayType: (enum) Type of the relay (RelayTypeEnum).
-MicrocontrollerValueJsonContent
+- MicrocontrollerId: (String) Identifier of the microcontroller.
+
+5. **MicrocontrollerValueJsonContent**
 
 Description: Represents the data model for current value of a microcontroller.
 Properties:
-MicrocontrollerId: (String) Identifier of the microcontroller.
-ValueType: (enum) Type of the value (ReadingTypeEnum).
-Value: (float) Current value.
-Enumerations
-ReadingTypeEnum
+- MicrocontrollerId: (String) Identifier of the microcontroller.
+- ValueType: (enum) Type of the value (ReadingTypeEnum).
+- Value: (float) Current value.
+
+### Enumerations
+
+1. **ReadingTypeEnum**
 
 Description: Enumerates different types of readings supported.
 Possible Values:
-PH / 1
-EL / 2
-TEMPERATURE / 4
-RelayTypeEnum
+- PH / 1
+- EL / 2
+- TEMPERATURE / 4
+
+2. **RelayTypeEnum**
 
 Description: Enumerates different types of relay configurations.
 Possible Values:
-BASIC_SOLUTION / 1
-ACID_SOLUTION / 2
-CE_SOLUTION / 4
-Errors
-400 Bad Request: If the request is malformed or missing required parameters.
-404 Not Found: If the requested resource (container, user, etc.) is not found.
-500 Internal Server Error: If an unexpected error occurs on the server.
+- BASIC_SOLUTION / 1
+- ACID_SOLUTION / 2
+- CE_SOLUTION / 4
+
+### Errors
+
+- 400 Bad Request: If the request is malformed or missing required parameters.
+- 404 Not Found: If the requested resource (container, user, etc.) is not found.
+- 500 Internal Server Error: If an unexpected error occurs on the server.
+
