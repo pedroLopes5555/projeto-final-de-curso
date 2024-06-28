@@ -37,7 +37,7 @@ class ApplicationController extends Controller
 
         // Simulate API response for containers (replace with actual API call)
         $api = new ContainerApi();
-        $response = $api->RequestUserContainer('5d4749f4-f4bd-4eb4-87b1-effaa4275b4f');
+        $response = $api->RequestUserContainer($user->user_guid);
 
         // Process each container and its readings
         foreach ($response as $container) {
