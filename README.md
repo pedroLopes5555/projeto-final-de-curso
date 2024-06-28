@@ -1,58 +1,62 @@
-Greenhouse Automation Project
+# Greenhouse Automation Project
+
 This project provides an automation system for greenhouse management, featuring a REST API backend developed in Laravel. The system allows users to manage containers and their microcontrollers, configure desired environmental values, and control relays to maintain optimal conditions. The backend is hosted on Azure and connects to an Azure SQL database, while the API supports various endpoints for interacting with the greenhouse system.
 
-Laravel Setup Guide
+## Laravel Setup Guide
+
 This guide provides step-by-step instructions for setting up a Laravel project. For more detailed information, please refer to the official Laravel documentation.
 
-Requirements
-PHP >= 7.4
-Composer
-Installation
-Clone Repository: Clone this repository to your local machine.
+### Requirements
 
-bash
-Copiar código
-git clone <repository_url>
-Navigate to Project Directory: Change your current directory to the project directory.
+- PHP >= 7.4
+- Composer
 
-bash
-Copiar código
-cd <project_directory>
-Install Dependencies: Install Composer dependencies.
+### Installation
 
-bash
-Copiar código
-composer install
-Copy Environment File: Create a copy of the .env.example file and rename it to .env.
+1. **Clone Repository**: Clone this repository to your local machine.
+    ```bash
+    git clone <repository_url>
+    ```
 
-bash
-Copiar código
-cp .env.example .env
-Generate Application Key: Generate an application key.
+2. **Navigate to Project Directory**: Change your current directory to the project directory.
+    ```bash
+    cd <project_directory>
+    ```
 
-bash
-Copiar código
-php artisan key:generate
-Configure Database: Set up your database connection details in the .env file.
+3. **Install Dependencies**: Install Composer dependencies.
+    ```bash
+    composer install
+    ```
 
-env
-Copiar código
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=your_database_name
-DB_USERNAME=your_database_username
-DB_PASSWORD=your_database_password
-Run Migrations: Execute database migrations to create the necessary tables.
+4. **Copy Environment File**: Create a copy of the `.env.example` file and rename it to `.env`.
+    ```bash
+    cp .env.example .env
+    ```
 
-bash
-Copiar código
-php artisan migrate
-Running the Application
+5. **Generate Application Key**: Generate an application key.
+    ```bash
+    php artisan key:generate
+    ```
+
+6. **Configure Database**: Set up your database connection details in the `.env` file.
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=your_database_name
+    DB_USERNAME=your_database_username
+    DB_PASSWORD=your_database_password
+    ```
+
+7. **Run Migrations**: Execute database migrations to create the necessary tables.
+    ```bash
+    php artisan migrate
+    ```
+
+### Running the Application
+
 To start a local development server, run the following command:
-
-bash
-Copiar código
+```bash
 php artisan serve
 Running Backend Docker
 To pull and run the backend Docker image, use the following command:
@@ -70,13 +74,9 @@ Frontend Calls
 Set Desired Value
 
 URL: /automation/SetDesiredValue
-
 Method: POST
-
 Description: Sets the desired value for a specific container.
-
 Request Body:
-
 json
 Copiar código
 {
@@ -85,78 +85,53 @@ Copiar código
     "ValueType": "ReadingTypeEnum"
 }
 Response: Returns 200 OK upon successful setting of desired value.
-
 Request User Containers
 
 URL: /automation/RequestUserContainers
-
 Method: POST
-
 Description: Retrieves containers associated with a specific user.
-
 Request Body:
-
 json
 Copiar código
 "string"
 Response: Returns a JSON array containing information about user's containers.
-
 Request Container Values
 
 URL: /automation/RequestContainerValues
-
 Method: POST
-
 Description: Retrieves the current values of a specific container.
-
 Request Body:
-
 json
 Copiar código
 "string"
 Response: Returns a JSON array containing current values of the specified container.
-
 Request Container Desired Values
 
 URL: /automation/RequestContainerDesiredValues
-
 Method: POST
-
 Description: Retrieves the desired values configured for a specific container.
-
 Request Body:
-
 json
 Copiar código
 "string"
 Response: Returns a JSON array containing desired values of the specified container.
-
 Request Container Microcontrollers
 
 URL: /automation/RequestContainerMicrocontrollers
-
 Method: POST
-
 Description: Retrieves microcontrollers associated with a specific container.
-
 Request Body:
-
 json
 Copiar código
 "string"
 Response: Returns a JSON array containing information about microcontrollers associated with the specified container.
-
 Microcontroller Calls
 Update Value
 
 URL: /microcontroller/UpdateValue
-
 Method: POST
-
 Description: Updates the reading value of a microcontroller.
-
 Request Body:
-
 json
 Copiar código
 {
@@ -165,17 +140,12 @@ Copiar código
     "Value": float
 }
 Response: Returns 200 OK upon successful update of the microcontroller value.
-
 Get Desired Value
 
 URL: /microcontroller/GetDesiredValue
-
 Method: POST
-
 Description: Retrieves the desired value configured for a microcontroller.
-
 Request Body:
-
 json
 Copiar código
 {
@@ -183,17 +153,12 @@ Copiar código
     "ValueType": "ReadingTypeEnum"
 }
 Response: Returns the desired value of the specified microcontroller in JSON format.
-
 Turn On Relay
 
 URL: /microcontroller/TurnOnRelay
-
 Method: POST
-
 Description: Turns on a relay connected to a microcontroller.
-
 Request Body:
-
 json
 Copiar código
 {
@@ -201,7 +166,6 @@ Copiar código
     "RelayType": "RelayTypeEnum"
 }
 Response: Returns 200 OK upon successful turning on of the relay.
-
 Data Models
 SetDesiredValueContent
 
@@ -236,6 +200,7 @@ Properties:
 MicrocontrollerId: (String) Identifier of the microcontroller.
 ValueType: (enum) Type of the value (ReadingTypeEnum).
 Value: (float) Current value.
+Enumerations
 ReadingTypeEnum
 
 Description: Enumerates different types of readings supported.
