@@ -27,6 +27,10 @@ class User extends Model
     Session::pull(Session::USER);
     self::$current = null;
   }
+  public static function isSuper(){
+    $user = self::getCurrent();
+    return $user && $user->user_super == 1;
+  }
 
   public function canSee($perm){
     if($this->user_super == 1) return true;

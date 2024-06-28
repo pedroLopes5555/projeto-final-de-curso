@@ -37,7 +37,12 @@ class ApplicationController extends Controller
 
         // Simulate API response for containers (replace with actual API call)
         $api = new ContainerApi();
-        $response = $api->RequestUserContainer($user->user_guid);
+
+        if(User::isSuper()){
+            $response = $api->RequestUserContainer('5D4749F4-F4BD-4EB4-87B1-EFFAA4275B4F');
+        }else{
+            $response = $api->RequestUserContainer($user->user_guid);
+        }
 
         // Process each container and its readings
         foreach ($response as $container) {

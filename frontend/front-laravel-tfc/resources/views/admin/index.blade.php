@@ -42,9 +42,10 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Iterate through each container and render the charts
-        @foreach($containers as $containerId => $containerData)
+document.addEventListener('DOMContentLoaded', function () {
+    // Iterate through each container and render the charts
+    @foreach($containers as $containerId => $containerData)
+        (function() {
             const ecData = {
                 labels: {!! json_encode(array_column($containerData['ec'], 'time')) !!},
                 datasets: [{
@@ -104,8 +105,10 @@
                     }
                 }
             });
-        @endforeach
-    });
+        })();
+    @endforeach
+});
+
 </script>
 @endsection
 
