@@ -1,4 +1,4 @@
-#APPLICATION IS HOSTED ON AZURE WITH THE LINKS 
+###APPLICATION IS HOSTED ON AZURE WITH THE LINKS 
 
 1. TO THE FRONTPAGE: <https://hydrogrowthweb.azurewebsites.net/admin>
 2. TO THE PLATFORM: <https://hydrogrowthmanager.azurewebsites.net>
