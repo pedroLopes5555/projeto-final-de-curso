@@ -1,6 +1,7 @@
 # Greenhouse Automation Project
 
-This project provides an automation system for greenhouse management, featuring a REST API backend developed in Laravel. The system allows users to manage containers and their microcontrollers, configure desired environmental values, and control relays to maintain optimal conditions. The backend is hosted on Azure and connects to an Azure SQL database, while the API supports various endpoints for interacting with the greenhouse system.
+This project provides an automation system for greenhouse management, featuring a REST API backend developed in .NET CORE Web App. 
+The system allows users to manage containers and their microcontrollers, configure desired environmental values, and control relays to maintain optimal conditions. The backend is hosted on Azure and connects to an Azure SQL Server database, while the API supports various endpoints for interacting with the greenhouse system.
 
 ## Laravel Setup Guide
 
