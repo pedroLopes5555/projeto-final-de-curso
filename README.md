@@ -1,3 +1,9 @@
+#APPLICATION IS HOSTED ON AZURE WITH THE LINKS 
+
+1. TO THE FRONTPAGE: <https://hydrogrowthweb.azurewebsites.net/admin>
+2. TO THE PLATFORM: <https://hydrogrowthmanager.azurewebsites.net>
+
+
 # Greenhouse Automation Project
 
 This project provides an automation system for greenhouse management, featuring a REST API backend developed in .NET CORE Web App. 
