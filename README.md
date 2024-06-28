@@ -3,6 +3,7 @@
 1. TO THE FRONTPAGE: <https://hydrogrowthweb.azurewebsites.net>
 2. TO THE PLATFORM: <https://hydrogrowthmanager.azurewebsites.net/admin>
 
+![image](https://github.com/pedroLopes5555/projeto-final-de-curso/assets/79208452/f7b09832-54fa-45ee-9a8c-34c9b6223e8b)
 
 # Greenhouse Automation Project
 
