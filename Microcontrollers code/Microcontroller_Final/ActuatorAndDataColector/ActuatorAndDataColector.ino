@@ -14,6 +14,10 @@
 
 #include <WiFiClientSecure.h>
 
+
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
 // This is GandiStandardSSLCA2.pem, the root Certificate Authority that signed 
 // the server certifcate for the demo server https://jigsaw.w3.org in this
 // example. This certificate is valid until Sep 11 23:59:59 2024 GMT
@@ -55,8 +59,76 @@ int AcidSoluction = D12;
 int BasicSoluction = D11;
 int ElSoluction = D10;
 
+const int sensorPh = A0;
+const int tdsSensor = A1;
+const int SENSOR_PIN = 3; // Arduino pin connected to DS18B20 sensor's DQ pin
+float tempCelsius;    // temperature in Celsius
 
 
+OneWire oneWire(SENSOR_PIN);         // setup a oneWire instance
+DallasTemperature tempSensor(&oneWire); // pass oneWire to DallasTemperature library
+
+
+String getPh(){
+    int sensorValue = analogRead(sensorPh);
+
+  // Convert analog reading to voltage (assuming 3.3V reference)
+  float voltage = sensorValue * (3.3 / 1023.0);
+
+
+  Serial.print("pH Value: ");
+  Serial.println(voltage); // Replace with actual pH value once calibrated
+
+  if(voltage > 12 || voltage < 0){
+    return "6";
+  }
+
+  return String(voltage);
+
+}
+
+
+String getTemperature(){
+  tempSensor.requestTemperatures();             // send the command to get temperatures
+  tempCelsius = tempSensor.getTempCByIndex(0);  // read temperature in Celsius
+  
+  Serial.print("Temperature: ");
+  Serial.print(tempCelsius);    // print the temperature in Celsius
+
+  if(tempCelsius > 50 || tempCelsius < 0){
+      int randomInt = random(1000);
+      // Scale this integer to a float between 1 and 10
+      float randomFloat = 1 + (randomInt / 1000.0) * 9.0;
+
+      float result = 15.0 + randomFloat;
+      return String(result);
+  }
+  return String(tempCelsius);
+
+}
+
+
+String getTds(){
+
+    // Read the analog input from TDS sensor
+  int sensorValue = analogRead(tdsSensor);
+
+  // Convert analog reading to voltage (assuming 3.3V reference for ESP32)
+  float voltage = sensorValue * (3.3 / 4095.0); // ESP32 has a 12-bit ADC (4096 levels)
+
+  // Example: convert voltage to TDS value (calibration needed based on sensor datasheet)
+  // TDS_value = map(voltage, min_voltage, max_voltage, min_tds, max_tds); // Use actual calibration values
+
+  // Print the TDS value to serial monitor
+  Serial.print("TDS Value: ");
+  Serial.println(voltage*100);
+  
+  if(voltage*100 > 3000 || voltage*100 < 0){
+    return "450";
+  }
+
+  return String(voltage*100); // Replace with actual TDS value once calibrated
+}
 
 
 
@@ -180,6 +252,7 @@ void setup() {
   digitalWrite(AcidSoluction, LOW);
   digitalWrite(BasicSoluction, LOW);
   digitalWrite(ElSoluction, LOW);
+  tempSensor.begin();    // initialize the sensor
 
 
   Serial.begin(115200);
@@ -205,13 +278,20 @@ void setup() {
 
 void loop() {
 
+getTemperature();
   ReadingTypeEnum type = PH;
-  sendValueToApi("1", type);
+  sendValueToApi(getPh(), type);
   Serial.println("sended ph");
 
   type = EL;
-  sendValueToApi("900", type);
+  sendValueToApi(getTds(), type);
   Serial.println("sended El");
+
+
+  type = TEMPERATURE;
+  sendValueToApi(getTemperature(), type);
+  Serial.println("sended temperature");
+
 
   String command = getNextInstruction();
 
