@@ -59,6 +59,7 @@ Route::post('/admin/table/container/{container_id}', 'TableController_api@contai
 Route::post('/admin/container/new', 'ContainerController@create');
 Route::post('/admin/container/update', 'ContainerController@update');
 Route::post('/admin/container/delete', 'ContainerController@delete');
+Route::post('/admin/container/activate', 'ContainerController@activate');
 
 /*****************Microcontroller*******************************/
 

@@ -5,171 +5,173 @@
 @endsection
 
 @section('body')
-    <div style="width: 80%; margin: auto; padding: 20px;">
-        <h2 style="text-align: center; margin-bottom: 20px; font-family: Arial, sans-serif; color: #333;">Dashboard</h2>
+    <div class="dashboard-container">
         
-        <!-- Active and Inactive Arduinos Charts -->
-        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-            <div style="flex: 1 1 48%;">
-                <div style="background: #f9f9f9; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                    <h3 style="text-align: center; font-family: Arial, sans-serif; color: #555;">Active Arduinos</h3>
-                    <canvas id="arduinoActiveChart"></canvas>
-                </div>
+        <!-- Active and Inactive Microcontroladores -->
+        <div class="microcontrolador-status">
+            <div class="microcontrolador-card">
+                <h3>Active Microcontroladores</h3>
+                <span class="microcontrolador-count">{{ $arduinosActive }}</span>
             </div>
-            <div style="flex: 1 1 48%;">
-                <div style="background: #f9f9f9; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                    <h3 style="text-align: center; font-family: Arial, sans-serif; color: #555;">Inactive Arduinos</h3>
-                    <canvas id="arduinoInactiveChart"></canvas>
-                </div>
+            <div class="microcontrolador-card">
+                <h3>Inactive Microcontroladores</h3>
+                <span class="microcontrolador-count">{{ $arduinosInactive }}</span>
             </div>
         </div>
-        
-        <!-- Container Data Chart -->
-        <div style="margin-bottom: 20px;">
-            <div style="background: #f9f9f9; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                <h3 style="text-align: center; font-family: Arial, sans-serif; color: #555;">Container Data</h3>
-                <canvas id="containerChart"></canvas>
+
+        <!-- Electric Conductivity and pH over Time Charts -->
+        @foreach($containers as $containerId => $containerData)
+            @php
+                $containerName = $containerData['name'];
+                $latestEcReading = end($containerData['ec'])['reading'] ?? 'N/A';
+                $latestPhReading = end($containerData['ph'])['reading'] ?? 'N/A';
+            @endphp
+            <div class="chart-card">
+                <h3>{{ $containerName }} - Electric Conductivity (Latest: {{ $latestEcReading }} µS/cm)</h3>
+                <canvas id="ecChart{{ $containerId }}"></canvas>
             </div>
-        </div>
-        
-        <!-- Reading Types Distribution Chart -->
-        <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-            <div style="flex: 1 1 48%; margin-bottom: 20px;">
-                <div style="background: #f9f9f9; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                    <h3 style="text-align: center; font-family: Arial, sans-serif; color: #555;">Reading Types Distribution</h3>
-                    <canvas id="readingTypeChart"></canvas>
-                </div>
+            <div class="chart-card">
+                <h3>{{ $containerName }} - pH (Latest: {{ $latestPhReading }} pH)</h3>
+                <canvas id="phChart{{ $containerId }}"></canvas>
             </div>
-            <div style="flex: 1 1 100%; margin-bottom: 20px;">
-                <div style="background: #f9f9f9; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                    <h3 style="text-align: center; font-family: Arial, sans-serif; color: #555;">Historical Readings</h3>
-                    <canvas id="historicalReadingChart"></canvas>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
 @endsection
 
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Active Arduinos Chart
-        const arduinoActiveCtx = document.getElementById('arduinoActiveChart').getContext('2d');
-        const arduinoActiveChart = new Chart(arduinoActiveCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Active Arduinos'],
+        // Iterate through each container and render the charts
+        @foreach($containers as $containerId => $containerData)
+            const ecData = {
+                labels: {!! json_encode(array_column($containerData['ec'], 'time')) !!},
                 datasets: [{
-                    label: 'Active',
-                    data: [{{ $arduinosActive }}],
-                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // Inactive Arduinos Chart
-        const arduinoInactiveCtx = document.getElementById('arduinoInactiveChart').getContext('2d');
-        const arduinoInactiveChart = new Chart(arduinoInactiveCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Inactive Arduinos'],
-                datasets: [{
-                    label: 'Inactive',
-                    data: [{{ $arduinosInactive }}],
-                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // Container Chart
-        const containerCtx = document.getElementById('containerChart').getContext('2d');
-        const containerChart = new Chart(containerCtx, {
-            type: 'bar',
-            data: {
-                labels: {!! json_encode(array_keys($containers)) !!}, // Assuming $containers is indexed by container ID
-                datasets: [{
-                    label: 'Number of Readings',
-                    data: {!! json_encode(array_map('count', $containers)) !!}, // Number of readings per container
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    label: 'Electric Conductivity',
+                    data: {!! json_encode(array_column($containerData['ec'], 'reading')) !!},
                     borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderWidth: 1,
+                    fill: true,
                 }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+            };
 
-        // Reading Type Chart
-        const readingTypeCtx = document.getElementById('readingTypeChart').getContext('2d');
-        const readingTypeCounts = [0, 0, 0]; // Initialize counts for each reading type
-        @foreach($containers as $container)
-            @foreach($container as $type => $readings)
-                readingTypeCounts[{{ array_search($type, array_values($typeDict)) }}] += {{ count($readings) }};
-            @endforeach
-        @endforeach
-        const readingTypeChart = new Chart(readingTypeCtx, {
-            type: 'doughnut',
-            data: {
-                labels: {!! json_encode(array_values($typeDict)) !!}, // Labels for reading types from $typeDict
+            const phData = {
+                labels: {!! json_encode(array_column($containerData['ph'], 'time')) !!},
                 datasets: [{
-                    label: '# of Readings',
-                    data: readingTypeCounts,
-                    backgroundColor: [
-                        'rgba(255, 206, 86, 0.6)',
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(255, 99, 132, 0.6)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 99, 132, 1)'
-                    ],
-                    borderWidth: 1
+                    label: 'pH',
+                    data: {!! json_encode(array_column($containerData['ph'], 'reading')) !!},
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderWidth: 1,
+                    fill: true,
                 }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return tooltipItem.label + ': ' + tooltipItem.raw;
+            };
+
+            new Chart(document.getElementById('ecChart{{ $containerId }}').getContext('2d'), {
+                type: 'line',
+                data: ecData,
+                options: {
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'day'
                             }
+                        },
+                        y: {
+                            beginAtZero: true
                         }
                     }
                 }
-            }
-        });
+            });
 
-        // Additional charts omitted for brevity
-
+            new Chart(document.getElementById('phChart{{ $containerId }}').getContext('2d'), {
+                type: 'line',
+                data: phData,
+                options: {
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'day'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        @endforeach
     });
 </script>
 @endsection
+
+<style>
+    :root {
+        --primary-color: #333;
+        --secondary-color: #555;
+        --background-color: #f9f9f9;
+        --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        --text-color: #333;
+    }
+
+    .dashboard-container {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .dashboard-title {
+        text-align: center;
+        margin-bottom: 20px;
+        font-family: var(--font-family);
+        color: var(--text-color);
+    }
+
+    .microcontrolador-status {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .microcontrolador-card {
+        flex: 1 1 48%;
+        text-align: center;
+        background: var(--background-color);
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: var(--card-shadow);
+        margin: 0 10px;
+    }
+
+    .microcontrolador-card h3 {
+        font-family: var(--font-family);
+        color: var(--secondary-color);
+        margin-bottom: 10px;
+    }
+
+    .microcontrolador-count {
+        font-size: 24px;
+    }
+
+    .chart-card {
+        background: var(--background-color);
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 20px;
+    }
+
+    .chart-card h3 {
+        text-align: center;
+        font-family: var(--font-family);
+        color: var(--secondary-color);
+        margin-bottom: 20px;
+    }
+    #layout-body > .card {
+        max-width: 100% !important;
+    }
+</style>

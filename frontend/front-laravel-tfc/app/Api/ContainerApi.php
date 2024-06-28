@@ -31,4 +31,9 @@ class ContainerApi extends BaseApi{
         return $this->post('automation/DeleteContainer', $container_guid);
     }
 
+    public function AddManualCommand($start, $finish, $container_guid, $operationType, $command){
+        return $this->post('automation/AddManualCommand', ['start' => $start, 'finish' => $finish, 'containerId' => $container_guid, 'operationType' => $operationType, 'command' => $command]);
+
+    }
+
 }

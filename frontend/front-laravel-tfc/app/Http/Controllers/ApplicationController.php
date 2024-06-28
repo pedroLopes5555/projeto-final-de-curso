@@ -32,27 +32,28 @@ class ApplicationController extends Controller
         $typeDict = [
             1 => 'ph',
             2 => 'ec',
-            3 => 'temperature'
+            4 => 'temperature'
         ];
 
         // Simulate API response for containers (replace with actual API call)
         $api = new ContainerApi();
-        $response = $api->RequestUserContainer('7c597a8a-16ed-4be9-ace4-6df2a35b7b33');
+        $response = $api->RequestUserContainer('5d4749f4-f4bd-4eb4-87b1-effaa4275b4f');
 
         // Process each container and its readings
         foreach ($response as $container) {
             $containerId = $container['id'];
             $containerReadings = $api->RequestContainerValues($containerId);
+            $containers[$containerId] = [
+                'name' => $container['name'],
+                'ph' => [],
+                'ec' => [],
+                'temperature' => []
+            ];
 
             foreach ($containerReadings as $reading) {
                 $readingType = $reading['readingType'];
                 $readingValue = $reading['reading'];
                 $time = $reading['time'];
-
-                // Ensure containers[$containerId][$typeDict[$readingType]] is initialized
-                if (!isset($containers[$containerId][$typeDict[$readingType]])) {
-                    $containers[$containerId][$typeDict[$readingType]] = [];
-                }
 
                 // Accumulate readings for each type
                 $containers[$containerId][$typeDict[$readingType]][] = [

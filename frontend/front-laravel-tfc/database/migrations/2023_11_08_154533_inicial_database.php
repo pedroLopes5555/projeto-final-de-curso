@@ -62,6 +62,10 @@ return new class extends Migration
             $table->string('container_name');
             $table->string('container_location');
             $table->string('container_guid');
+            $table->float('container_margin_ph');
+            $table->float('container_margin_ec');
+            $table->float('container_action_time_ph');
+            $table->float('container_action_time_ec');
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('user_id')->on('users');
