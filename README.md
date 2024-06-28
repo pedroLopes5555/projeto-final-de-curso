@@ -23,7 +23,7 @@ This guide provides step-by-step instructions for setting up a Laravel project. 
 
 2. **Navigate to Project Directory**: Change your current directory to the project directory.
     ```bash
-    cd <project_directory>
+    cd <project_directory>/frontend/front-laravel-tfc
     ```
 
 3. **Install Dependencies**: Install Composer dependencies.
